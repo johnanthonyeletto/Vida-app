@@ -1,12 +1,12 @@
 import { createStackNavigator, } from 'react-navigation';
-import ClientList from './screens/ClientList'
+import ClientListScreen from './screens/ClientListScreen'
 import ClientProfile from './screens/ClientProfile'
 
 
 
 export default createStackNavigator({
   Home: {
-    screen: ClientList
+    screen: ClientListScreen
   },
   ClientProfile: {
     screen: ClientProfile
