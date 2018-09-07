@@ -5,27 +5,33 @@ import { Col, Grid } from 'react-native-easy-grid';
 
 export default class ClientProfileInfo extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
+
     render() {
+
 
         return (
             <Container>
                 <Content>
                     <View style={{ justifyContent: "center", alignItems: "center", marginTop: 10 }}>
                         <Image style={{ borderRadius: 150 / 2, overflow: "hidden", flex: 0, width: 150, height: 150, resizeMode: 'contain' }} source={{ uri: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" }} />
-                        <H1>John Eletto</H1>
+                        <H1>{this.props.client.name}</H1>
                         <Grid style={{ marginTop: 10, flex: 0 }}>
                             <Col>
-                                <Button rounded style={{ alignSelf: 'center' }} onPress={() => this.openURL("sms:5164689725")}>
+                                <Button rounded style={{ alignSelf: 'center' }} onPress={() => this.openURL("sms:" + this.props.client.phone)}>
                                     <Icon name="chatbubbles" />
                                 </Button>
                             </Col>
                             <Col>
-                                <Button rounded style={{ alignSelf: 'center' }} onPress={() => this.openURL("tel:5164689725")}>
+                                <Button rounded style={{ alignSelf: 'center' }} onPress={() => this.openURL("tel:" + this.props.client.phone)}>
                                     <Icon name="call" />
                                 </Button>
                             </Col>
                             <Col>
-                                <Button rounded style={{ alignSelf: 'center' }} onPress={() => this.openURL("mailto:johnanthony.eletto@gmail.com?body=\n\n\nSent Using Vida\nhttps://getvida.app")}>
+                                <Button rounded style={{ alignSelf: 'center' }} onPress={() => this.openURL("mailto:" + this.props.client.email + "?body=\n\n\nSent Using Vida\nhttps://getvida.app")}>
                                     <Icon name="mail" />
                                 </Button>
                             </Col>

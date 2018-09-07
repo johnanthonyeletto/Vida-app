@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Fab, Tabs, Tab, Button, Icon, Text, } from 'native-base';
 import ClientConnectionsWeb from '../components/ClientConnectionsWeb';
 import ClientProfileInfo from '../components/ClientProfileInfo';
+import Client from '../Models/Client';
 
 
 
@@ -14,7 +15,8 @@ export default class ClientProfile extends React.Component {
     constructor() {
         super();
         this.state = {
-            active: false
+            active: false,
+            c: new Client()
         };
     };
 
@@ -23,7 +25,7 @@ export default class ClientProfile extends React.Component {
             <Container>
                 <Tabs locked>
                     <Tab heading="Profile">
-                        <ClientProfileInfo />
+                        <ClientProfileInfo client={this.state.c}/>
                     </Tab>
                     <Tab heading="Connections">
                         <ClientConnectionsWeb />
@@ -35,17 +37,17 @@ export default class ClientProfile extends React.Component {
                     active={this.state.active}
                     direction="up"
                     containerStyle={{}}
-                    style={{ backgroundColor: '#2196F3' }}
+                    style={{ backgroundColor: '#007bff' }}
                     position="bottomRight"
                     onPress={() => this.setState({ active: !this.state.active })}>
                     <Icon name="add" />
-                    <Button style={{ backgroundColor: '#34A34F' }} onPress={()=>alert("Add new event.")}>
+                    <Button style={{ backgroundColor: '#34A34F' }} onPress={() => alert("Add new event.")}>
                         <Icon name="calendar" />
                     </Button>
-                    <Button style={{ backgroundColor: '#3B5998' }} onPress={()=>alert("Add new connection.")}>
+                    <Button style={{ backgroundColor: '#3B5998' }} onPress={() => alert("Add new connection.")}>
                         <Icon name="people" />
                     </Button>
-                    <Button style={{ backgroundColor: '#DD5144' }} onPress={()=>alert("Add new note.")}>
+                    <Button style={{ backgroundColor: '#DD5144' }} onPress={() => alert("Add new note.")}>
                         <Icon name="clipboard" />
                     </Button>
                 </Fab>
@@ -54,3 +56,21 @@ export default class ClientProfile extends React.Component {
         );
     }
 }
+// export default createMaterialTopTabNavigator({
+//     Profile: { screen: ClientProfileInfo },
+//     Connections: { screen: ClientConnectionsWeb }
+// },
+//     {
+//         barStyle: { backgroundColor: '#007bff' },
+//         swipeEnabled: false,
+//         tabBarPosition: 'bottom',
+//         lazy: true,
+//         optimizationsEnabled: true,
+//         tabBarOptions:{
+//             showIcon: true,
+//             tabStyle:{
+//                 paddingBottom: 25
+//             }
+//         }
+//     },
+// );

@@ -1,19 +1,25 @@
 import React from 'react';
-import { Container, Drawer, Item, Input, Content, Button, Left, Right, Body, Icon, Text, List, ListItem, Separator, Thumbnail } from 'native-base';
+import { Container, Drawer, Input, Item, Content, Button, Left, Right, Body, Icon, Text, List, ListItem, Separator, Thumbnail } from 'native-base';
 import SideBar from '../components/SideBar';
 import ClientList from '../Models/ClientList';
 
 export default class ClientListScreen extends React.Component {
     static navigationOptions = {
-        title: 'Vida',
+        headerTitle: "Vida",
         headerRight: <Button transparent onPress={() => alert("This will navigate to the new client screen.")}><Icon name='add' style={{ marginRight: 10 }} /></Button>,
         headerLeft: <Button transparent onPress={() => openDrawer()}><Icon name='menu' style={{ marginLeft: 10, }} /></Button>,
-        headerBackTitle: 'Home'
+        headerBackTitle: 'Home',
+        tabBarIcon: () => (
+            <Icon
+                name="ios-home"
+                style={{ color: "white" }}
+            />
+        ),
+        tabBarVisible: false
     };
 
     constructor(props) {
         super(props);
-
         var cl = new ClientList();
         this.activeClients = cl.getActive();
         this.inactiveClients = cl.getInactive();
@@ -35,11 +41,14 @@ export default class ClientListScreen extends React.Component {
                     <Content>
                         <Item style={{ paddingLeft: 10, paddingRight: 10, }}>
                             <Icon name="ios-search" />
-                            <Input placeholder="Search Clients" />
+                            <Input
+                                placeholder="Search Clients"
+                                returnKeyType='search'
+                            />
                             <Icon name="ios-people" />
                         </Item>
 
-                        {/* Hackey Hack Hack */}
+                        {/* Hackey Hack Hack - John Eletto */}
                         <List></List>
 
                         <Separator bordered>
@@ -47,7 +56,7 @@ export default class ClientListScreen extends React.Component {
                         </Separator>
                         <List dataArray={this.activeClients}
                             renderRow={(client) =>
-                                <ListItem thumbnail>
+                                <ListItem thumbnail onPress={()=> this.props.navigation.navigate('ClientProfile')}>
                                     <Left>
                                         <Thumbnail square source={{ uri: client.avatarURL }} />
                                     </Left>
@@ -93,3 +102,8 @@ export default class ClientListScreen extends React.Component {
         );
     }
 }
+
+
+
+
+
