@@ -1,6 +1,6 @@
 import { createStackNavigator, createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation';
-import ClientListScreen from './screens/ClientListScreen'
-import ClientProfile from './screens/ClientProfile'
+import ClientListScreen from './Screens/ClientListScreen'
+import ClientProfile from './Screens/ClientProfile'
 
 const HomeStack = createStackNavigator({
   Home: { screen: ClientListScreen },

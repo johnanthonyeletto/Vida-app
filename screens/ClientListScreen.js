@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Drawer, Input, Item, Content, Button, Left, Right, Body, Icon, Text, List, ListItem, Separator, Thumbnail } from 'native-base';
-import SideBar from '../components/SideBar';
+import SideBar from '../Components/SideBar';
 import ClientList from '../Models/ClientList';
 
 export default class ClientListScreen extends React.Component {

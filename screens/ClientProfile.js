@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Fab, Tabs, Tab, Button, Icon, Text, } from 'native-base';
-import ClientConnectionsWeb from '../components/ClientConnectionsWeb';
-import ClientProfileInfo from '../components/ClientProfileInfo';
+import ClientConnectionsWeb from '../Components/ClientConnectionsWeb';
+import ClientProfileInfo from '../Components/ClientProfileInfo';
 import Client from '../Models/Client';
 
 
