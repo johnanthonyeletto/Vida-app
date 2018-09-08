@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Linking } from 'react-native'
+import { View, Image, Linking, AsyncStorage, } from 'react-native'
 import { Container, H1, Content, Button, Icon, Text, Separator, List, ListItem, Left, Right } from 'native-base';
 import { Col, Grid } from 'react-native-easy-grid';
 
@@ -34,7 +34,7 @@ export default class SideBar extends React.Component {
                                 <Icon name="arrow-forward" />
                             </Right>
                         </ListItem>
-                        <ListItem onPress={() => alert("This will log out the user and return them to the login screen.")}>
+                        <ListItem onPress={this._signOutAsync}>
                             <Left>
                                 <Text>Logout</Text>
                             </Left>
@@ -48,4 +48,10 @@ export default class SideBar extends React.Component {
         );
 
     }
+
+    _signOutAsync = async () => {
+        await AsyncStorage.clear();
+        // this.props.navigation.navigate('Auth');
+        alert("Logged out. Please refresh.");
+    };
 }

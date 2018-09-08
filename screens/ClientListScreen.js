@@ -44,6 +44,7 @@ export default class ClientListScreen extends React.Component {
                             <Input
                                 placeholder="Search Clients"
                                 returnKeyType='search'
+                                autoCorrect={false}
                             />
                             <Icon name="ios-people" />
                         </Item>
