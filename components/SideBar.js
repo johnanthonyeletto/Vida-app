@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image, Linking, AsyncStorage, } from 'react-native'
 import { Container, H1, Content, Button, Icon, Text, Separator, List, ListItem, Left, Right } from 'native-base';
 import { Col, Grid } from 'react-native-easy-grid';
+import User from '../Models/User';
 
 export default class SideBar extends React.Component {
 
@@ -50,7 +51,10 @@ export default class SideBar extends React.Component {
     }
 
     _signOutAsync = async () => {
-        await AsyncStorage.clear();
+        const user = new User();
+        await user.loadFromAsyncStorage();
+        await user.logout();
+        // await AsyncStorage.clear();
         // this.props.navigation.navigate('Auth');
         alert("Logged out. Please refresh.");
     };
