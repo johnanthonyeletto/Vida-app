@@ -14,7 +14,11 @@ import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Vida',
+    title: 'Clients',
+    headerTitle: <Image
+    source={require('../assets/images/logo_1280x800.png')}
+    style={{height: 45, width: 72}}
+  />,
   };
 
   render() {
