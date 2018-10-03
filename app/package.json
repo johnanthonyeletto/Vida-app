@@ -1,29 +1,25 @@
 {
-  "name": "Vida-app",
-  "version": "0.1.0",
+  "name": "my-new-project",
+  "main": "node_modules/expo/AppEntry.js",
   "private": true,
-  "devDependencies": {
-    "jest-expo": "~27.0.0",
-    "react-native-scripts": "^1.14.1",
-    "react-test-renderer": "16.3.1"
-  },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
-    "test": "jest"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject",
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@expo/vector-icons": "^6.3.1",
-    "expo": "^27.0.1",
-    "native-base": "^2.8.0",
+    "@expo/samples": "2.1.1",
+    "expo": "^30.0.1",
     "react": "16.3.1",
-    "react-native": "^0.57.0",
-    "react-navigation": "^2.12.1"
+    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "react-navigation": "^2.16.0"
+  },
+  "devDependencies": {
+    "jest-expo": "30.0.0"
   }
 }
