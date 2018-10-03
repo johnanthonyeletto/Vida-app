@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "app2",
-    "description": "A very interesting project.",
-    "slug": "app2",
+    "name": "Vida",
+    "description": "An app for life coaches to manage their clients.",
+    "slug": "vida",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
