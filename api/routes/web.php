@@ -14,3 +14,7 @@
 $router->get('/', function () use ($router) {
     return 'Welcome To The Vida API!';
 });
+
+$router->get('/phpinfo', function () use ($router) {
+	return response()->json(phpinfo());
+});
