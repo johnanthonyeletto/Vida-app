@@ -7,6 +7,9 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import ClientList from '../models/ClientList';
+import ScrollContainer from '../components/ScrollContainer'
+import ListSeparator from '../components/clientList/ListSeparator';
+import ListItem from '../components/clientList/ListItem';
 import Colors from '../constants/Colors';
 
 export default class HomeScreen extends React.Component {
@@ -34,13 +37,13 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollContainer>
         <SectionList
           renderItem={({ item, index, section }) =>
-            <Text key={index}>{item.name}</Text>
+            <ListItem client={item} />
           }
           renderSectionHeader={({ section: { title } }) => (
-            <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+            <ListSeparator>{title}</ListSeparator>
           )}
           sections={[
             { title: 'Active', data: this.activeClients },
@@ -48,7 +51,7 @@ export default class HomeScreen extends React.Component {
           ]}
           keyExtractor={(item, index) => item + index}
         />
-      </ScrollView>
+      </ScrollContainer>
     );
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Button, AsyncStorage } from 'react-native';
+import ScrollContainer from '../components/ScrollContainer';
 import Colors from '../constants/Colors';
 
 export default class SettingsScreen extends React.Component {
@@ -17,9 +18,9 @@ export default class SettingsScreen extends React.Component {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
     return (
-      <View>
-        <Button title="Sign Out" onPress={this._logoutAsync} />
-      </View>
+      <ScrollContainer>
+        <Button title="Logout" onPress={this._logoutAsync} />
+      </ScrollContainer>
     );
   }
 
