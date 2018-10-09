@@ -7,14 +7,21 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import ClientList from '../models/ClientList';
+import Colors from '../constants/Colors';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Clients',
-    headerTitle: <Image
-      source={require('../assets/images/logo_1280x800.png')}
-      style={{ height: 45, width: 72, paddingTop: 5, paddingBottom: 5 }}
-    />,
+    // headerTitle: <Image
+    //   source={require('../assets/images/logo_1280x800.png')}
+    //   style={{ height: 45, width: 72, paddingTop: 5, paddingBottom: 5 }}
+    // />,
+    headerTitleStyle:{
+      color: Colors.white
+    },
+    headerStyle:{
+      backgroundColor: Colors.blue
+    }
   };
 
   constructor(props) {

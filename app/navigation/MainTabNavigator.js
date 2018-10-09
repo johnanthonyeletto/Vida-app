@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import AuthStack from './AppNavigator';
+import Colors from '../constants/Colors';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -23,7 +24,7 @@ HomeStack.navigationOptions = {
           : 'md-people'
       }
     />
-  ),
+  )
 };
 
 const LinksStack = createStackNavigator({
@@ -37,7 +38,7 @@ LinksStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? `ios-calendar${focused ? '' : '-outline'}` : 'md-calendar'}
     />
-  ),
+  )
 };
 
 const SettingsStack = createStackNavigator({
@@ -51,7 +52,7 @@ SettingsStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
     />
-  ),
+  )
 };
 
 export default createBottomTabNavigator({
