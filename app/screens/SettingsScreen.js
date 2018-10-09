@@ -11,12 +11,12 @@ export default class SettingsScreen extends React.Component {
      * content, we just wanted to give you a quick view of your config */
     return (
       <View>
-        <Button title="Sign Out" onPress={this._signOutAsync} />
+        <Button title="Sign Out" onPress={this._logoutAsync} />
       </View>
     );
   }
 
-  _signOutAsync = async () => {
+  _logoutAsync = async () => {
     await AsyncStorage.clear();
     this.props.navigation.navigate('Auth');
   };
