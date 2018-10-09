@@ -18,7 +18,6 @@ export default class SettingsScreen extends React.Component {
 
   _signOutAsync = async () => {
     await AsyncStorage.clear();
-    // this.props.navigation.navigate('Auth');
-    alert("Signed Out. Please Refresh. Note: Fix this.");
+    this.props.navigation.navigate('Auth');
   };
 }
