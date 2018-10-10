@@ -14,6 +14,7 @@ import ListSeparator from '../components/clientList/ListSeparator';
 import ListItem from '../components/clientList/ListItem';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import Navigator from 'react-navigation';
 
 
 export default class HomeScreen extends React.Component {
@@ -49,7 +50,7 @@ export default class HomeScreen extends React.Component {
       <ScrollContainer>
         <SectionList
           renderItem={({ item, index, section }) =>
-            <TouchableOpacity onPress={() => { alert("Navigate to client's page.") }}>
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientProfile'); }}>
               <ListItem client={item} />
             </TouchableOpacity>
           }

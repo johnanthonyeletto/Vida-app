@@ -6,11 +6,13 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ClientProfileScreen from '../screens/ClientProfileScreen';
 import AuthStack from './AppNavigator';
 import Colors from '../constants/Colors';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
+  ClientProfile: ClientProfileScreen
 });
 
 HomeStack.navigationOptions = {
