@@ -29,8 +29,6 @@ export default class LoginScreen extends React.Component {
                     source={require('../../assets/images/logo_1280x800.png')}
                     resizeMode={'contain'}
                     style={{
-                        flex: 1,
-                        alignSelf: 'stretch',
                         width: (win.width * 0.5), // This makes the image take up 50% of the window's width
                         //height: win.height,
                     }}

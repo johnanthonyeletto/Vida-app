@@ -24,14 +24,14 @@ export default class HomeScreen extends React.Component {
     //   style={{ height: 45, width: 72, paddingTop: 5, paddingBottom: 5 }}
     // />,
     headerTitleStyle: {
-      color: '#000000'
+      color: Colors.white
     },
     headerStyle: {
-      backgroundColor: Colors.white
+      backgroundColor: Colors.blue
     },
     headerRight: (
       <TouchableOpacity onPress={() => { alert("New Client") }}>
-        <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.blue} />
+        <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
       </TouchableOpacity>
     ),
   };
@@ -49,7 +49,9 @@ export default class HomeScreen extends React.Component {
       <ScrollContainer>
         <SectionList
           renderItem={({ item, index, section }) =>
-            <ListItem client={item} />
+            <TouchableOpacity onPress={() => { alert("Navigate to client's page.") }}>
+              <ListItem client={item} />
+            </TouchableOpacity>
           }
           renderSectionHeader={({ section: { title } }) => (
             <ListSeparator>{title}</ListSeparator>
