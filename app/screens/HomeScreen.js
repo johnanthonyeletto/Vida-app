@@ -20,10 +20,10 @@ export default class HomeScreen extends React.Component {
     //   style={{ height: 45, width: 72, paddingTop: 5, paddingBottom: 5 }}
     // />,
     headerTitleStyle:{
-      color: Colors.white
+      color: '#000000'
     },
     headerStyle:{
-      backgroundColor: Colors.blue
+      backgroundColor: Colors.white
     }
   };
 

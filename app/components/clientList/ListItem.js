@@ -13,7 +13,7 @@ export default class ListItem extends Component {
     render() {
         return (
             <View style={styles.item}>
-                <View>
+                <View style={styles.imageSection}>
                     <Image
                         style={{ width: 65, height: 65, borderRadius: 32.5 }}
                         source={{
@@ -23,7 +23,7 @@ export default class ListItem extends Component {
                     />
                 </View>
                 <View style={styles.clientInfo}>
-                    <Text style={styles.name}> {this.props.client.name} </Text>
+                    <Text style={styles.name}>{this.props.client.name} </Text>
                     <Text style={styles.lastInteraction}>{this.props.client.lastInteraction}</Text>
                 </View>
                 <View style={styles.more}>
@@ -37,18 +37,18 @@ export default class ListItem extends Component {
 
     _showMoreOptions() {
         ActionSheetIOS.showActionSheetWithOptions({
-            options: ['Cancel', 'Call Client', 'SMS Client', 'Email Client'],
+            options: ['Cancel', 'Add Meeting', 'Call Client', 'SMS Client', 'Email Client'],
             cancelButtonIndex: 0,
         },
             (buttonIndex) => {
                 switch (buttonIndex) {
-                    case 1:
+                    case 2:
                         Linking.openURL('tel:5164689725');
                         break;
-                    case 2:
+                    case 3:
                         Linking.openURL('sms:5164689725');
                         break;
-                        case 3:
+                    case 4:
                         Linking.openURL('mailto:johnanthony.eletto@gmail.com');
                         break;
                 }
@@ -60,12 +60,13 @@ const styles = new StyleSheet.create({
     item: {
         flex: 1,
         flexDirection: 'row',
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         borderBottomColor: Colors.lightGrey,
         paddingTop: 20,
         paddingBottom: 20,
         paddingRight: 10,
         paddingLeft: 10,
+        backgroundColor: Colors.white,
     },
     name: {
         fontSize: 17,
@@ -74,9 +75,9 @@ const styles = new StyleSheet.create({
         fontWeight: '100',
     },
     clientInfo: {
-        paddingLeft: 10,
+        paddingLeft: 20,
         justifyContent: 'center',
-        alignItems: 'center'
+        //alignItems: 'center'
     },
     more: {
         justifyContent: 'center',
@@ -84,6 +85,9 @@ const styles = new StyleSheet.create({
         position: 'absolute',
         right: 20,
         paddingTop: 35
+    },
+    imageSection:{
+        paddingLeft: 10
     }
 });
 

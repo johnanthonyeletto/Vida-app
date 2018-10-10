@@ -22,10 +22,12 @@ export default class ListSeparator extends React.Component {
 
 const styles = new StyleSheet.create({
     seperator: {
-        backgroundColor: Colors.lightBlue,
+        //backgroundColor: Colors.lightBlue,
         padding: 5,
     },
     seperatorText: {
-        fontSize: 20
+        fontSize: 20,
+        color: Colors.blue,
+        fontWeight: '400',
     }
 });
