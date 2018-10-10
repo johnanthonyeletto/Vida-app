@@ -86,7 +86,7 @@ const styles = new StyleSheet.create({
         right: 20,
         paddingTop: 35
     },
-    imageSection:{
+    imageSection: {
         paddingLeft: 10
     }
 });
