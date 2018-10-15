@@ -1,25 +1,55 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  SectionList,
+  StyleSheet,
+  Text,
+  Button,
+  TouchableOpacity,
+  View,
+  FlatList,
+} from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
+import ScheduleList from '../models/ScheduleList';
+import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
+import EventItem from '../components/EventItem';
 
 export default class LinksScreen extends React.Component {
   static navigationOptions = {
-    title: 'Links',
+    title: 'Upcoming',
     headerTitleStyle:{
       color: Colors.white
     },
     headerStyle:{
       backgroundColor: Colors.blue
-    }
+    },
+    headerRight: (
+      <TouchableOpacity onPress={() => { alert("Add Event") }}>
+        <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
+      </TouchableOpacity>
+    ),
   };
+
+  constructor(props) {
+    super(props);
+
+    const scheduleList = new ScheduleList();
+    this.events = scheduleList.getUpcoming();
+  }
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
-        <ExpoLinksView />
+        <FlatList
+          data={this.events}
+          renderItem={({item}) =>
+           <EventItem sEvent={item}/>
+          }
+          keyExtractor={(item, index) => item + index}
+
+        />
       </ScrollView>
     );
   }
