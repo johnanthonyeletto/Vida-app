@@ -23,10 +23,11 @@ export default class ClientProfileScreen extends Component {
 
   constructor(props) {
     super(props);
+    let client = new Client();
     this.state = {
-
+      client: client
     };
-    var client = new Client();
+
   }
 
   render() {
@@ -34,14 +35,14 @@ export default class ClientProfileScreen extends Component {
       <ScrollContainer>
         <View>
           <Image
-            style={{ width: 65, height: 65, borderRadius: 32.5 }}
+            style={{ width: 200, height: 200, borderRadius: 100, alignSelf: "center" }}
             source={{
-              uri: this.client.avatarURL
+              uri: this.state.client.avatarURL
             }}
             resizeMode={'contain'}
           />
         </View>
-        <Text> Client Profile </Text>
+        <Text> Client Profile</Text>
       </ScrollContainer>
     );
   }
