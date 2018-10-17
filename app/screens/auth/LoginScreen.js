@@ -4,7 +4,8 @@ import {
     SafeAreaView,
     Button,
     Image,
-    Dimensions
+    Dimensions,
+    ScrollView
 } from 'react-native';
 import Colors from '../../constants/Colors';
 
@@ -21,7 +22,7 @@ export default class LoginScreen extends React.Component {
             <SafeAreaView style={{
                 flex: 1,
                 backgroundColor: Colors.lightBlue,
-                height: '100%',
+                height: '90%',
                 justifyContent: 'center',
                 alignItems: 'center',
             }}>

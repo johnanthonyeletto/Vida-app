@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import ScrollContainer from '../components/ScrollContainer';
 import Client from '../models/Client';
 import Colors from '../constants/Colors';
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default class ClientProfileScreen extends Component {
   static navigationOptions = {
@@ -12,13 +14,14 @@ export default class ClientProfileScreen extends Component {
     },
     headerTintColor: Colors.white,
     headerStyle: {
-      backgroundColor: Colors.blue
+      backgroundColor: Colors.blue,
+      borderBottomWidth: 0,
     },
-    // headerRight: (
-    //   <TouchableOpacity onPress={() => { alert("New Client") }}>
-    //     <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
-    //   </TouchableOpacity>
-    // ),
+    headerRight: (
+      <TouchableOpacity onPress={() => { alert("Add something to this client.") }}>
+        <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
+      </TouchableOpacity>
+    ),
   };
 
   constructor(props) {
@@ -32,18 +35,33 @@ export default class ClientProfileScreen extends Component {
 
   render() {
     return (
-      <ScrollContainer>
-        <View>
+      <ScrollView style={styles.container}>
+        <View style={styles.clientInfo}>
           <Image
-            style={{ width: 200, height: 200, borderRadius: 100, alignSelf: "center" }}
+            style={{ width: 175, height: 175, borderRadius: (175 / 2), alignSelf: "center" }}
             source={{
               uri: this.state.client.avatarURL
             }}
             resizeMode={'contain'}
           />
         </View>
-        <Text> Client Profile</Text>
-      </ScrollContainer>
+
+      </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.blue
+  },
+  clientInfo: {
+    alignItems: "center",
+    backgroundColor: Colors.blue,
+    position: "absolute",
+    width: "100%"
+  },
+  clientName: {
+    fontSize: 25,
+  }
+});
