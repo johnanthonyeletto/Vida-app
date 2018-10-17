@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="d3.min.js"></script>
+  </head>
+  <style>
+    .static {
+      cursor: not-allowed;
+    }
+
+    .draggable {
+      cursor: move;
+      fill: #007bff;
+      fill-opacity: 0.7;
+      stroke: #007bff;
+      stroke-width: 0.2;
+    }
+
+    .connection {
+      stroke-width: 0.1;
+      stroke: blue;
+    }
+
+  </style>
+  <body>
+    <p>Vida Test Graph</p>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75 75" onload="makeDraggable(evt)" width="1000" height="1000">
+
+      <rect id="rect1" class="draggable" x="10" y="8" width="3" height="3"/>
+      <rect id="rect2" class="draggable" x="15" y="15" width="3" height="3"/>
+      <rect id="rect3" class="draggable" x="10" y="15" width="3" height="3"/>
+      <rect id="rect4" class="draggable" x="5" y="15" width="3" height="3"/>
+      <line id="cxn1" class = "connection" />
+      <line id="cxn2" class = "connection" />
+      <line id="cxn3" class = "connection" />
+
+    </svg>
+
+    <script>
+
+    var rect1 = document.getElementById('rect1');
+    var rect2 = document.getElementById('rect2');
+    var rect3 = document.getElementById('rect3');
+    var rect4 = document.getElementById('rect4');
+    var cxn1 = document.getElementById('cxn1');
+    var cxn2 = document.getElementById('cxn2');
+    var cxn3 = document.getElementById('cxn3');
+
+    updateConnection(rect1, rect2, cxn1);
+    updateConnection(rect1, rect3, cxn2);
+    updateConnection(rect1, rect4, cxn3);
+
+ function updateConnection(obj1, obj2, cxn) {
+    // Top left coordinates
+    var x1 = parseFloat(obj1.getAttributeNS(null, 'x'));
+    var y1 = parseFloat(obj1.getAttributeNS(null, 'y'));
+    var x2 = parseFloat(obj2.getAttributeNS(null, 'x'));
+    var y2 = parseFloat(obj2.getAttributeNS(null, 'y'));
+
+    // Half widths and half heights
+    var w1 = parseFloat(obj1.getAttributeNS(null, 'width')) / 2;
+    var h1 = parseFloat(obj1.getAttributeNS(null, 'height')) / 2;
+    var w2 = parseFloat(obj2.getAttributeNS(null, 'width')) / 2;
+    var h2 = parseFloat(obj2.getAttributeNS(null, 'height')) / 2;
+
+    // Center coordinates
+    var cx1 = x1 + w1;
+    var cy1 = y1 + h1;
+    var cx2 = x2 + w2;
+    var cy2 = y2 + h2;
+
+    // Distance between centers
+    var dx = cx2 - cx1;
+    var dy = cy2 - cy1;
+
+    var p1, p2;
+    if (!dx) {
+      p1 = [cx1, y1 + h2 * 2];
+      p2 = [cx1, y2];
+    } else {
+      p1 = getIntersection(dx, dy, cx1, cy1, w1, h1);
+      p2 = getIntersection(-dx, -dy, cx2, cy2, w2, h2);
+    }
+
+    cxn.setAttributeNS(null, 'x1', p1[0]);
+    cxn.setAttributeNS(null, 'y1', p1[1]);
+    cxn.setAttributeNS(null, 'x2', p2[0]);
+    cxn.setAttributeNS(null, 'y2', p2[1]);
+    }
+
+    function getIntersection(dx, dy, cx, cy, w, h) {
+    if (Math.abs(dy / dx) < h / w) {
+    // Hit vertical edge of box1
+    return [cx + (dx > 0 ? w : -w), cy + dy * w / Math.abs(dx)];
+    } else {
+    // Hit horizontal edge of box1
+    return [cx + dx * h / Math.abs(dy), cy + (dy > 0 ? h : -h)];
+    }
+    };
+
+    function makeDraggable(evt) {
+    var svg = evt.target;
+    svg.addEventListener('mousedown', startDrag);
+    svg.addEventListener('mousemove', drag);
+    svg.addEventListener('mouseup', endDrag);
+
+    function getMousePosition(evt) {
+      var CTM = svg.getScreenCTM();
+      return {
+        x: (evt.clientX - CTM.e) / CTM.a,
+        y: (evt.clientY - CTM.f) / CTM.d
+      };
+    }
+
+    var selectedElement, offset;
+    function startDrag(evt) {
+      if (evt.target.classList.contains('draggable')) {
+        selectedElement = evt.target;
+        offset = getMousePosition(evt);
+        offset.x -= parseFloat(selectedElement.getAttributeNS(null, "x"));
+        offset.y -= parseFloat(selectedElement.getAttributeNS(null, "y"));
+      }
+    }
+
+    function drag(evt) {
+      if (selectedElement) {
+        var coord = getMousePosition(evt);
+        selectedElement.setAttributeNS(null, "x", coord.x - offset.x);
+        selectedElement.setAttributeNS(null, "y", coord.y - offset.y);
+        updateConnection(rect1, rect2, cxn1);
+        updateConnection(rect1, rect3, cxn2);
+        updateConnection(rect1, rect4, cxn3);
+      }
+    }
+
+    function endDrag(evt) {
+      selectedElement = null;
+    }
+    }
+
+    </script>
+  </body>
+
+</html>
