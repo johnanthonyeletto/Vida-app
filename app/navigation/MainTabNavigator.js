@@ -9,12 +9,14 @@ import SettingsScreen from '../screens/SettingsScreen';
 import ClientProfileScreen from '../screens/ClientProfileScreen';
 import eventView from '../screens/eventScreens/eventView';
 import eventEntry from '../screens/eventScreens/eventEntry';
+import ClientGraphScreen from '../screens/ClientGraphScreen';
 import AuthStack from './AppNavigator';
 import Colors from '../constants/Colors';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
-  ClientProfile: ClientProfileScreen
+  ClientProfile: ClientProfileScreen,
+  ClientGraph: ClientGraphScreen
 });
 
 HomeStack.navigationOptions = {

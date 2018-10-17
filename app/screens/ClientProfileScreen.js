@@ -44,9 +44,24 @@ export default class ClientProfileScreen extends Component {
             }}
             resizeMode={'contain'}
           />
+
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity style={styles.circleContactButton}>
+              <Ionicons name="ios-call" size={32} color={Colors.blue} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.circleContactButton}>
+              <Ionicons name="ios-chatbubbles" size={32} color={Colors.blue} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.circleContactButton}>
+              <Ionicons name="ios-mail" size={32} color={Colors.blue} />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.clientDetails}>
+          <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph') }} style={styles.circleRelationshipButton}>
+            <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
+          </TouchableOpacity>
         </View>
 
       </ScrollView>
@@ -68,6 +83,28 @@ const styles = StyleSheet.create({
   },
   clientDetails: {
     backgroundColor: Colors.white,
-    minHeight: "100%"
+    minHeight: "100%",
+    padding: 10,
+  },
+  circleContactButton: {
+    //flex: 1,
+    width: 60,
+    height: 60,
+    borderRadius: (60 / 2),
+    backgroundColor: Colors.lightBlue,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: 'column',
+    margin: 10
+  },
+  circleRelationshipButton: {
+    width: 75,
+    height: 75,
+    borderRadius: (75 / 2),
+    backgroundColor: Colors.blue,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: 'column',
+    margin: 10
   }
 });
