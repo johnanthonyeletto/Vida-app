@@ -40,8 +40,6 @@ const styles = new StyleSheet.create({
     item: {
         flex: 1,
         flexDirection: 'row',
-        borderTopWidth: 1.5,
-        borderTopColor: Colors.blue,
         paddingBottom: 40,
         paddingRight: 10,
         backgroundColor: Colors.lightBlue,

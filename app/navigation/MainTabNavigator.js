@@ -7,6 +7,8 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ClientProfileScreen from '../screens/ClientProfileScreen';
+import eventView from '../screens/eventScreens/eventView';
+import eventEntry from '../screens/eventScreens/eventEntry';
 import AuthStack from './AppNavigator';
 import Colors from '../constants/Colors';
 
@@ -31,6 +33,8 @@ HomeStack.navigationOptions = {
 
 const LinksStack = createStackNavigator({
   Links: LinksScreen,
+  EView: eventView,
+  EEntry: eventEntry,
 });
 
 LinksStack.navigationOptions = {
