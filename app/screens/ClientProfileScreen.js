@@ -46,6 +46,9 @@ export default class ClientProfileScreen extends Component {
           />
         </View>
 
+        <View style={styles.clientDetails}>
+        </View>
+
       </ScrollView>
     );
   }
@@ -58,10 +61,13 @@ const styles = StyleSheet.create({
   clientInfo: {
     alignItems: "center",
     backgroundColor: Colors.blue,
-    position: "absolute",
-    width: "100%"
+    padding: 25
   },
   clientName: {
     fontSize: 25,
+  },
+  clientDetails: {
+    backgroundColor: Colors.white,
+    minHeight: "100%"
   }
 });
