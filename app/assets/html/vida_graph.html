@@ -1,149 +1,166 @@
 <!DOCTYPE html>
-<style>
-  html{
-    background-color: #eeeeee;
-  }
-</style>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{
+      background-color: #eeeeee;
+      width: 100%;
+      height: 100vh;
+      min-width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+      margin: 0;
+    }
+  </style>
 
 
-<svg width="1500" height="1500"></svg>
+</head>
+
+<body>
+  <svg width="100%" height="100vh"></svg>
 
 
-<script type="text/javascript" src="d3.min.js"></script>
-<script>
-  var nodes = [
-    { id: "Client", group: 0, label: "Client", level: 1 },
-    { id: "Pablo", group: 0, label: "Pablo", level: 2 },
-    { id: "Hunter", group: 0, label: "Hunter", level: 2 },
-    { id: "Jenna", group: 0, label: "Jenna", level: 2 },
-    { id: "Andrew", group: 0, label: "Andrew", level: 2 },
-    { id: "John", group: 1, label: "John", level: 2 }
-  ]
-  var links = [
-    { target: "Client", source: "Pablo", strength: 0.7 },
-    { target: "Client", source: "Hunter", strength: 0.7 },
-    { target: "Client", source: "Jenna", strength: 0.7 },
-    { target: "Client", source: "Andrew", strength: 0.7 },
-    { target: "Hunter", source: "Andrew", strength: 0.1 },
-    { target: "Andrew", source: "John", strength: 0.1 }
-  ]
-  function getNeighbors(node) {
-    return links.reduce(function (neighbors, link) {
-      if (link.target.id === node.id) {
-        neighbors.push(link.source.id)
-      } else if (link.source.id === node.id) {
-        neighbors.push(link.target.id)
+  <script type="text/javascript" src="d3.min.js"></script>
+  <script>
+    var nodes = [
+      { id: "Client", group: 0, label: "Client", level: 1 },
+      { id: "Pablo", group: 0, label: "Pablo", level: 2 },
+      { id: "Hunter", group: 0, label: "Hunter", level: 2 },
+      { id: "Jenna", group: 0, label: "Jenna", level: 2 },
+      { id: "Andrew", group: 0, label: "Andrew", level: 2 },
+      { id: "John", group: 1, label: "John", level: 2 }
+    ]
+    var links = [
+      { target: "Client", source: "Pablo", strength: 0.7 },
+      { target: "Client", source: "Hunter", strength: 0.7 },
+      { target: "Client", source: "Jenna", strength: 0.7 },
+      { target: "Client", source: "Andrew", strength: 0.7 },
+      { target: "Hunter", source: "Andrew", strength: 0.1 },
+      { target: "Andrew", source: "John", strength: 0.1 }
+    ]
+    function getNeighbors(node) {
+      return links.reduce(function (neighbors, link) {
+        if (link.target.id === node.id) {
+          neighbors.push(link.source.id)
+        } else if (link.source.id === node.id) {
+          neighbors.push(link.target.id)
+        }
+        return neighbors
+      },
+        [node.id]
+      )
+    }
+    function isNeighborLink(node, link) {
+      return link.target.id === node.id || link.source.id === node.id
+    }
+
+    function getNodeColor(node, neighbors) {
+      if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
+        return node.level === 1 ? 'teal' : 'gray'
       }
-      return neighbors
-    },
-      [node.id]
-    )
-  }
-  function isNeighborLink(node, link) {
-    return link.target.id === node.id || link.source.id === node.id
-  }
-
-  function getNodeColor(node, neighbors) {
-    if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
-      return node.level === 1 ? 'teal' : 'gray'
+      return node.level === 1 ? 'blue' : 'lightblue'
     }
-    return node.level === 1 ? 'blue' : 'lightblue'
-  }
 
-  function getLinkColor(node, link) {
-    return isNeighborLink(node, link) ? 'gray' : '#E5E5E5'
-  }
-
-  function getTextColor(node, neighbors) {
-    return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'gray' : 'black'
-  }
-
-  var width = window.innerWidth
-  var height = window.innerHeight
-  var svg = d3.select('svg')
-  svg.attr('width', width).attr('height', height)
-
-  // simulation setup with all forces
-  var linkForce = d3
-    .forceLink()
-    .id(function (link) { return link.id })
-    .strength(function (link) { return link.strength })
-
-  var simulation = d3
-    .forceSimulation()
-    .force('link', linkForce)
-    .force('charge', d3.forceManyBody().strength(-150))
-    .force('center', d3.forceCenter(width / 2, height / 2))
-
-  //user interaction to drag and drop nodes
-  var dragDrop = d3.drag().on('start', function (node) {
-    node.fx = node.x
-    node.fy = node.y
-  }).on('drag', function (node) {
-    simulation.alphaTarget(0.7).restart()
-    node.fx = d3.event.x
-    node.fy = d3.event.y
-  }).on('end', function (node) {
-    if (!d3.event.active) {
-      simulation.alphaTarget(0)
+    function getLinkColor(node, link) {
+      return isNeighborLink(node, link) ? 'gray' : '#E5E5E5'
     }
-    node.fx = null
-    node.fy = null
-  })
 
-  // highlights a node and shows direct connections
-  function selectNode(selectedNode) {
-    var neighbors = getNeighbors(selectedNode)
-    // we modify the styles to highlight selected nodes
-    nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-    textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
-    linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
-  }
+    function getTextColor(node, neighbors) {
+      return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'gray' : 'black'
+    }
 
-  //links nodes together
-  var linkElements = svg.append("g")
-    .attr("class", "links")
-    .selectAll("line")
-    .data(links)
-    .enter().append("line")
-    .attr("stroke-width", 2)
-    .attr("stroke", "rgba(50, 50, 50, 0.2)")
+    var width = window.innerWidth
+    var height = window.innerHeight
 
-  var nodeElements = svg.append("g")
-    .attr("class", "nodes")
-    .selectAll("circle")
-    .data(nodes)
-    .enter().append("circle")
-    .attr("r", 15)
-    .attr("fill", getNodeColor)
-    .call(dragDrop)
-    .on('click', selectNode)
+    var svg = d3.select('svg')
+    svg.attr('width', width).attr('height', height)
 
-  //adds text to label each node --> client name
-  var textElements = svg.append("g")
-    .attr("class", "texts")
-    .selectAll("text")
-    .data(nodes)
-    .enter().append("text")
-    .text(function (node) { return node.label })
-    .attr("font-size", 14)
-    .attr("dx", 15)
-    .attr("dy", 4)
-  simulation.nodes(nodes).on('tick', () => {
-    nodeElements
-      .attr('cx', function (node) { return node.x })
-      .attr('cy', function (node) { return node.y })
-    textElements
-      .attr('x', function (node) { return node.x })
-      .attr('y', function (node) { return node.y })
-    linkElements
-      .attr('x1', function (link) { return link.source.x })
-      .attr('y1', function (link) { return link.source.y })
-      .attr('x2', function (link) { return link.target.x })
-      .attr('y2', function (link) { return link.target.y })
-  })
-  simulation.force("link").links(links)
+    // simulation setup with all forces
+    var linkForce = d3
+      .forceLink()
+      .id(function (link) { return link.id })
+      .strength(function (link) { return link.strength })
 
-</script>
+    var simulation = d3
+      .forceSimulation()
+      .force('link', linkForce)
+      .force('charge', d3.forceManyBody().strength(-150))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+
+    //user interaction to drag and drop nodes
+    var dragDrop = d3.drag().on('start', function (node) {
+      node.fx = node.x
+      node.fy = node.y
+    }).on('drag', function (node) {
+      simulation.alphaTarget(0.7).restart()
+      node.fx = d3.event.x
+      node.fy = d3.event.y
+    }).on('end', function (node) {
+      if (!d3.event.active) {
+        simulation.alphaTarget(0)
+      }
+      node.fx = null
+      node.fy = null
+    })
+
+    // highlights a node and shows direct connections
+    function selectNode(selectedNode) {
+      var neighbors = getNeighbors(selectedNode)
+      // we modify the styles to highlight selected nodes
+      nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+      textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
+      linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+    }
+
+    //links nodes together
+    var linkElements = svg.append("g")
+      .attr("class", "links")
+      .selectAll("line")
+      .data(links)
+      .enter().append("line")
+      .attr("stroke-width", 2)
+      .attr("stroke", "rgba(50, 50, 50, 0.2)")
+
+    var nodeElements = svg.append("g")
+      .attr("class", "nodes")
+      .selectAll("circle")
+      .data(nodes)
+      .enter().append("circle")
+      .attr("r", 15)
+      .attr("fill", getNodeColor)
+      .call(dragDrop)
+      .on('click', selectNode)
+
+    //adds text to label each node --> client name
+    var textElements = svg.append("g")
+      .attr("class", "texts")
+      .selectAll("text")
+      .data(nodes)
+      .enter().append("text")
+      .text(function (node) { return node.label })
+      .attr("font-size", 14)
+      .attr("dx", 15)
+      .attr("dy", 4)
+    simulation.nodes(nodes).on('tick', () => {
+      nodeElements
+        .attr('cx', function (node) { return node.x })
+        .attr('cy', function (node) { return node.y })
+      textElements
+        .attr('x', function (node) { return node.x })
+        .attr('y', function (node) { return node.y })
+      linkElements
+        .attr('x1', function (link) { return link.source.x })
+        .attr('y1', function (link) { return link.source.y })
+        .attr('x2', function (link) { return link.target.x })
+        .attr('y2', function (link) { return link.target.y })
+    })
+    simulation.force("link").links(links)
+
+  </script>
+</body>
+
+</html>
