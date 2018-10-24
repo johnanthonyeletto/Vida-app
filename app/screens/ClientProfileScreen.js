@@ -109,7 +109,7 @@ export default class ClientProfileScreen extends Component {
 
   _showMoreOptions(navigation) {
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Add Meeting', 'Add Note', 'Add Relationship', 'Quick Start Meeting'],
+      options: ['Cancel', 'Add Meeting', 'Add Relationship', 'Quick Start Meeting'],
       cancelButtonIndex: 0,
     },
       (buttonIndex) => {
@@ -118,9 +118,6 @@ export default class ClientProfileScreen extends Component {
             Linking.openURL('tel:5164689725');
             break;
           case 3:
-            Linking.openURL('sms:5164689725');
-            break;
-          case 4:
             navigation.navigate('Notes');
             break;
         }

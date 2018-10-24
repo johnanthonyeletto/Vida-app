@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, WebView } from 'react-native';
+import { View, Text, TouchableOpacity, WebView, Alert } from 'react-native';
 import Colors from '../../constants/Colors';
 
 const NotesHTML = require('../../assets/html/notes_text_editor.html');
 
 
 export default class NoteScreen extends Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
+    gesturesEnabled: false,
     title: '0:00',
     headerTintColor: Colors.white,
     headerTitleStyle: {
@@ -16,12 +17,21 @@ export default class NoteScreen extends Component {
       backgroundColor: Colors.blue
     },
     headerRight: (
-      <TouchableOpacity onPress={() => { alert("New Client") }} style={{ marginRight: 25 }}>
+      <TouchableOpacity onPress={() => {
+        Alert.alert(
+          'End Meeting?',
+          'Are you sure that you want to end this meeting?',
+          [
+            { text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+            { text: 'Yes', onPress: () => navigation.navigate("ClientProfile") },
+          ],
+        )
+      }} style={{ marginRight: 25 }}>
         <Text style={{ color: Colors.red, fontSize: 20, fontWeight: "bold" }}>End</Text>
       </TouchableOpacity>
     ),
     headerLeft: null,
-  };
+  });
 
   constructor(props) {
     super(props);
