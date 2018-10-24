@@ -10,12 +10,10 @@ import {
   View,
   FlatList,
 } from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
 import ScheduleList from '../models/ScheduleList';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import EventItem from '../components/EventItem';
-import Navigator from 'react-navigation';
 
 export default class MeetingsScreen extends React.Component {
   static navigationOptions = ({navigation})=> ({

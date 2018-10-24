@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionSheetIOS } from 'react-native';
-import ScrollContainer from '../components/ScrollContainer';
 import Client from '../models/Client';
 import Colors from '../constants/Colors';
 import ListSeparator from '../components/ListSeparator';

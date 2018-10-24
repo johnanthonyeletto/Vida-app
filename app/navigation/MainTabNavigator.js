@@ -10,8 +10,6 @@ import ClientProfileScreen from '../screens/ClientProfileScreen';
 import eventView from '../screens/eventScreens/eventView';
 import eventEntry from '../screens/eventScreens/eventEntry';
 import ClientGraphScreen from '../screens/ClientGraphScreen';
-import AuthStack from './AppNavigator';
-import Colors from '../constants/Colors';
 import NoteScreen from '../screens/ClientProfile/NoteScreen';
 
 const HomeStack = createStackNavigator({

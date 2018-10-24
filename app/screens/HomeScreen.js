@@ -8,14 +8,12 @@ import {
   TouchableOpacity,
   SafeAreaView
 } from 'react-native';
-import { WebBrowser } from 'expo';
 import ClientList from '../models/ClientList';
 import ScrollContainer from '../components/ScrollContainer'
 import ListSeparator from '../components/ListSeparator';
 import ListItem from '../components/clientList/ListItem';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import Navigator from 'react-navigation';
 
 
 export default class HomeScreen extends React.Component {
