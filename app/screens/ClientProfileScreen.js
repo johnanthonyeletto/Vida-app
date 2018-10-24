@@ -59,12 +59,27 @@ export default class ClientProfileScreen extends Component {
         </View>
 
         <View style={styles.clientDetails}>
-          <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph') }} style={styles.circleRelationshipButton}>
-            <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
-          </TouchableOpacity>
+          <Text>Relationships</Text>
+          <ScrollView style={{ flexDirection: "row" }} horizontal={true}>
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph') }} style={styles.circleRelationshipButton}>
+              <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
+            </TouchableOpacity>
+            {this.state.client.getConnections().map((connection, i) => {
+              return (
+                <Image
+                  key={i}
+                  style={styles.circleRelationshipButton}
+                  source={{
+                    uri: connection.avatarURL
+                  }}
+                  resizeMode={'contain'}
+                />
+              );
+            })}
+          </ScrollView>
         </View>
 
-      </ScrollView>
+      </ScrollView >
     );
   }
 }
