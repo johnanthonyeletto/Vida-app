@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import ClientList from '../models/ClientList';
