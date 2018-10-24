@@ -17,7 +17,7 @@ import Navigator from 'react-navigation';
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Settings',
-    headerTitleStyle:{
+    headerTitleStyle: {
       color: Colors.white
     },
     headerStyle: {
@@ -31,13 +31,13 @@ export default class SettingsScreen extends React.Component {
   // All on onPress are set to logout for now just so the warning about them being null goes away.
   render() {
     return (
-        <View style={styles.settingsContainer}>
-          <Button title="Notifications" onPress={this._logoutAsync} />
-          <Button title="Help/FAQ" onPress={this._logoutAsync} />
-          <Button title="Legal Terms" onPress={this.lawyer} />
-          <Button title="Account Info" onPress={this._logoutAsync} />
-          <Button title="Logout" onPress={this._logoutAsync} />
-        </View>
+      <View style={styles.settingsContainer}>
+        <Button title="Notifications" onPress={this._logoutAsync} />
+        <Button title="Help/FAQ" onPress={this._logoutAsync} />
+        <Button title="Legal Terms" onPress={this.lawyer} />
+        <Button title="Account Info" onPress={this._logoutAsync} />
+        <Button title="Logout" onPress={this._logoutAsync} color={Colors.red} />
+      </View>
     );
   }
 
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     alignSelf: 'center',
-    width:180
+    width: 180
   },
   dividerBlock: {
     backgroundColor: Colors.lightGrey,
