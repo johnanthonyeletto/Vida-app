@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionSheetIOS } from 'react-native';
 import ScrollContainer from '../components/ScrollContainer';
 import Client from '../models/Client';
 import Colors from '../constants/Colors';
@@ -18,7 +18,7 @@ export default class ClientProfileScreen extends Component {
       borderBottomWidth: 0,
     },
     headerRight: (
-      <TouchableOpacity onPress={() => { alert("Add something to this client.") }}>
+      <TouchableOpacity onPress={() => { new ClientProfileScreen()._showMoreOptions() }}>
         <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
       </TouchableOpacity>
     ),
@@ -81,6 +81,26 @@ export default class ClientProfileScreen extends Component {
 
       </ScrollView >
     );
+  }
+
+  _showMoreOptions() {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Add Meeting', 'Add Note', 'Add Relationship'],
+      cancelButtonIndex: 0,
+    },
+      (buttonIndex) => {
+        switch (buttonIndex) {
+          case 2:
+            Linking.openURL('tel:5164689725');
+            break;
+          case 3:
+            Linking.openURL('sms:5164689725');
+            break;
+          case 4:
+            Linking.openURL('mailto:johnanthony.eletto@gmail.com');
+            break;
+        }
+      });
   }
 }
 
