@@ -20,6 +20,7 @@ export default class NoteScreen extends Component {
         <Text style={{ color: Colors.red, fontSize: 20, fontWeight: "bold" }}>End</Text>
       </TouchableOpacity>
     ),
+    headerLeft: null,
   };
 
   constructor(props) {
