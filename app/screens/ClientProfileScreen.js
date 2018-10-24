@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionShee
 import ScrollContainer from '../components/ScrollContainer';
 import Client from '../models/Client';
 import Colors from '../constants/Colors';
+import ListSeparator from '../components/ListSeparator';
 import { Ionicons } from '@expo/vector-icons';
 
 
@@ -59,24 +60,35 @@ export default class ClientProfileScreen extends Component {
         </View>
 
         <View style={styles.clientDetails}>
-          <Text>Relationships</Text>
-          <ScrollView style={{ flexDirection: "row" }} horizontal={true}>
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph') }} style={styles.circleRelationshipButton}>
-              <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
-            </TouchableOpacity>
-            {this.state.client.getConnections().map((connection, i) => {
-              return (
-                <Image
-                  key={i}
-                  style={styles.circleRelationshipButton}
-                  source={{
-                    uri: connection.avatarURL
-                  }}
-                  resizeMode={'contain'}
-                />
-              );
-            })}
-          </ScrollView>
+
+          {/* BEGIN RELATIONSHIPS SECTION */}
+          <View>
+            <ListSeparator>
+              <Text>Relationships</Text>
+            </ListSeparator>
+            <ScrollView
+              style={{ flexDirection: "row" }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph') }} style={styles.circleRelationshipButton}>
+                <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
+              </TouchableOpacity>
+              {this.state.client.getConnections().map((connection, i) => {
+                return (
+                  <Image
+                    key={i}
+                    style={styles.circleRelationshipButton}
+                    source={{
+                      uri: connection.avatarURL
+                    }}
+                    resizeMode={'contain'}
+                  />
+                );
+              })}
+            </ScrollView>
+          </View>
+          {/* END RELATIONSHIPS SECTION */}
         </View>
 
       </ScrollView >
