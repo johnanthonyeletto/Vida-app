@@ -29,10 +29,10 @@ export default class EventCard extends Component {
 const styles = new StyleSheet.create({
     card: {
         borderColor: Colors.lightGrey,
-        borderWidth: 1,
+        borderWidth: 0.5,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
+        shadowOffset: { width: 1, height: 2 },
+        shadowOpacity: 0.1,
         shadowRadius: 2,
         backgroundColor: Colors.white,
         flexDirection: 'row',
@@ -47,10 +47,10 @@ const styles = new StyleSheet.create({
         justifyContent: "center",
     },
     month: {
-        fontSize: 20,
+        fontSize: 15,
     },
     day: {
-        fontSize: 25,
+        fontSize: 20,
         fontWeight: "bold"
     },
     time: {
