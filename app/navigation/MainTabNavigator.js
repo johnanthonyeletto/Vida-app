@@ -4,7 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import MeetingsScreen from '../screens/MeetingsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ClientProfileScreen from '../screens/ClientProfileScreen';
 import eventView from '../screens/eventScreens/eventView';
@@ -36,13 +36,13 @@ HomeStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+  Meetings: MeetingsScreen,
   EView: eventView,
   EEntry: eventEntry,
 });
 
 LinksStack.navigationOptions = {
-  tabBarLabel: 'Appointments',
+  tabBarLabel: 'Meetings',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}

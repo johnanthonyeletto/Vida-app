@@ -17,13 +17,9 @@ import Colors from '../constants/Colors';
 import EventItem from '../components/EventItem';
 import Navigator from 'react-navigation';
 
-export default class LinksScreen extends React.Component {
+export default class MeetingsScreen extends React.Component {
   static navigationOptions = ({navigation})=> ({
-    title: 'Upcoming',
-    // headerTitle: <Image
-    //   source={require('../assets/images/logo_1280x800.png')}
-    //   style={{ height: 45, width: 72, paddingTop: 5, paddingBottom: 5 }}
-    // />,
+    title: 'Upcoming Meetings',
     headerTitleStyle: {
       color: Colors.white
     },
