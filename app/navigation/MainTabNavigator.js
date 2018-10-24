@@ -12,11 +12,13 @@ import eventEntry from '../screens/eventScreens/eventEntry';
 import ClientGraphScreen from '../screens/ClientGraphScreen';
 import AuthStack from './AppNavigator';
 import Colors from '../constants/Colors';
+import NoteScreen from '../screens/ClientProfile/NoteScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   ClientProfile: ClientProfileScreen,
-  ClientGraph: ClientGraphScreen
+  ClientGraph: ClientGraphScreen,
+  Notes: NoteScreen,
 });
 
 HomeStack.navigationOptions = {

@@ -9,7 +9,7 @@ import EventCard from '../components/events/EventCard';
 
 
 export default class ClientProfileScreen extends Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     // title: 'Pablo Rivas',
     headerTitleStyle: {
       color: Colors.white
@@ -20,11 +20,11 @@ export default class ClientProfileScreen extends Component {
       borderBottomWidth: 0,
     },
     headerRight: (
-      <TouchableOpacity onPress={() => { new ClientProfileScreen()._showMoreOptions() }}>
+      <TouchableOpacity onPress={() => { new ClientProfileScreen()._showMoreOptions(navigation) }}>
         <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
       </TouchableOpacity>
     ),
-  };
+  });
 
   constructor(props) {
     super(props);
@@ -46,7 +46,7 @@ export default class ClientProfileScreen extends Component {
             }}
             resizeMode={'contain'}
           />
-          <Text style={{ color: Colors.white, fontSize: 25, marginTop: 10}}>Pablo Rivas</Text>
+          <Text style={{ color: Colors.white, fontSize: 25, marginTop: 10 }}>Pablo Rivas</Text>
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={styles.circleContactButton}>
               <Ionicons name="ios-call" size={32} color={Colors.blue} />
@@ -107,9 +107,9 @@ export default class ClientProfileScreen extends Component {
     );
   }
 
-  _showMoreOptions() {
+  _showMoreOptions(navigation) {
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Add Meeting', 'Add Note', 'Add Relationship'],
+      options: ['Cancel', 'Add Meeting', 'Add Note', 'Add Relationship', 'Quick Start Meeting'],
       cancelButtonIndex: 0,
     },
       (buttonIndex) => {
@@ -121,7 +121,7 @@ export default class ClientProfileScreen extends Component {
             Linking.openURL('sms:5164689725');
             break;
           case 4:
-            Linking.openURL('mailto:johnanthony.eletto@gmail.com');
+            navigation.navigate('Notes');
             break;
         }
       });

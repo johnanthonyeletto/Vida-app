@@ -13,13 +13,13 @@ export default class ClientGraphScreen extends Component {
         // },
         headerTintColor: Colors.blue,
         headerStyle: {
-            //backgroundColor: Colors.blue,
+            backgroundColor: Colors.lightGrey,
             borderBottomWidth: 0,
         },
         headerBackTitle: 'Back',
         headerRight: (
             <TouchableOpacity onPress={() => { alert("Add something to this client.") }}>
-                <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
+                <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.blue} />
             </TouchableOpacity>
         ),
     };
@@ -35,6 +35,7 @@ export default class ClientGraphScreen extends Component {
             <WebView
                 originWhitelist={['*']}
                 source={GraphHTML}
+                style={{ backgroundColor: Colors.lightGrey }}
             />
         );
     }
