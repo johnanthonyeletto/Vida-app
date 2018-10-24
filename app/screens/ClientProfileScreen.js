@@ -87,14 +87,15 @@ export default class ClientProfileScreen extends Component {
               </TouchableOpacity>
               {this.state.client.getConnections().map((connection, i) => {
                 return (
-                  <Image
-                    key={i}
-                    style={styles.circleRelationshipButton}
-                    source={{
-                      uri: connection.avatarURL
-                    }}
-                    resizeMode={'contain'}
-                  />
+                  <TouchableOpacity key={i}>
+                    <Image
+                      style={styles.circleRelationshipButton}
+                      source={{
+                        uri: connection.avatarURL
+                      }}
+                      resizeMode={'contain'}
+                    />
+                  </TouchableOpacity>
                 );
               })}
             </ScrollView>
