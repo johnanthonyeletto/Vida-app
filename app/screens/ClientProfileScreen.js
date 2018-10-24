@@ -5,6 +5,7 @@ import Client from '../models/Client';
 import Colors from '../constants/Colors';
 import ListSeparator from '../components/ListSeparator';
 import { Ionicons } from '@expo/vector-icons';
+import EventCard from '../components/events/EventCard';
 
 
 export default class ClientProfileScreen extends Component {
@@ -60,6 +61,16 @@ export default class ClientProfileScreen extends Component {
         </View>
 
         <View style={styles.clientDetails}>
+
+          {/* BEGIN NEXT EVENT SECTION */}
+          <View>
+            <ListSeparator>
+              <Text>Next Meeting</Text>
+            </ListSeparator>
+            <EventCard title={"Meeting With Pablo"} location={"On The Phone"} />
+          </View>
+          {/* END NEXT EVENT SECTION */}
+
 
           {/* BEGIN RELATIONSHIPS SECTION */}
           <View>
