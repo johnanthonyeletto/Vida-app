@@ -10,7 +10,7 @@ import EventCard from '../components/events/EventCard';
 
 export default class ClientProfileScreen extends Component {
   static navigationOptions = {
-    title: 'Pablo Rivas',
+    // title: 'Pablo Rivas',
     headerTitleStyle: {
       color: Colors.white
     },
@@ -46,7 +46,7 @@ export default class ClientProfileScreen extends Component {
             }}
             resizeMode={'contain'}
           />
-
+          <Text style={{ color: Colors.white, fontSize: 25, marginTop: 10}}>Pablo Rivas</Text>
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={styles.circleContactButton}>
               <Ionicons name="ios-call" size={32} color={Colors.blue} />
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   clientInfo: {
     alignItems: "center",
     backgroundColor: Colors.blue,
-    padding: 25
+    paddingBottom: 25
   },
   clientName: {
     fontSize: 25,
@@ -150,11 +150,12 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: (60 / 2),
-    backgroundColor: Colors.lightBlue,
+    backgroundColor: Colors.white,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: 'column',
-    margin: 10
+    margin: 10,
+    //opacity: 0.50
   },
   circleRelationshipButton: {
     width: 75,
