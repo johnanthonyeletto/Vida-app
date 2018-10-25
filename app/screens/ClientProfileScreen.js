@@ -66,7 +66,7 @@ export default class ClientProfileScreen extends Component {
             <ListSeparator>
               <Text>Next Meeting</Text>
             </ListSeparator>
-            <EventCard title={"Meeting With Pablo"} location={"On The Phone"} />
+            <EventCard meeting={this.state.client.getNextMeeting()} />
           </View>
           {/* END NEXT EVENT SECTION */}
 

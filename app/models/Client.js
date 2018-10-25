@@ -33,4 +33,17 @@ export default class Client {
         return connections;
     }
 
+    getNextMeeting() {
+        return new Meeting();
+    }
+
+}
+
+class Meeting {
+    constructor() {
+        this.title = "Meeing With Pablo";
+        this.dateTime = new Date();
+        this.notes = "";
+        this.location = "On The Phone";
+    }
 }
