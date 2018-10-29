@@ -37,8 +37,6 @@ THIS WILL AUTOMATICALLY ADD THE /1.0/ PREFIX TO ALL ROUTES IN HERE
  */
 $router->group(['prefix' => '1.0'], function () use ($router) {
 
-    $router->get('/login', function () use ($router) {
-        return response()->json("this is the login route");
-    });
+    $router->post('/login', 'AuthController@login');
 
 });
