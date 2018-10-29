@@ -11,6 +11,15 @@
 |
  */
 
+ /*
+    GET - get information
+    POST - add a record
+    DELETE - delete a record (also soft delete)
+    PUT - update
+
+    
+ */
+
 $router->get('/', function () use ($router) {
     return 'Welcome To The Vida API!';
 });
