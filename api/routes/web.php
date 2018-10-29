@@ -31,7 +31,10 @@ $router->post('/DBTEST', function () use ($router) {
     return response()->json($results);
 });
 
-// PUT ALL ROUTES IN HERE - THIS WILL AUTOMATICALLY ADD THE /1.0/ PREFIX TO ALL ROUTES IN HERE
+/*
+PUT ALL ROUTES IN HERE -
+THIS WILL AUTOMATICALLY ADD THE /1.0/ PREFIX TO ALL ROUTES IN HERE
+ */
 $router->group(['prefix' => '1.0'], function () use ($router) {
 
     $router->get('/login', function () use ($router) {
