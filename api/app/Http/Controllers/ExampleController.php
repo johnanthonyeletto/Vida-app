@@ -14,5 +14,13 @@ class ExampleController extends Controller
         //
     }
 
-    //
+    /**
+     * Exmple function returns phpinfo for current system.
+     *
+     * @return json
+     */
+    public function phpInfo()
+    {
+        return response()->json(phpinfo());
+    }
 }

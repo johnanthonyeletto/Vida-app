@@ -9,12 +9,16 @@
 | It is a breeze. Simply tell Lumen the URIs it should respond to
 | and give it the Closure to call when that URI is requested.
 |
-*/
+ */
 
 $router->get('/', function () use ($router) {
     return 'Welcome To The Vida API!';
 });
 
-$router->get('/phpinfo', function () use ($router) {
-	return response()->json(phpinfo());
+// Example route returns phpinfo fur current system.
+$router->get('/phpinfo', 'ExampleController@phpInfo');
+
+$router->post('/DBTEST', function () use ($router) {
+    $results = app('db')->select("SELECT email, username FROM coach_profiles");
+    return response()->json($results);
 });
