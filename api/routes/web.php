@@ -11,13 +11,12 @@
 |
  */
 
- /*
-    GET - get information
-    POST - add a record
-    DELETE - delete a record (also soft delete)
-    PUT - update
+/*
+GET - get information
+POST - add a record
+DELETE - delete a record (also soft delete)
+PUT - update
 
-    
  */
 
 $router->get('/', function () use ($router) {
@@ -32,6 +31,6 @@ $router->post('/DBTEST', function () use ($router) {
     return response()->json($results);
 });
 
-$router->get('/1.0/login', function () use ($router) {
+$router->post('/1.0/login', function () use ($router) {
     return response()->json("this is the login route");
 });
