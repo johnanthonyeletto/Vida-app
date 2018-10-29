@@ -22,3 +22,7 @@ $router->post('/DBTEST', function () use ($router) {
     $results = app('db')->select("SELECT email, username FROM coach_profiles");
     return response()->json($results);
 });
+
+$router->get('/1.0/login', function () use ($router) {
+    return response()->json("this is the login route");
+});
