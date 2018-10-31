@@ -31,10 +31,24 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    const clientList = new ClientList();
-    this.activeClients = clientList.getActive();
-    this.inactiveClients = clientList.getInactive();
+    this.state = {
+      inactiveClients: [],
+      activeClients: [],
+    }
   }
+
+  // async componentDidMount() {
+  //   var clientList = new ClientList();
+  //   clientList.getActive().then(activeClients => {
+  //     console.log(activeClients);
+  //     this.setState({ activeClients })
+  //   });
+
+  //   clientList.getActive().then(inactiveClients => {
+  //     console.log(activeClients);
+  //     this.setState({ inactiveClients })
+  //   });
+  // }
 
   render() {
     return (
@@ -50,8 +64,8 @@ export default class HomeScreen extends React.Component {
           )}
           renderSectionFooter={({ section }) => this.renderNoContent(section)}
           sections={[
-            { title: 'Active', data: this.activeClients },
-            { title: 'Inactive', data: this.inactiveClients },
+            { title: 'Active', data: this.state.activeClients },
+            { title: 'Inactive', data: this.state.inactiveClients },
           ]}
           keyExtractor={(item, index) => item + index}
         />

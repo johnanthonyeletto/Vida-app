@@ -4,23 +4,19 @@ import Auth from '../constants/Auth';
 export default class ClientList {
 
 
-    constructor() {
-        this.activeClients = [];
-        this.inactiveClients = [];
+    constructor() { }
 
-        Auth.getToken().then(token => {
-
-
-            fetch(Environment.API_HOST + '/1.0/client-list', {
+    async getActive() {
+        let result = Auth.getToken().then(token => {
+            return fetch(Environment.API_HOST + '/1.0/client-list', {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    token: token
+                    token
 
                 },
             }).then((response) => {
-
                 if (response.status != 200) {
                     response.json().then(errors => {
                         var errorMessage = '';
@@ -29,39 +25,19 @@ export default class ClientList {
                         }
                         alert(errorMessage);
                     });
-
-
-                    return;
+                    //return;
                 }
-
                 response.json().then(result => {
-                    this.activeClients = result;
-                    console.log(this.activeClients);
+                    return result;
                 });
             }).catch((error) => {
                 console.error(error);
-
             });
 
-
-
-
-
         });
-
-
-
-
-
-        this.inactiveClients.push({
-            name: "Pablo Rivas",
-            lastInteraction: "5 Months Ago",
-            avatarURL: "https://avatars2.githubusercontent.com/u/8935301?s=460&v=4"
+        return result.then(res => {
+            return res;
         });
-    }
-
-    getActive() {
-        return this.activeClients;
     }
 
     getInactive() {
