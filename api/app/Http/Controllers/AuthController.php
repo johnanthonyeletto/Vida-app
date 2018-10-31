@@ -40,7 +40,8 @@ class AuthController extends BaseController
             'iss' => "lumen-jwt", // Issuer of the token
             'sub' => $user->pid, // Subject of the token
             'iat' => time(), // Time when JWT was issued.
-            'exp' => time() + 60 * 60, // Expiration time
+            // Not sure if we want to add an expiration date...
+            // 'exp' => time() + 60 * 60, // Expiration time
         ];
 
         // As you can see we are passing `JWT_SECRET` as the second parameter that will
@@ -76,7 +77,7 @@ class AuthController extends BaseController
         }
 
         // Verify the password and generate the token
-        if (Hash::check($this->request->input('password'), $user->passwrd)) {
+        if (Hash::check($this->request->input('password'), $user->password)) {
             return response()->json([
                 'token' => $this->jwt($user),
             ], 200);

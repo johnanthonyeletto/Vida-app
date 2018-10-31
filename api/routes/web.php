@@ -48,5 +48,7 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->get('current-user', 'AuthController@currentUser');
 
+        $router->get('client-list', 'ClientController@getClientList');
+
     });
 });

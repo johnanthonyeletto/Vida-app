@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -33,4 +34,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'passwrd',
     ];
+
+    public function Clients()
+    {
+        return DB::select("SELECT people.* FROM people join coach_clients on people.pid = coach_clients.client_id where coach_clients.coach_id = :coach_id", ["coach_id" => $this->pid]);
+    }
 }
