@@ -27,11 +27,21 @@ export default class ClientProfileScreen extends Component {
 
   constructor(props) {
     super(props);
-    let client = new Client();
+
     this.state = {
-      client: client
+      client: [],
     };
 
+  }
+
+  async componentWillMount() {
+    const { navigation } = this.props;
+    const pid = navigation.getParam('pid', 'NONE');
+
+    var client = new Client();
+    client.getClient(pid).then(foundClient => {
+      this.setState({ client: foundClient });
+    });
   }
 
   render() {
@@ -41,11 +51,11 @@ export default class ClientProfileScreen extends Component {
           <Image
             style={{ width: 175, height: 175, borderRadius: (175 / 2), alignSelf: "center" }}
             source={{
-              uri: this.state.client.avatarURL
+              uri: this.state.client.image_path
             }}
             resizeMode={'contain'}
           />
-          <Text style={{ color: Colors.white, fontSize: 25, marginTop: 10 }}>Pablo Rivas</Text>
+          <Text style={{ color: Colors.white, fontSize: 25, marginTop: 10 }}>{this.state.client.fname} {this.state.client.lname}</Text>
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={styles.circleContactButton}>
               <Ionicons name="ios-call" size={32} color={Colors.blue} />
@@ -66,13 +76,13 @@ export default class ClientProfileScreen extends Component {
             <ListSeparator>
               <Text>Next Meeting</Text>
             </ListSeparator>
-            <EventCard meeting={this.state.client.getNextMeeting()} />
+            {/* <EventCard meeting={this.state.client.getNextMeeting()} /> */}
           </View>
           {/* END NEXT EVENT SECTION */}
 
 
           {/* BEGIN RELATIONSHIPS SECTION */}
-          <View>
+          {/* <View>
             <ListSeparator>
               <Text>Relationships</Text>
             </ListSeparator>
@@ -98,7 +108,7 @@ export default class ClientProfileScreen extends Component {
                 );
               })}
             </ScrollView>
-          </View>
+          </View> */}
           {/* END RELATIONSHIPS SECTION */}
         </View>
 

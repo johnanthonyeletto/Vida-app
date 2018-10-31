@@ -1,4 +1,4 @@
 export default Environment = {
     'APP_ENV': 'dev',
-    'API_HOST': 'http://5a62871d.ngrok.io',
+    'API_HOST': 'https://2f8c3b75.ngrok.io/',
 }

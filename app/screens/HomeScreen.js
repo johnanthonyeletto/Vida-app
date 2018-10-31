@@ -3,6 +3,7 @@ import {
   SectionList,
   Text,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import ClientList from '../models/ClientList';
 import ScrollContainer from '../components/ScrollContainer'
@@ -34,26 +35,38 @@ export default class HomeScreen extends React.Component {
     this.state = {
       inactiveClients: [],
       activeClients: [],
+      refreshing: false,
     }
+  }
+
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.componentDidMount().then(() => {
+      this.setState({ refreshing: false });
+    });
   }
 
   async componentDidMount() {
     var clientList = new ClientList();
     clientList.getClients().then(foundClients => {
       var clients = foundClients;
-      console.log(foundClients);
       this.setState({ activeClients: clients.active })
       this.setState({ inactiveClients: clients.inactive })
     });
-
   }
 
   render() {
     return (
-      <ScrollContainer>
+      <ScrollContainer
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }>
         <SectionList
           renderItem={({ item, index, section }) =>
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientProfile'); }}>
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientProfile', { 'pid': item.pid }); }}>
               <ListItem client={item} />
             </TouchableOpacity>
           }

@@ -13,7 +13,7 @@ export default class ScrollContainer extends React.Component {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.container} refreshControl={this.props.refreshControl}>
                 {this.props.children}
             </ScrollView>
         )
@@ -21,7 +21,7 @@ export default class ScrollContainer extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         backgroundColor: Colors.white,
         height: '100%',

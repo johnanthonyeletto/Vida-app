@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Person;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -41,5 +42,11 @@ class ClientController extends Controller
         ];
 
         return response()->json($clients);
+    }
+
+    public function getClient($pid)
+    {
+        $person = Person::where('pid', $pid)->first();
+        return response()->json($person);
     }
 }

@@ -50,5 +50,7 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->get('client-list', 'ClientController@getClientList');
 
+        $router->get('client/{pid}', 'ClientController@getClient');
+
     });
 });
