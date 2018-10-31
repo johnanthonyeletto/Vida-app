@@ -150,6 +150,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     minHeight: "100%",
     padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
   circleContactButton: {
     //flex: 1,

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Person;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -46,7 +45,13 @@ class ClientController extends Controller
 
     public function getClient($pid)
     {
-        $person = Person::where('pid', $pid)->first();
+        /*
+        This allows coaches to only see their clients. This will probably have to be modified when we implement super coaches.
+         */
+        $person = $this->request->auth->Clients()->where('pid', $pid)->first();
+        if ($person == null) {
+            abort(404, 'This client could not be found. They might not be your client.');
+        }
         return response()->json($person);
     }
 }
