@@ -39,14 +39,13 @@ export default class HomeScreen extends React.Component {
 
   async componentDidMount() {
     var clientList = new ClientList();
-    clientList.getActive().then(activeClients => {
-      console.log(activeClients);
-      this.setState({ activeClients })
+    clientList.getActive().then(foundClients => {
+      var clients = foundClients;
+      console.log(foundClients);
+      this.setState({ activeClients: clients.active })
+      this.setState({ inactiveClients: clients.inactive })
     });
 
-    clientList.getActive().then(inactiveClients => {
-      this.setState({ inactiveClients })
-    });
   }
 
   render() {

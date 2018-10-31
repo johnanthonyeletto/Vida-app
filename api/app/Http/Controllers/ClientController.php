@@ -31,8 +31,15 @@ class ClientController extends Controller
      */
     public function getClientList()
     {
-        $coachClients = $this->request->auth->Clients();
+        $active = $this->request->auth->ActiveClients();
 
-        return response()->json($coachClients);
+        $inactive = $this->request->auth->InactiveClients();
+
+        $clients = [
+            'active' => $active,
+            'inactive' => $inactive,
+        ];
+
+        return response()->json($clients);
     }
 }

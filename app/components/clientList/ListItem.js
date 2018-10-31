@@ -6,8 +6,6 @@ import Colors from '../../constants/Colors';
 export default class ListItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
     }
 
     render() {
@@ -17,14 +15,14 @@ export default class ListItem extends Component {
                     <Image
                         style={{ width: 65, height: 65, borderRadius: 32.5 }}
                         source={{
-                            uri: this.props.client.avatarURL
+                            uri: this.props.client.image_path
                         }}
                         resizeMode={'contain'}
                     />
                 </View>
                 <View style={styles.clientInfo}>
-                    <Text style={styles.name}>{this.props.client.fname} </Text>
-                    <Text style={styles.lastInteraction}>{this.props.client.lastInteraction}</Text>
+                    <Text style={styles.name}>{this.props.client.fname} {this.props.client.lname}</Text>
+                    <Text style={styles.lastInteraction}>{this.props.client.updated_at}</Text>
                 </View>
                 <View style={styles.more}>
                     <TouchableOpacity onPress={this._showMoreOptions}>
@@ -43,13 +41,13 @@ export default class ListItem extends Component {
             (buttonIndex) => {
                 switch (buttonIndex) {
                     case 2:
-                        Linking.openURL('tel:5164689725');
+                        Linking.openURL('tel:' + this.state.phone);
                         break;
                     case 3:
-                        Linking.openURL('sms:5164689725');
+                        Linking.openURL('sms:' + this.props.client.cell_phone);
                         break;
                     case 4:
-                        Linking.openURL('mailto:johnanthony.eletto@gmail.com');
+                        Linking.openURL('mailto:' + this.props.client.email);
                         break;
                 }
             });

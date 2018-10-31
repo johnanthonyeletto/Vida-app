@@ -39,4 +39,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return DB::select("SELECT people.* FROM people join coach_clients on people.pid = coach_clients.client_id where coach_clients.coach_id = :coach_id", ["coach_id" => $this->pid]);
     }
+
+    public function ActiveClients()
+    {
+        return DB::select('SELECT people.* FROM people join coach_clients on people.pid = coach_clients.client_id where people."isActive" = true AND coach_clients.coach_id = :coach_id', ["coach_id" => $this->pid]);
+    }
+
+    public function InactiveClients()
+    {
+        return DB::select('SELECT people.* FROM people join coach_clients on people.pid = coach_clients.client_id where people."isActive" = false AND coach_clients.coach_id = :coach_id', ["coach_id" => $this->pid]);
+    }
 }
