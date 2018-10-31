@@ -6,7 +6,7 @@ export default class ClientList {
 
     constructor() { }
 
-    async getActive() {
+    async getClients() {
         let result = Auth.getToken().then(token => {
             return fetch(Environment.API_HOST + '/1.0/client-list', {
                 method: 'GET',
@@ -38,10 +38,6 @@ export default class ClientList {
         return result.then(res => {
             return res;
         });
-    }
-
-    getInactive() {
-        return this.inactiveClients;
     }
 
 }
