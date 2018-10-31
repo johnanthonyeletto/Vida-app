@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +24,15 @@ $router->get('/', function () use ($router) {
     return 'Welcome To The Vida API!';
 });
 
+$router->get('/generatepw', function () use ($router) {
+    return Hash::make('password');
+});
+
 // Example route returns phpinfo fur current system.
 $router->get('/phpinfo', 'ExampleController@phpInfo');
 
-$router->post('/DBTEST', function () use ($router) {
-    $results = app('db')->select("SELECT email, username FROM coach_profiles");
+$router->get('/DBTEST', function () use ($router) {
+    $results = app('db')->select("SELECT * FROM coach_profiles");
     return response()->json($results);
 });
 
@@ -37,6 +42,8 @@ THIS WILL AUTOMATICALLY ADD THE /1.0/ PREFIX TO ALL ROUTES IN HERE
  */
 $router->group(['prefix' => '1.0'], function () use ($router) {
 
-    $router->post('/login', 'AuthController@login');
+    $router->post('auth/login', ['uses' => 'AuthController@authenticate']);
+
+    // $router->get('auth/test', ['middleware' => 'auth', 'AuthController@test']);
 
 });
