@@ -27,7 +27,7 @@ export default class ClientList {
                     });
                     //return;
                 }
-                response.json().then(result => {
+                return response.json().then(result => {
                     return result;
                 });
             }).catch((error) => {

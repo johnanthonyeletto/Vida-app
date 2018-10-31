@@ -37,18 +37,17 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  // async componentDidMount() {
-  //   var clientList = new ClientList();
-  //   clientList.getActive().then(activeClients => {
-  //     console.log(activeClients);
-  //     this.setState({ activeClients })
-  //   });
+  async componentDidMount() {
+    var clientList = new ClientList();
+    clientList.getActive().then(activeClients => {
+      console.log(activeClients);
+      this.setState({ activeClients })
+    });
 
-  //   clientList.getActive().then(inactiveClients => {
-  //     console.log(activeClients);
-  //     this.setState({ inactiveClients })
-  //   });
-  // }
+    clientList.getActive().then(inactiveClients => {
+      this.setState({ inactiveClients })
+    });
+  }
 
   render() {
     return (
