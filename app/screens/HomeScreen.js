@@ -56,6 +56,7 @@ export default class HomeScreen extends React.Component {
           renderSectionHeader={({ section: { title } }) => (
             <ListSeparator>{title}</ListSeparator>
           )}
+          renderSectionFooter={({ section }) => this.renderNoContent(section)}
           sections={[
             { title: 'Active', data: this.activeClients },
             { title: 'Inactive', data: this.inactiveClients },
@@ -64,5 +65,12 @@ export default class HomeScreen extends React.Component {
         />
       </ScrollContainer>
     );
+  }
+
+  renderNoContent = (section) => {
+    if (section.data.length == 0) {
+      return <Text style={{ alignSelf: 'center', opacity: 0.6, fontSize: 15 }}>You Have No {section.title} Clients</Text>
+    }
+    return null
   }
 }

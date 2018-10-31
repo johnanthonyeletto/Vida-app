@@ -148,7 +148,7 @@ export default class LoginScreen extends React.Component {
                     // If there's an error and we're in dev, let the user through with a random, invalid token. This won't let the user do anything, but it'll bring them to see the screens that they need. 
                     AsyncStorage.setItem('token', 'asdfasdf');
                 }
-            });;
+            });
 
 
 

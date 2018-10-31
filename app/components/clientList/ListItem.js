@@ -23,7 +23,7 @@ export default class ListItem extends Component {
                     />
                 </View>
                 <View style={styles.clientInfo}>
-                    <Text style={styles.name}>{this.props.client.name} </Text>
+                    <Text style={styles.name}>{this.props.client.fname} </Text>
                     <Text style={styles.lastInteraction}>{this.props.client.lastInteraction}</Text>
                 </View>
                 <View style={styles.more}>
