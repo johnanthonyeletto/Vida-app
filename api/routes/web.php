@@ -1,5 +1,4 @@
 <?php
-use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +23,6 @@ $router->get('/', function () use ($router) {
     return 'Welcome To The Vida API!';
 });
 
-$router->get('/generatepw', function () use ($router) {
-    return Hash::make('password');
-});
-
 // Example route returns phpinfo fur current system.
 $router->get('/phpinfo', 'ExampleController@phpInfo');
 
@@ -42,8 +37,16 @@ THIS WILL AUTOMATICALLY ADD THE /1.0/ PREFIX TO ALL ROUTES IN HERE
  */
 $router->group(['prefix' => '1.0'], function () use ($router) {
 
-    $router->post('auth/login', ['uses' => 'AuthController@authenticate']);
+    $router->post('auth/login', 'AuthController@authenticate');
 
-    // $router->get('auth/test', ['middleware' => 'auth', 'AuthController@test']);
+    /*
+    All routes within this group will require authentication.
+    Most routes should be in here. With the exception of
+    login and signup routes
+     */
+    $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
 
+        $router->get('current-user', 'AuthController@currentUser');
+
+    });
 });

@@ -34,7 +34,7 @@ class AuthController extends BaseController
      * @param  \App\User   $user
      * @return string
      */
-    protected function jwt($user)
+    protected function jwt(User $user)
     {
         $payload = [
             'iss' => "lumen-jwt", // Issuer of the token
@@ -62,7 +62,8 @@ class AuthController extends BaseController
         ]);
 
         // Find the user by email
-        $user = app('db')->select("SELECT * FROM coach_profiles WHERE email = :email", ['email' => $this->request->input('email')])[0];
+        // $user = app('db')->select("SELECT * FROM coach_profiles WHERE email = :email", ['email' => $this->request->input('email')])[0];
+        $user = User::where('email', $this->request->input('email'))->first();
 
         if (!$user) {
             // You wil probably have some sort of helpers or whatever
@@ -85,5 +86,10 @@ class AuthController extends BaseController
         return response()->json([
             'error' => 'Email or password is wrong.',
         ], 400);
+    }
+
+    public function currentUser()
+    {
+        return response()->json($this->request->auth);
     }
 }
