@@ -35,10 +35,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
-    public function Clients()
+    public function clients()
     {
-        $clients = DB::table('people')->join('coach_clients', 'people.pid', '=', 'coach_clients.client_id')->where('coach_clients.coach_id', $this->pid)->select('people.*')->get();
-        return $clients;
+        return $this->belongsToMany('App\Models\Person', 'coach_clients', 'coach_id', 'client_id');
     }
 
     public function ActiveClients()

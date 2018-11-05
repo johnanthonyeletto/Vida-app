@@ -31,9 +31,9 @@ class ClientController extends Controller
      */
     public function getClientList()
     {
-        $active = $this->request->auth->ActiveClients();
+        $active = $this->request->auth->clients()->where('isActive', true)->get();
 
-        $inactive = $this->request->auth->InactiveClients();
+        $inactive = $this->request->auth->clients()->where('isActive', false)->get();
 
         $clients = [
             'active' => $active,
@@ -48,10 +48,11 @@ class ClientController extends Controller
         /*
         This allows coaches to only see their clients. This will probably have to be modified when we implement super coaches.
          */
-        $person = $this->request->auth->Clients()->where('pid', $pid)->first();
+        $person = $this->request->auth->clients()->where('pid', $pid)->first();
         if ($person == null) {
             abort(404, 'This client could not be found. They might not be your client.');
         }
+
         return response()->json($person);
     }
 }
