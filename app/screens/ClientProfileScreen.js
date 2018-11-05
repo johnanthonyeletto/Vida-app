@@ -126,14 +126,18 @@ export default class ClientProfileScreen extends Component {
                         }}
                         resizeMode={'contain'}
                       />
-                      <Text>{connection.fname} {connection.lname.substr(0,1)}.</Text>
-                      <Text style={{fontStyle: 'italic', fontSize: 10,}}>{connection.pivot.relationshiptoclient}</Text>
+                      <Text>{connection.fname} {connection.lname.substr(0, 1)}.</Text>
+                      <Text style={{ fontStyle: 'italic', fontSize: 10, }}>{connection.pivot.relationshiptoclient}</Text>
 
 
                     </TouchableOpacity>
                   );
                 })}
               </ScrollView>
+            }
+
+            {!this.state.relationships &&
+              <Text>{this.state.client.fname} {this.state.client.lname} doesn't have any relationships yet.</Text>
             }
           </View>
           {/* END RELATIONSHIPS SECTION */}

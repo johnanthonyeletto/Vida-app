@@ -30,12 +30,19 @@ export default class ClientGraphScreen extends Component {
         };
     }
 
+    async componentDidMount() {
+        Auth.getToken().then(token => {
+            this.setState({ "token": token });
+        });
+    }
+
     render() {
         return (
             <WebView
                 originWhitelist={['*']}
                 source={GraphHTML}
                 style={{ backgroundColor: Colors.lightGrey }}
+                injectedJavaScript={'(alert("Token: ' +  this.state.token  + '"))'}
             />
         );
     }

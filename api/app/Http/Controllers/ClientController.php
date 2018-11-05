@@ -57,6 +57,10 @@ class ClientController extends Controller
         unset($person->relationshipsPID1);
         unset($person->relationshipsPID2);
 
+        if (sizeof($person->relationships) < 1) {
+            unset($person->relationships);
+        }
+
         return response()->json($person);
     }
 }
