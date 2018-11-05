@@ -48,10 +48,14 @@ class ClientController extends Controller
         /*
         This allows coaches to only see their clients. This will probably have to be modified when we implement super coaches.
          */
-        $person = $this->request->auth->clients()->where('pid', $pid)->with('nextMeeting', 'relationships')->first();
+        $person = $this->request->auth->clients()->where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2')->first();
         if ($person == null) {
             abort(404, 'This client could not be found. They might not be your client.');
         }
+
+        $person->relationships = $person->relationshipsPID1->merge($person->relationshipsPID2)->all();
+        unset($person->relationshipsPID1);
+        unset($person->relationshipsPID2);
 
         return response()->json($person);
     }

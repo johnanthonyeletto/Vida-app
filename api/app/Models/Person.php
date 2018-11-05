@@ -15,9 +15,13 @@ class Person extends Model
         return $this->hasMany('App\Models\Event', 'pid', 'pid')->where('event_datetime', '>', Carbon::now())->oldest();
     }
 
-    public function relationships()
+    public function relationshipsPID1()
     {
-        // FIX THIS PLEASE TO INCLUDE BOTH PID1 AND PID2
         return $this->belongsToMany('App\Models\Person', 'relationships', 'client_id', 'pid1')->withPivot('relationshiptoclient');
+    }
+
+    public function relationshipsPID2()
+    {
+        return $this->belongsToMany('App\Models\Person', 'relationships', 'client_id', 'pid2')->withPivot('relationshiptoclient');
     }
 }
