@@ -5,12 +5,12 @@ import {
   SectionList,
   StyleSheet,
   Text,
-  Button,
+  RefreshControl,
   TouchableOpacity,
   View,
   FlatList,
 } from 'react-native';
-import ScheduleList from '../models/ScheduleList';
+import EventList from '../models/EventList';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import EventItem from '../components/EventItem';
@@ -35,19 +35,43 @@ export default class MeetingsScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    const scheduleList = new ScheduleList();
-    this.events = scheduleList.getUpcoming();
+    this.state = {
+      events: [],
+      refreshing: false,
+    }
+
   }
-  lawyer = () => {
-  }
+
+  _onRefresh = () => {
+      this.setState({ refreshing: true });
+      this.componentDidMount().then(() => {
+        this.setState({ refreshing: false });
+      });
+    }
+
+    async componentDidMount() {
+      var eventList = new EventList();
+      eventList.getEvents().then(foundEvents => {
+        var events = foundEvents;
+        this.setState({ events: events })
+      });
+    }
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh} />
+          }
+      >
         <FlatList
-          data={this.events}
+          data={this.state.events}
           renderItem={({item}) =>
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('EView'); }}>
+            <TouchableOpacity onPress={() =>
+              { this.props.navigation.navigate('EView', { 'event_id': item.event_id }); }
+             }>
               <EventItem sEvent={item}/>
             </TouchableOpacity>
           }

@@ -52,5 +52,16 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->get('client/{pid}', 'ClientController@getClient');
 
+        $router->get('event-list', 'EventController@getEventList');
+
+        $router->get('event/{event_id}', 'EventController@getEvent');
     });
+
+
+    // Future event routes.
+    // $router->put('event-update/{event_id}', 'EventController@updateEvent');
+    // $router->post('event-add', 'EventController@addEvent');
+    //
+    // $router->delete('event-delete/{event_id}', 'EventController@deleteEvent');
+
 });
