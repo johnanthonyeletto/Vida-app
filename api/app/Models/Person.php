@@ -9,8 +9,8 @@ class Person extends Model
     protected $table = 'people';
     protected $primaryKey = 'pid';
 
-    public function getNextMeeting()
+    public function nextMeeting()
     {
-        return app('db')->select("select * from events where events.pid = :pid", ["pid" => $this->pid])->get();
+        return $this->hasMany('App\Models\Event', 'pid', 'pid')->latest();
     }
 }
