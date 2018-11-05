@@ -30,18 +30,17 @@ export default class ClientProfileScreen extends Component {
 
     this.state = {
       client: [],
-      nextMeeting: [],
     };
 
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     const pid = navigation.getParam('pid', 'NONE');
 
     var client = new Client();
     client.getClient(pid).then(foundClient => {
-      this.setState({ client: foundClient, nextMeeting: foundClient.next_meeting[0] });
+      this.setState({ client: foundClient, nextMeeting: foundClient.next_meeting[0], relationships: foundClient.relationships });
     });
   }
 
@@ -101,33 +100,42 @@ export default class ClientProfileScreen extends Component {
           {/* END NEXT EVENT SECTION */}
 
           {/* BEGIN RELATIONSHIPS SECTION */}
-          {/* <View>
+          <View>
             <ListSeparator>
               <Text>Relationships</Text>
             </ListSeparator>
-            <ScrollView
-              style={{ flexDirection: "row" }}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph') }} style={styles.circleRelationshipButton}>
-                <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
-              </TouchableOpacity>
-              {this.state.client.getConnections().map((connection, i) => {
-                return (
-                  <TouchableOpacity key={i}>
-                    <Image
-                      style={styles.circleRelationshipButton}
-                      source={{
-                        uri: connection.avatarURL
-                      }}
-                      resizeMode={'contain'}
-                    />
+            {this.state.relationships &&
+              <ScrollView
+                style={{ flexDirection: "row" }}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              >
+                <View>
+                  <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph') }} style={styles.circleRelationshipButton}>
+                    <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
                   </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-          </View> */}
+                  <Text style={{ alignSelf: 'center' }}>Graph</Text>
+                </View>
+                {this.state.relationships.map((connection, i) => {
+                  return (
+                    <TouchableOpacity key={i} style={{ alignItems: 'center' }}>
+                      <Image
+                        style={styles.circleRelationshipButton}
+                        source={{
+                          uri: connection.image_path
+                        }}
+                        resizeMode={'contain'}
+                      />
+                      <Text>{connection.fname} {connection.lname.substr(0,1)}.</Text>
+                      <Text style={{fontStyle: 'italic', fontSize: 10,}}>{connection.pivot.relationshiptoclient}</Text>
+
+
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+            }
+          </View>
           {/* END RELATIONSHIPS SECTION */}
         </View>
 
@@ -198,6 +206,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: 'column',
-    margin: 10
+    margin: 10,
+    alignContent: 'center'
   }
 });

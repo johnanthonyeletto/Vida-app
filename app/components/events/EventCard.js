@@ -22,7 +22,7 @@ export default class EventCard extends Component {
                 <View style={styles.right}>
                     {/* <Text style={styles.eventTitle}>{this.props.meeting.title}</Text> */}
                     <Text style={styles.eventTitle}>Meeting with this person.</Text>
-                    <Text style={styles.eventLocation}>{this.props.meeting.location}</Text>
+                    <Text style={styles.eventLocation}>Location: {this.props.meeting.location}</Text>
                 </View>
             </TouchableOpacity>
         );
