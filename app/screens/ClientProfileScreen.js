@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionSheetIOS } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionSheetIOS, Linking } from 'react-native';
 import Client from '../models/Client';
 import Colors from '../constants/Colors';
 import ListSeparator from '../components/ListSeparator';
@@ -30,17 +30,18 @@ export default class ClientProfileScreen extends Component {
 
     this.state = {
       client: [],
+      nextMeeting: [],
     };
 
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const { navigation } = this.props;
     const pid = navigation.getParam('pid', 'NONE');
 
     var client = new Client();
     client.getClient(pid).then(foundClient => {
-      this.setState({ client: foundClient });
+      this.setState({ client: foundClient, nextMeeting: foundClient.next_meeting[0] });
     });
   }
 
@@ -57,29 +58,47 @@ export default class ClientProfileScreen extends Component {
           />
           <Text style={{ color: Colors.white, fontSize: 25, marginTop: 10 }}>{this.state.client.fname} {this.state.client.lname}</Text>
           <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity style={styles.circleContactButton}>
-              <Ionicons name="ios-call" size={32} color={Colors.blue} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.circleContactButton}>
-              <Ionicons name="ios-chatbubbles" size={32} color={Colors.blue} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.circleContactButton}>
-              <Ionicons name="ios-mail" size={32} color={Colors.blue} />
-            </TouchableOpacity>
+            {this.state.client.cell_phone &&
+              <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("tel:" + this.state.client.cell_phone) }}>
+                <Ionicons name="ios-call" size={32} color={Colors.blue} />
+              </TouchableOpacity>
+            }
+
+            {this.state.client.cell_phone &&
+              <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("sms:" + this.state.client.cell_phone) }}>
+                <Ionicons name="ios-chatbubbles" size={32} color={Colors.blue} />
+              </TouchableOpacity>
+            }
+
+            {this.state.client.email &&
+              <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("mailto:" + this.state.client.email) }}>
+                <Ionicons name="ios-mail" size={32} color={Colors.blue} />
+              </TouchableOpacity>
+            }
           </View>
         </View>
 
         <View style={styles.clientDetails}>
 
           {/* BEGIN NEXT EVENT SECTION */}
+
+
           <View>
             <ListSeparator>
               <Text>Next Meeting</Text>
             </ListSeparator>
-            {/* <EventCard meeting={this.state.client.getNextMeeting()} /> */}
-          </View>
-          {/* END NEXT EVENT SECTION */}
+            {this.state.nextMeeting &&
+              <EventCard meeting={this.state.nextMeeting} />
+            }
 
+            {
+              !this.state.nextMeeting &&
+              <Text>You have no upcoming meetings with {this.state.client.fname} {this.state.client.lname}.</Text>
+            }
+          </View>
+
+
+          {/* END NEXT EVENT SECTION */}
 
           {/* BEGIN RELATIONSHIPS SECTION */}
           {/* <View>
@@ -131,6 +150,10 @@ export default class ClientProfileScreen extends Component {
             break;
         }
       });
+  }
+
+  _openLink(url) {
+    Linking.openURL(url);
   }
 }
 

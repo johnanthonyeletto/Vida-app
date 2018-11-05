@@ -15,12 +15,13 @@ export default class EventCard extends Component {
         return (
             <TouchableOpacity style={styles.card}>
                 <View style={styles.left}>
-                    <Text style={styles.month}>{Months[this.props.meeting.dateTime.getMonth()]}</Text>
-                    <Text style={styles.day}>{this.props.meeting.dateTime.getDate()}</Text>
-                    <Text style={styles.time}>{((this.props.meeting.dateTime.getHours() + 11) % 12 + 1)}:{("00" + this.props.meeting.dateTime.getMinutes()).substr(this.props.meeting.dateTime.getMinutes().toString().length - 4, this.props.meeting.dateTime.getMinutes().toString().length)} {(this.props.meeting.dateTime.getHours() >= 12) ? "PM" : "AM"}</Text>
+                    <Text style={styles.month}>{this.props.meeting.event_datetime}</Text>
+                    {/* <Text style={styles.day}>{this.props.meeting.event_datetime}</Text> */}
+                    {/* <Text style={styles.time}>{((this.props.meeting.dateTime.getHours() + 11) % 12 + 1)}:{("00" + this.props.meeting.dateTime.getMinutes()).substr(this.props.meeting.dateTime.getMinutes().toString().length - 4, this.props.meeting.dateTime.getMinutes().toString().length)} {(this.props.meeting.dateTime.getHours() >= 12) ? "PM" : "AM"}</Text> */}
                 </View>
                 <View style={styles.right}>
-                    <Text style={styles.eventTitle}>{this.props.meeting.title}</Text>
+                    {/* <Text style={styles.eventTitle}>{this.props.meeting.title}</Text> */}
+                    <Text style={styles.eventTitle}>Meeting with this person.</Text>
                     <Text style={styles.eventLocation}>{this.props.meeting.location}</Text>
                 </View>
             </TouchableOpacity>
