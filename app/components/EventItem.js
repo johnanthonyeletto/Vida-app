@@ -25,7 +25,7 @@ export default class EventItem extends Component {
                       <Text>Location:</Text><Text style={styles.eventDetails}>  {this.props.sEvent.location}</Text>
                     </View>
                     <View style={{flexDirection: 'row'}}>
-                      <Text>Notes:</Text><Text style={styles.eventDetails}>  {this.props.sEvent.note}</Text>
+                      <Text>Notes:</Text><Text style={styles.eventDetails}>  {this.props.sEvent.notes}</Text>
                     </View>
                   </View>
                 </View>
@@ -35,7 +35,11 @@ export default class EventItem extends Component {
         );
     }
 }
-
+// there might not be a title to events anymore, so replace with "Meeting with {pid}"
+// replace date with evdatetime
+// replace client with pid until you use the getClient API
+// replace location with eventlocation
+// replace note with notes
 const styles = new StyleSheet.create({
     item: {
         flex: 1,
