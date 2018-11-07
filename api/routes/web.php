@@ -54,6 +54,8 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->post('client/', 'ClientController@createClient');
 
+        $router->put('client/', 'ClientController@updateClient');
+
         $router->get('event-list', 'EventController@getEventList');
 
         $router->get('event/{event_id}', 'EventController@getEvent');

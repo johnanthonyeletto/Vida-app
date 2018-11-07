@@ -135,4 +135,53 @@ class ClientController extends Controller
         return response()->json($newClient->pid);
 
     }
+
+    public function updateClient()
+    {
+
+        $validatedData = $this->validate($this->request, [
+            'pid' => 'required|numeric|nullable',
+            'fname' => 'required|max:100',
+            'lname' => 'required|max:100',
+            'address' => 'max:100|string|nullable',
+            'address2' => 'max:255|string|nullable',
+            'city' => 'max:100|string|nullable',
+            'state_province' => 'max:100|string|nullable',
+            'cell_phone' => 'max:20|numeric|nullable',
+            'home_phone' => 'max:20|numeric|nullable',
+            'email' => 'max:100|email|nullable',
+            'occupation' => 'string|nullable',
+        ]);
+
+        $client = Person::find($this->request->input('pid'));
+        if ($client == null) {
+            abort(404);
+        }
+
+        $client->fname = $this->request->input('fname');
+        $client->lname = $this->request->input('lname');
+        $client->address = $this->request->input('address');
+        $client->address2 = $this->request->input('address2');
+        $client->city = $this->request->input('city');
+        $client->state_province = $this->request->input('state_province');
+        $client->cell_phone = $this->request->input('cell_phone');
+        $client->home_phone = $this->request->input('home_phone');
+        $client->email = $this->request->input('email');
+        $client->occupation = $this->request->input('occupation');
+
+        $image = $this->request->input('image_base64'); // your base64 encoded
+
+        if ($image != null) {
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = '/img/people_images/' . $this->request->auth->pid . "-" . time() . "-" . str_random(100) . '.' . 'png';
+            File::put(base_path() . '/public' . $imageName, base64_decode($image));
+            $newClient->image_path = $imageName;
+        }
+
+        $newClient->save();
+
+        return response()->json($newClient->pid);
+
+    }
 }
