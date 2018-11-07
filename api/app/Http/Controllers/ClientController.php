@@ -69,6 +69,20 @@ class ClientController extends Controller
 
     public function createClient()
     {
+
+        $validatedData = $this->validate($this->request, [
+            'fname' => 'required|max:100',
+            'lname' => 'required|max:100',
+            'address' => 'max:100|string|nullable',
+            'address2' => 'max:255|string|nullable',
+            'city' => 'max:100|string|nullable',
+            'state_province' => 'max:100|string|nullable',
+            'cell_phone' => 'max:20|numeric|nullable',
+            'home_phone' => 'max:20|numeric|nullable',
+            'email' => 'max:100|email|nullable',
+            'occupation' => 'string|nullable',
+        ]);
+
         $newClient = new Person();
         $newClient->fname = $this->request->input('fname');
         $newClient->lname = $this->request->input('lname');

@@ -28,7 +28,7 @@ export default class AddClientScreen extends Component {
         ),
         headerRight: (
             <TouchableOpacity onPress={() => {
-                _this._save()
+                _this._save();
             }} style={{ marginRight: 15 }}>
                 <Text style={{ fontSize: 20, color: Colors.white }}>Save</Text>
             </TouchableOpacity>
@@ -184,7 +184,10 @@ export default class AddClientScreen extends Component {
             client.image_path = this.state.image_base64;
 
             client.save().then(pid => {
-                this.props.navigation.navigate('ClientProfile', { 'pid': pid });
+                alert(pid);
+                //this.props.navigation.navigate('ClientProfile', { 'pid': pid });
+            }).catch((errorMessage) => {
+                alert(errorMessage);
             });
         }
     }

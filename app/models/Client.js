@@ -39,7 +39,7 @@ export default class Client {
                         for (var key in errors) {
                             errorMessage = errorMessage + errors[key] + ' ';
                         }
-                        alert(errorMessage);
+                        throw errorMessage;
                     });
                     //return;
                 }
@@ -48,6 +48,7 @@ export default class Client {
                 });
             }).catch((error) => {
                 console.error(error);
+                throw error;
             });
 
         });
@@ -73,7 +74,7 @@ export default class Client {
                         for (var key in errors) {
                             errorMessage = errorMessage + errors[key] + ' ';
                         }
-                        alert(errorMessage);
+                        throw errorMessage;
                     });
                     //return;
                 }
@@ -95,6 +96,7 @@ export default class Client {
                 });
             }).catch((error) => {
                 console.error(error);
+                throw error;
             });
 
         });
@@ -121,19 +123,25 @@ export default class Client {
                         for (var key in errors) {
                             errorMessage = errorMessage + errors[key] + ' ';
                         }
-                        alert(errorMessage);
+                        console.error(errorMessage);
+                    });
+                } else {
+                    return response.json().then(result => {
+                        return result;
                     });
                 }
-                return response.json().then(result => {
-                    return result;
-                });
+
             }).catch((error) => {
                 console.error(error);
             });
 
+        }).catch(error => {
+            console.error(error);
         });
         return result.then(res => {
             return res;
+        }).catch(error => {
+            console.error(error);
         });
     }
 
