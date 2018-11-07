@@ -5,6 +5,7 @@ import Colors from '../constants/Colors';
 import ListSeparator from '../components/ListSeparator';
 import { Ionicons } from '@expo/vector-icons';
 import EventCard from '../components/events/EventCard';
+import Environment from '../constants/Environment';
 
 
 export default class ClientProfileScreen extends Component {
@@ -51,7 +52,7 @@ export default class ClientProfileScreen extends Component {
           <Image
             style={{ width: 175, height: 175, borderRadius: (175 / 2), alignSelf: "center" }}
             source={{
-              uri: this.state.client.image_path
+              uri: Environment.API_HOST + this.props.client.image_path
             }}
             resizeMode={'contain'}
           />

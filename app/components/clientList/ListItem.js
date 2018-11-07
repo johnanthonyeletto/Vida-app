@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ActionSheetIOS, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
+import Environment from '../../constants/Environment';
 
 export default class ListItem extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ export default class ListItem extends Component {
                     <Image
                         style={{ width: 65, height: 65, borderRadius: 32.5 }}
                         source={{
-                            uri: this.props.client.image_path
+                            uri: Environment.API_HOST + this.props.client.image_path
                         }}
                         resizeMode={'contain'}
                     />

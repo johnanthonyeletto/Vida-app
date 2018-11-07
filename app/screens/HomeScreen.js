@@ -14,7 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Clients',
     headerTitleStyle: {
       color: Colors.white
@@ -23,11 +23,11 @@ export default class HomeScreen extends React.Component {
       backgroundColor: Colors.blue
     },
     headerRight: (
-      <TouchableOpacity onPress={() => { alert("New Client") }}>
+      <TouchableOpacity onPress={() => { navigation.navigate('AddClient') }}>
         <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
       </TouchableOpacity>
     ),
-  };
+  });
 
   constructor(props) {
     super(props);

@@ -11,10 +11,12 @@ import eventView from '../screens/eventScreens/eventView';
 import eventEntry from '../screens/eventScreens/eventEntry';
 import ClientGraphScreen from '../screens/ClientGraphScreen';
 import NoteScreen from '../screens/ClientProfile/NoteScreen';
+import AddClientScreen from '../screens/AddClientScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   ClientProfile: ClientProfileScreen,
+  AddClient: AddClientScreen,
   ClientGraph: ClientGraphScreen,
   Notes: NoteScreen,
 });
