@@ -83,7 +83,7 @@ class ClientController extends Controller
             'email' => 'max:100|email|nullable',
             'occupation' => 'string|nullable',
         ]);
-        return $this->request->input('pid');
+
         if ($this->request->input('pid') == null) {
             $newClient = new Person();
         } else {
@@ -106,26 +106,31 @@ class ClientController extends Controller
         $newClient->occupation = $this->request->input('occupation');
 
         $image = $this->request->input('image_base64'); // your base64 encoded
+        $image_path = $this->request->input('image_path'); // your base64 encoded
         if ($image != null) {
             $image = str_replace('data:image/png;base64,', '', $image);
             $image = str_replace(' ', '+', $image);
             $imageName = '/img/people_images/' . $this->request->auth->pid . "-" . time() . "-" . str_random(100) . '.' . 'png';
             File::put(base_path() . '/public' . $imageName, base64_decode($image));
-        } else {
+        } else if ($image_path == null) {
             $imageName = "/img/people_images/default.png";
+        } else {
+            $imageName = $image_path;
         }
         $newClient->image_path = $imageName;
 
         $newClient->save();
 
-        \DB::table('coach_clients')->insert(
-            [
-                'coach_id' => $this->request->auth->pid,
-                'client_id' => $newClient->pid,
-                "created_at" => \Carbon\Carbon::now(), # \Datetime()
-                "updated_at" => \Carbon\Carbon::now(), # \Datetime()
-            ]
-        );
+        if ($this->request->input('pid') == null) {
+            \DB::table('coach_clients')->insert(
+                [
+                    'coach_id' => $this->request->auth->pid,
+                    'client_id' => $newClient->pid,
+                    "created_at" => \Carbon\Carbon::now(), # \Datetime()
+                    "updated_at" => \Carbon\Carbon::now(), # \Datetime()
+                ]
+            );
+        }
 
         return response()->json($newClient->pid);
 
