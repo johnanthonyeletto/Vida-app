@@ -42,7 +42,7 @@ export default class ClientGraphScreen extends Component {
                 originWhitelist={['*']}
                 source={GraphHTML}
                 style={{ backgroundColor: Colors.lightGrey }}
-                injectedJavaScript={'(alert("Token: ' +  this.state.token  + '"))'}
+                //injectedJavaScript={'(alert("Token: ' +  this.state.token  + '"))'}
             />
         );
     }
