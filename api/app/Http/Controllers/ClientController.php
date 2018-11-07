@@ -85,8 +85,8 @@ class ClientController extends Controller
         if ($image != null) {
             $image = str_replace('data:image/png;base64,', '', $image);
             $image = str_replace(' ', '+', $image);
-            $imageName = $this->request->auth->pid . "-" . time() . "-" . str_random(100) . '.' . 'png';
-            File::put(base_path() . '/public/img/people_images/' . $imageName, base64_decode($image));
+            $imageName = '/img/people_images/' . $this->request->auth->pid . "-" . time() . "-" . str_random(100) . '.' . 'png';
+            File::put(base_path() . '/public' . $imageName, base64_decode($image));
         } else {
             $imageName = "/img/people_images/default.png";
         }
