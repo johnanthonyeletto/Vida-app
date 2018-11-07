@@ -44,8 +44,6 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
     Most routes should be in here. With the exception of
     login and signup routes
      */
-
-
     $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
 
         $router->get('current-user', 'AuthController@currentUser');
@@ -54,12 +52,17 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->get('client/{pid}', 'ClientController@getClient');
 
-        $router->post('client', 'ClientController@createClient');
-
         $router->get('event-list', 'EventController@getEventList');
 
         $router->get('event/{event_id}', 'EventController@getEvent');
+
+        $router->get('relationship-list', 'GraphController@getRelationshipList')
+
+
+      ;
+
     });
+
 
     // Future event routes.
     // $router->put('event-update/{event_id}', 'EventController@updateEvent');

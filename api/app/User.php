@@ -49,7 +49,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return DB::select('SELECT people.* FROM people join coach_clients on people.pid = coach_clients.client_id where people."isActive" = false AND coach_clients.coach_id = :coach_id', ["coach_id" => $this->pid]);
     }
-    
+
     public function Meetings()
     {
         // I want to get all meetings that the coach logged in has in the system
@@ -57,6 +57,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $meetings = DB::table('events')->join('people', 'events.pid', '=', 'people.pid')->join('coach_clients', 'people.pid', '=', 'coach_clients.client_id')->where('coach_clients.coach_id', $this->pid)->select('events.*')->get();
         // $meetings = app('db')->select("SELECT ev.* FROM events as ev, coach_clients as cc, people as pe where cc.client_id = pe.pid and pe.pid = ev.pid and cc.coach_id = :coach_id", ["coach_id" => $this->pid]);
         return $meetings;
+    }
+
+    public function Relationships()
+    {
+      $relationships = DB::select("SELECT person1.pid, person1.fname, person1.lname , person2.pid,
+      person2.fname,person2.lname,relationships.relationshiptoclient
+      from relationships join people person1 on relationships.pid1 = person1.pid
+      join people person2 on relationships.pid2 = person2.pid
+      WHERE relationships.client_id = 11");
+      return $relationships;
     }
 
 }

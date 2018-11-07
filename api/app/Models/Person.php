@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Person extends Model
 {
@@ -24,4 +24,17 @@ class Person extends Model
     {
         return $this->belongsToMany('App\Models\Person', 'relationships', 'client_id', 'pid2')->withPivot('relationshiptoclient');
     }
+
+    public function Relationships()
+    {
+      $relationships = DB::select("SELECT person1.pid, person1.fname, person1.lname , person2.pid,
+      person2.fname,person2.lname,relationships.relationshiptoclient
+      from relationships join people person1 on relationships.pid1 = person1.pid
+      join people person2 on relationships.pid2 = person2.pid
+      WHERE relationships.client_id = 11");
+      return $relationships;
+    }
+
 }
+
+//client id =! to pid
