@@ -78,8 +78,8 @@ class ClientController extends Controller
             'address2' => 'max:255|string|nullable',
             'city' => 'max:100|string|nullable',
             'state_province' => 'max:100|string|nullable',
-            'cell_phone' => 'max:20|numeric|nullable',
-            'home_phone' => 'max:20|numeric|nullable',
+            'cell_phone' => 'numeric|nullable',
+            'home_phone' => 'numeric|nullable',
             'email' => 'max:100|email|nullable',
             'occupation' => 'string|nullable',
         ]);
@@ -140,15 +140,15 @@ class ClientController extends Controller
     {
 
         $validatedData = $this->validate($this->request, [
-            'pid' => 'required|numeric|nullable',
+            'pid' => 'required|numeric',
             'fname' => 'required|max:100',
             'lname' => 'required|max:100',
             'address' => 'max:100|string|nullable',
             'address2' => 'max:255|string|nullable',
             'city' => 'max:100|string|nullable',
             'state_province' => 'max:100|string|nullable',
-            'cell_phone' => 'max:20|numeric|nullable',
-            'home_phone' => 'max:20|numeric|nullable',
+            'cell_phone' => 'numeric|nullable',
+            'home_phone' => 'numeric|nullable',
             'email' => 'max:100|email|nullable',
             'occupation' => 'string|nullable',
         ]);
@@ -176,12 +176,12 @@ class ClientController extends Controller
             $image = str_replace(' ', '+', $image);
             $imageName = '/img/people_images/' . $this->request->auth->pid . "-" . time() . "-" . str_random(100) . '.' . 'png';
             File::put(base_path() . '/public' . $imageName, base64_decode($image));
-            $newClient->image_path = $imageName;
+            $client->image_path = $imageName;
         }
 
-        $newClient->save();
+        $client->save();
 
-        return response()->json($newClient->pid);
+        return response()->json($client->pid);
 
     }
 }
