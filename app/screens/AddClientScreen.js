@@ -4,6 +4,7 @@ import ScrollContainer from '../components/ScrollContainer';
 import Colors from '../constants/Colors';
 import { ImagePicker } from 'expo';
 import Client from '../models/Client';
+import Environment from '../constants/Environment';
 
 let _this = null;
 
@@ -38,12 +39,25 @@ export default class AddClientScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            image_path: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
+            image_path: Environment.API_HOST + "/img/people_images/default.png",
         };
     }
 
     componentDidMount() {
         _this = this;
+
+        const { navigation } = this.props;
+        const pid = navigation.getParam('pid', 'NONE');
+        if (pid !== 'NONE') {
+            // We're editing a client. Load their info.
+
+            var client = new Client();
+            client.getClient(pid).then(foundClient => {
+                this.setState(foundClient);
+
+                this.setState({ image_path: Environment.API_HOST + this.state.image_path });
+            });
+        }
     }
 
     render() {

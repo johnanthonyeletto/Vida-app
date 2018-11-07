@@ -3,6 +3,7 @@ import Auth from '../constants/Auth';
 
 export default class Client {
     constructor() {
+        this.pid;
         this.fname;
         this.lname;
         this.address;
@@ -43,6 +44,53 @@ export default class Client {
                     //return;
                 }
                 return response.json().then(result => {
+                    return result;
+                });
+            }).catch((error) => {
+                console.error(error);
+            });
+
+        });
+        return result.then(res => {
+            return res;
+        });
+    }
+
+    async find(pid) {
+        let result = Auth.getToken().then(token => {
+            return fetch(Environment.API_HOST + '/1.0/client/' + pid, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    token
+
+                },
+            }).then((response) => {
+                if (response.status != 200) {
+                    response.json().then(errors => {
+                        var errorMessage = '';
+                        for (var key in errors) {
+                            errorMessage = errorMessage + errors[key] + ' ';
+                        }
+                        alert(errorMessage);
+                    });
+                    //return;
+                }
+                return response.json().then(result => {
+                    this.pid = result.pid;
+                    this.fname = result.fname;
+                    this.lname = result.lname;
+                    this.address = result.address;
+                    this.address2 = result.address2;
+                    this.city = result.city;
+                    this.state_province = result.state_province;
+                    this.postal_code = result.postal_code;
+                    this.cell_phone = result.cell_phone;
+                    this.home_phone = result.home_phone;
+                    this.email = result.email;
+                    this.image_path = result.image_path;
+                    this.occupation = result.occupation;
                     return result;
                 });
             }).catch((error) => {

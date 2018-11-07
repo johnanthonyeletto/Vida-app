@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import EventCard from '../components/events/EventCard';
 import Environment from '../constants/Environment';
 
-
+let _this = null;
 export default class ClientProfileScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     // title: 'Pablo Rivas',
@@ -21,7 +21,7 @@ export default class ClientProfileScreen extends Component {
     },
     headerRight: (
       <TouchableOpacity onPress={() => { new ClientProfileScreen()._showMoreOptions(navigation) }}>
-        <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
+        <Ionicons name="ios-more" size={32} style={{ marginRight: 15 }} color={Colors.white} />
       </TouchableOpacity>
     ),
   });
@@ -36,6 +36,8 @@ export default class ClientProfileScreen extends Component {
   }
 
   componentDidMount() {
+    _this = this;
+
     const { navigation } = this.props;
     const pid = navigation.getParam('pid', 'NONE');
 
@@ -50,13 +52,13 @@ export default class ClientProfileScreen extends Component {
       <ScrollView style={styles.container}>
         <View style={styles.clientInfo}>
           <Image
-            style={{ width: 175, height: 175, borderRadius: (175 / 2), alignSelf: "center" }}
+            style={{ width: 150, height: 150, borderRadius: (150 / 2), alignSelf: "center" }}
             source={{
-              uri: Environment.API_HOST + this.props.client.image_path
+              uri: Environment.API_HOST + this.state.client.image_path
             }}
-            resizeMode={'contain'}
           />
           <Text style={{ color: Colors.white, fontSize: 25, marginTop: 10 }}>{this.state.client.fname} {this.state.client.lname}</Text>
+          <Text style={{ color: Colors.white, fontSize: 16, fontStyle: 'italic' }}>{this.state.client.occupation}</Text>
           <View style={{ flexDirection: "row" }}>
             {this.state.client.cell_phone &&
               <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("tel:" + this.state.client.cell_phone) }}>
@@ -150,8 +152,9 @@ export default class ClientProfileScreen extends Component {
 
   _showMoreOptions(navigation) {
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Add Meeting', 'Add Relationship', 'Quick Start Meeting'],
+      options: ['Cancel', 'Add Meeting', 'Add Relationship', 'Quick Start Meeting', 'Edit Client', 'Mark Client Inactive'],
       cancelButtonIndex: 0,
+      destructiveButtonIndex: 5,
     },
       (buttonIndex) => {
         switch (buttonIndex) {
@@ -160,6 +163,9 @@ export default class ClientProfileScreen extends Component {
             break;
           case 3:
             navigation.navigate('Notes');
+            break;
+          case 4:
+            navigation.navigate('AddClient', { 'pid': _this.state.client.pid });
             break;
         }
       });

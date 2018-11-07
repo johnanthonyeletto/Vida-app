@@ -18,7 +18,6 @@ export default class ListItem extends Component {
                         source={{
                             uri: Environment.API_HOST + this.props.client.image_path
                         }}
-                        resizeMode={'contain'}
                     />
                 </View>
                 <View style={styles.clientInfo}>
