@@ -167,7 +167,7 @@ export default class AddClientScreen extends Component {
             client.home_phone = this.state.home_phone;
             client.email = this.state.email;
             client.occupation = this.state.occupation;
-            client.image_path = this.state.image_path;
+            client.image_path = this.state.image_base64;
 
             client.save().then(pid => {
                 this.props.navigation.navigate('ClientProfile', { 'pid': pid });
@@ -189,7 +189,8 @@ export default class AddClientScreen extends Component {
             console.log(result);
 
             if (!result.cancelled) {
-                this.setState({ image_path: result.base64 });
+                this.setState({ image_base64: result.base64 });
+                this.setState({ image_path: result.uri });
             }
         }
     }
@@ -209,7 +210,8 @@ export default class AddClientScreen extends Component {
             console.log(result);
 
             if (!result.cancelled) {
-                this.setState({ image_path: result.base64 });
+                this.setState({ image_base64: result.base64 });
+                this.setState({ image_path: result.uri });
             }
         }
     }
