@@ -73,7 +73,7 @@ class ClientController extends Controller
         $image = $this->request->input('image_path'); // your base64 encoded
         $image = str_replace('data:image/png;base64,', '', $image);
         $image = str_replace(' ', '+', $image);
-        $imageName = $this->request->auth->pid . "_" . time() . "_" . str_random(10) . '.' . 'png';
+        $imageName = $this->request->auth->pid . "_" . time() . "_" . str_random(20) . '.' . 'png';
         File::put(base_path() . '/public/img/people_images/' . $imageName, base64_decode($image));
 
         $newClient = new Person();
