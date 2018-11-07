@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Event;
 
 class EventController extends Controller
 {
@@ -55,13 +56,14 @@ class EventController extends Controller
     // We want a function to add a specific meeting
 
     public function addEvent($payload){
-
+        // DB::table('event')->insert( [] );
     }
 
     // We want a function to delete a specific meeting
 
     public function deleteEvent($event_id){
-
+      Event::find($event_id)->delete();
+      return response()->json("deleted");
     }
 
 }

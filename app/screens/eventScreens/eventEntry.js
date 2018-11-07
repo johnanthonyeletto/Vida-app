@@ -52,7 +52,7 @@ export default class EventEntry extends React.Component {
     console.log(this.state.chosenDate);
   }
 
-
+  // mAKE SURE YOU PASS THE CLIENT PID SO YOU CAN ADD VIA THE API
   render() {
         var showClientPicker = this.state.showClientPicker ?
 
