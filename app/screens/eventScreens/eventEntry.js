@@ -78,11 +78,6 @@ export default class EventEntry extends React.Component {
     return (
       <DismissKeyboard>
         <View style={styles.eventAddContainer}>
-          <TextInput style={styles.input}
-            placeholder='Meet with...'
-            placeholderTextColor = "#696d72"
-            clearButtonMode = "while-editing"
-          />
           // Need to deal with the datePicker not pushing everything down far enough
           // Also need to represent the time instead of just the date
 
@@ -94,7 +89,7 @@ export default class EventEntry extends React.Component {
           {showClientPicker}
 
           <TouchableOpacity onPress={() => this.setState({showDatePicker: !this.state.showDatePicker,showClientPicker: false})} >
-            <Text>Starts</Text>
+            <Text>Starts:</Text>
             <Text> {(this.state.chosenDate.toLocaleDateString())} </Text>
           </TouchableOpacity>
           {showDatePicker}
