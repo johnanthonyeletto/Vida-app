@@ -58,6 +58,8 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->get('event/{event_id}', 'EventController@getEvent');
 
+        $router->delete('event/{event_id}', 'EventController@deleteEvent');
+
         $router->get('relationship-list', 'GraphController@getRelationshipList')
 
         ;

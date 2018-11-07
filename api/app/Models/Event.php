@@ -8,5 +8,5 @@ class Event extends Model
 {
     protected $table = 'events';
     protected $primaryKey = 'event_id';
-
+    
 }

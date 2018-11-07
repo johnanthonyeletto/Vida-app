@@ -38,10 +38,10 @@ export default class eventView extends Component {
 }
   async componentDidMount() {
     const { navigation } = this.props;
-    const event_id = navigation.getParam('event_id', 'NONE');
+    this.event_id = navigation.getParam('event_id', 'NONE');
 
-    var event = new Event();
-    event.getEvent(event_id).then(foundEvent => {
+    this.event = new Event();
+    this.event.getEvent(this.event_id).then(foundEvent => {
       this.setState({ event: foundEvent });
     });
   }
@@ -49,19 +49,18 @@ export default class eventView extends Component {
 
 
   render() {
-    const itemId = this.props.navigation.getParam('item', 'null');
     return (
       <ScrollView style={styles.eventAddContainer}>
         <EventItem sEvent={this.state.event}/>
         <Button title="Update" onPress={()=>console.log("update pls")} />
+        <Button title="Delete" color={Colors.red} onPress={()=>{
+        this.event.deleteEvent(this.event_id);
+        this.props.navigation.goBack();
+        }} />
       </ScrollView>
     );
   }
-  /*
-  figure out how to implement these better
-  <Button title="Update" onPress={()=>this.update(itemId)} />
-  <Button title="Add" onPress={this.add} />
-  */
+
 
 }
 const styles = StyleSheet.create({
