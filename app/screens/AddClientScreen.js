@@ -168,28 +168,28 @@ export default class AddClientScreen extends Component {
     }
 
     _save = async () => {
-        if (this.state.pid == null) {
+        // if (this.state.pid == null) {
 
-            var client = new Client();
-            client.fname = this.state.fname;
-            client.lname = this.state.lname;
-            client.address = this.state.address;
-            client.address2 = this.state.address2;
-            client.city = this.state.city;
-            client.state_province = this.state.state_province;
-            client.cell_phone = this.state.cell_phone;
-            client.home_phone = this.state.home_phone;
-            client.email = this.state.email;
-            client.occupation = this.state.occupation;
-            client.image_path = this.state.image_base64;
+        var client = new Client();
+        client.pid = this.state.pid;
+        client.fname = this.state.fname;
+        client.lname = this.state.lname;
+        client.address = this.state.address;
+        client.address2 = this.state.address2;
+        client.city = this.state.city;
+        client.state_province = this.state.state_province;
+        client.cell_phone = this.state.cell_phone;
+        client.home_phone = this.state.home_phone;
+        client.email = this.state.email;
+        client.occupation = this.state.occupation;
+        client.image_base64 = this.state.image_base64;
 
-            client.save().then(pid => {
-                alert(pid);
-                //this.props.navigation.navigate('ClientProfile', { 'pid': pid });
-            }).catch((errorMessage) => {
-                alert(errorMessage);
-            });
-        }
+        client.save().then(pid => {
+            this.props.navigation.navigate('ClientProfile', { 'pid': pid });
+        }).catch((errorMessage) => {
+            alert(errorMessage);
+        });
+        //}
     }
 
     _launchCamera = async () => {

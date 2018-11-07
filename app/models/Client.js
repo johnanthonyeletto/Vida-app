@@ -15,6 +15,7 @@ export default class Client {
         this.home_phone;
         this.email;
         this.image_path;
+        this.image_base64;
         this.occupation;
     }
 

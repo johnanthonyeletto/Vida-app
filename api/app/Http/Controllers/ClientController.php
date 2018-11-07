@@ -71,6 +71,7 @@ class ClientController extends Controller
     {
 
         $validatedData = $this->validate($this->request, [
+            'pid' => 'numeric|nullable',
             'fname' => 'required|max:100',
             'lname' => 'required|max:100',
             'address' => 'max:100|string|nullable',
@@ -82,8 +83,17 @@ class ClientController extends Controller
             'email' => 'max:100|email|nullable',
             'occupation' => 'string|nullable',
         ]);
+        return $this->request->input('pid');
+        if ($this->request->input('pid') == null) {
+            $newClient = new Person();
+        } else {
 
-        $newClient = new Person();
+            $newClient = Person::find($this->request->input('pid'));
+            if ($newClient == null) {
+                abort(404);
+            }
+        }
+
         $newClient->fname = $this->request->input('fname');
         $newClient->lname = $this->request->input('lname');
         $newClient->address = $this->request->input('address');
@@ -95,7 +105,7 @@ class ClientController extends Controller
         $newClient->email = $this->request->input('email');
         $newClient->occupation = $this->request->input('occupation');
 
-        $image = $this->request->input('image_path'); // your base64 encoded
+        $image = $this->request->input('image_base64'); // your base64 encoded
         if ($image != null) {
             $image = str_replace('data:image/png;base64,', '', $image);
             $image = str_replace(' ', '+', $image);
