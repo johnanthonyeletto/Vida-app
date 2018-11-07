@@ -69,13 +69,6 @@ class ClientController extends Controller
 
     public function createClient()
     {
-
-        $image = $this->request->input('image_path'); // your base64 encoded
-        $image = str_replace('data:image/png;base64,', '', $image);
-        $image = str_replace(' ', '+', $image);
-        $imageName = $this->request->auth->pid . "-" . time() . "-" . str_random(20) . '.' . 'png';
-        File::put(base_path() . '/public/img/people_images/' . $imageName, base64_decode($image));
-
         $newClient = new Person();
         $newClient->fname = $this->request->input('fname');
         $newClient->lname = $this->request->input('lname');
@@ -87,6 +80,16 @@ class ClientController extends Controller
         $newClient->home_phone = $this->request->input('home_phone');
         $newClient->email = $this->request->input('email');
         $newClient->occupation = $this->request->input('occupation');
+
+        $image = $this->request->input('image_path'); // your base64 encoded
+        if ($image != null) {
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = $this->request->auth->pid . "-" . time() . "-" . str_random(100) . '.' . 'png';
+            File::put(base_path() . '/public/img/people_images/' . $imageName, base64_decode($image));
+        } else {
+            $imageName = "/img/people_images/default.png";
+        }
         $newClient->image_path = $imageName;
 
         $newClient->save();
