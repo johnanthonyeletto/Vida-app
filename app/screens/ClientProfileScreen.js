@@ -123,7 +123,7 @@ export default class ClientProfileScreen extends Component {
                       <Image
                         style={styles.circleRelationshipButton}
                         source={{
-                          uri: connection.image_path
+                          uri: Environment.API_HOST + connection.image_path
                         }}
                         resizeMode={'contain'}
                       />
