@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Person;
+use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ClientController extends Controller
 {
@@ -62,5 +65,42 @@ class ClientController extends Controller
         }
 
         return response()->json($person);
+    }
+
+    public function createClient()
+    {
+
+        $image = $this->request->input('image_path'); // your base64 encoded
+        $image = str_replace('data:image/png;base64,', '', $image);
+        $image = str_replace(' ', '+', $image);
+        $imageName = $this->request->auth->pid . "_" . time() . "_" . str_random(10) . '.' . 'png';
+        File::put(base_path() . '/public/img/people_images/' . $imageName, base64_decode($image));
+
+        $newClient = new Person();
+        $newClient->fname = $this->request->input('fname');
+        $newClient->lname = $this->request->input('lname');
+        $newClient->address = $this->request->input('address');
+        $newClient->address2 = $this->request->input('address2');
+        $newClient->city = $this->request->input('city');
+        $newClient->state_province = $this->request->input('state_province');
+        $newClient->cell_phone = $this->request->input('cell_phone');
+        $newClient->home_phone = $this->request->input('home_phone');
+        $newClient->email = $this->request->input('email');
+        $newClient->occupation = $this->request->input('occupation');
+        $newClient->image_path = $imageName;
+
+        $newClient->save();
+
+        \DB::table('coach_clients')->insert(
+            [
+                'coach_id' => $this->request->auth->pid,
+                'client_id' => $newClient->pid,
+                "created_at" => \Carbon\Carbon::now(), # \Datetime()
+                "updated_at" => \Carbon\Carbon::now(), # \Datetime()
+            ]
+        );
+
+        return response()->json($newClient->pid);
+
     }
 }
