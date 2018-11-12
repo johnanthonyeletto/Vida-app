@@ -6,8 +6,10 @@ import ListSeparator from '../components/ListSeparator';
 import { Ionicons } from '@expo/vector-icons';
 import EventCard from '../components/events/EventCard';
 import Environment from '../constants/Environment';
+import LoadingOverlay from '../components/loadingOverlay';
 
 let _this = null;
+
 export default class ClientProfileScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     // title: 'Pablo Rivas',
@@ -65,6 +67,7 @@ export default class ClientProfileScreen extends Component {
             tintColor={Colors.white}
           />}
       >
+
         <View style={styles.clientInfo}>
           <Image
             style={{ width: 100, height: 100, borderRadius: (100 / 2), alignSelf: "center" }}
@@ -160,7 +163,9 @@ export default class ClientProfileScreen extends Component {
           </View>
           {/* END RELATIONSHIPS SECTION */}
         </View>
-
+        {this.state.loading &&
+          <LoadingOverlay />
+        }
       </ ScrollView >
     );
   }

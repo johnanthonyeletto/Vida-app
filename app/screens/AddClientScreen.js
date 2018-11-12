@@ -6,6 +6,7 @@ import { ImagePicker } from 'expo';
 import Client from '../models/Client';
 import Environment from '../constants/Environment';
 import FormGroup from '../components/forms/FormGroup';
+import LoadingOverlay from '../components/loadingOverlay';
 
 let _this = null;
 
@@ -185,6 +186,9 @@ export default class AddClientScreen extends Component {
 
                     </View>
                 </KeyboardAvoidingView>
+                {this.state.loading &&
+                    <LoadingOverlay />
+                }
             </ScrollContainer>
 
         );
@@ -192,7 +196,7 @@ export default class AddClientScreen extends Component {
 
     _save = async () => {
         // if (this.state.pid == null) {
-
+        this.setState({ loading: true });
         var client = new Client();
         client.pid = this.state.pid;
         client.fname = this.state.fname;
@@ -210,8 +214,10 @@ export default class AddClientScreen extends Component {
 
         client.save().then(pid => {
             this.props.navigation.navigate('ClientProfile', { 'pid': pid });
+            this.setState({ loading: false });
         }).catch((errorMessage) => {
             alert(errorMessage);
+            this.setState({ loading: false });
         });
         //}
     }
