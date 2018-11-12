@@ -83,6 +83,7 @@ export default class AddClientScreen extends Component {
                             autoCapitalize={"words"}
                             autoCorrect={true}
                             textContentType={"givenName"}
+                            maxLength={100}
                         />
 
                         <FormGroup
@@ -93,6 +94,7 @@ export default class AddClientScreen extends Component {
                             autoCapitalize={"words"}
                             autoCorrect={true}
                             textContentType={"familyName"}
+                            maxLength={100}
                         />
 
                         <FormGroup
@@ -102,6 +104,7 @@ export default class AddClientScreen extends Component {
                             keyboardType={"default"}
                             autoCapitalize={"words"}
                             autoCorrect={true}
+                            maxLength={100}
                         />
 
                         <FormGroup
@@ -132,6 +135,7 @@ export default class AddClientScreen extends Component {
                             autoCapitalize={"none"}
                             autoCorrect={false}
                             textContentType={"emailAddress"}
+                            maxLength={100}
                         />
 
                         <FormGroup
@@ -142,6 +146,7 @@ export default class AddClientScreen extends Component {
                             autoCapitalize={"words"}
                             autoCorrect={true}
                             textContentType={"streetAddressLine1"}
+                            maxLength={100}
                         />
 
                         <FormGroup
@@ -152,6 +157,7 @@ export default class AddClientScreen extends Component {
                             autoCapitalize={"words"}
                             autoCorrect={true}
                             textContentType={"streetAddressLine2"}
+                            maxLength={100}
                         />
 
                         <FormGroup
@@ -162,6 +168,7 @@ export default class AddClientScreen extends Component {
                             autoCapitalize={"words"}
                             autoCorrect={true}
                             textContentType={"addressCity"}
+                            maxLength={100}
                         />
 
                         <FormGroup
@@ -172,6 +179,7 @@ export default class AddClientScreen extends Component {
                             autoCapitalize={"words"}
                             autoCorrect={true}
                             textContentType={"addressState"}
+                            maxLength={100}
                         />
 
                         <FormGroup

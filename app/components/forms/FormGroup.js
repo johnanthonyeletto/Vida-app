@@ -32,6 +32,7 @@ export default class FormGroup extends Component {
             returnKeyType={this.props.returnKeyType}
             secureTextEntry={this.props.secureTextEntry}
             textContentType={this.props.textContentType}
+            maxLength={this.props.maxLength}
           />
         </View>
       </View>
