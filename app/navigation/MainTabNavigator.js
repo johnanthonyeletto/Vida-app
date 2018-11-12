@@ -16,6 +16,7 @@ import NoteScreen from '../screens/ClientProfile/NoteScreen';
 
 // SETTINGS SCREENS
 import SettingsScreen from '../screens/Settings/SettingsScreen';
+import EditAccountScreen from '../screens/Settings/EditAccountScreen';
 
 // OTHER COMPONENTS
 import TabBarIcon from '../components/TabBarIcon';
@@ -62,6 +63,7 @@ LinksStack.navigationOptions = {
 
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
+  EditAccount: EditAccountScreen,
 });
 
 SettingsStack.navigationOptions = {
