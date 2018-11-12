@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import Colors from '../../constants/Colors';
 import ScrollContainer from '../../components/ScrollContainer';
 import FormGroup from '../../components/forms/FormGroup';
+import User from '../../models/User';
 
 export default class EditAccountScreen extends Component {
   static navigationOptions = {
@@ -27,6 +28,14 @@ export default class EditAccountScreen extends Component {
     super(props);
     this.state = {
     };
+  }
+
+  async componentDidMount() {
+    var user = new User();
+
+    user.getCurrentUser().then(res => {
+      this.setState(res);
+    });
   }
 
   render() {
