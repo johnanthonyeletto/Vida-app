@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionSheetIOS, Linking } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionSheetIOS, Linking, RefreshControl } from 'react-native';
 import Client from '../models/Client';
 import Colors from '../constants/Colors';
 import ListSeparator from '../components/ListSeparator';
@@ -31,11 +31,18 @@ export default class ClientProfileScreen extends Component {
 
     this.state = {
       client: [],
+      refreshing: false,
     };
 
   }
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.componentDidMount().then(() => {
+      this.setState({ refreshing: false });
+    });
+  }
 
-  componentDidMount() {
+  async componentDidMount() {
     _this = this;
 
     const { navigation } = this.props;
@@ -49,7 +56,15 @@ export default class ClientProfileScreen extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+            tintColor={Colors.white}
+          />}
+      >
         <View style={styles.clientInfo}>
           <Image
             style={{ width: 100, height: 100, borderRadius: (100 / 2), alignSelf: "center" }}
@@ -146,7 +161,7 @@ export default class ClientProfileScreen extends Component {
           {/* END RELATIONSHIPS SECTION */}
         </View>
 
-      </ScrollView >
+      </ ScrollView >
     );
   }
 
