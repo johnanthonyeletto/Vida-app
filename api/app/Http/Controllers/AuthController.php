@@ -119,9 +119,9 @@ class AuthController extends BaseController
 
         $coach->email = $this->request->input('email');
 
-        if ($this->request->input('newPassword') !== null
-            && $this->request->input('newPassword') === $this->request->input('confirmNewPassword')
-            && Hash::check($this->request->input('currentPassword'), $coach->password)) {
+        if ($this->request->input('newPassword') != null &&
+            $this->request->input('newPassword') == $this->request->input('confirmNewPassword') &&
+            Hash::check($this->request->input('currentPassword'), $coach->password)) {
             $coach->password = Hash::make($this->request->input('newPassword'));
         }
 
