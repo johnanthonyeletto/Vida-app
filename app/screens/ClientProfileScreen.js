@@ -45,6 +45,7 @@ export default class ClientProfileScreen extends Component {
   }
 
   async componentDidMount() {
+
     _this = this;
 
     const { navigation } = this.props;
@@ -114,7 +115,7 @@ export default class ClientProfileScreen extends Component {
 
             {
               !this.state.nextMeeting &&
-              <Text style={{color: Colors.grey, padding: 15}}>You have no upcoming meetings with {this.state.client.fname} {this.state.client.lname}.</Text>
+              <Text style={{ color: Colors.grey, padding: 15 }}>You have no upcoming meetings with {this.state.client.fname} {this.state.client.lname}.</Text>
             }
           </View>
 
@@ -159,7 +160,7 @@ export default class ClientProfileScreen extends Component {
             }
 
             {!this.state.relationships &&
-              <Text style={{color: Colors.grey, padding: 15}}>{this.state.client.fname} {this.state.client.lname} doesn't have any relationships yet.</Text>
+              <Text style={{ color: Colors.grey, padding: 15 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any relationships yet.</Text>
             }
           </View>
           {/* END RELATIONSHIPS SECTION */}
