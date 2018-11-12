@@ -7,6 +7,7 @@ use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use App\Models\Person;
 
 class AuthController extends BaseController
 {
@@ -91,6 +92,15 @@ class AuthController extends BaseController
 
     public function currentUser()
     {
-        return response()->json($this->request->auth);
+        $coach = $this->request->auth;
+        $person = Person::find($this->request->auth->pid);
+
+        $response = [
+            'pid' => $person->pid,
+            'fname' => $person->fname,
+            'lname' => $person->lname,
+            'email' => $coach->email
+        ];
+        return response()->json($response);
     }
 }
