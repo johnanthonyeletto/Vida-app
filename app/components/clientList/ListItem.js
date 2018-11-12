@@ -38,6 +38,7 @@ export default class ListItem extends Component {
         var t = timestamp.split(/[- :]/);
         // Apply each element to the Date function
         var updated_at = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]));
+
         var today = new Date();
 
 

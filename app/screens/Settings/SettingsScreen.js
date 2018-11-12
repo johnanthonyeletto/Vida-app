@@ -30,8 +30,8 @@ export default class SettingsScreen extends React.Component {
         <SettingsItem title={"Manage Company"} onPress={() => { alert("Manage Company") }} />
 
         <SettingsGroupSeparator title={"About"} />
-        <SettingsItem title="Help/FAQ" onPress={() => { alert("Help / FAQ") }}  />
-        <SettingsItem title="Legal Terms" onPress={() => { alert("Legal Terms") }}  />
+        <SettingsItem title="Help/FAQ" onPress={() => { alert("Help yo self.") }}  />
+        <SettingsItem title="Legal Terms" onPress={() => { alert("Anyone know a good lawyer?") }}  />
         
         <SettingsGroupSeparator title={""} />
         <SettingsItem title="Logout" onPress={this._logoutAsync} color={Colors.red} />
