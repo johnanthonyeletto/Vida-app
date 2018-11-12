@@ -78,8 +78,9 @@ export default class ClientProfileScreen extends Component {
           <Text style={{ color: Colors.white, fontSize: 20, marginTop: 10 }}>{this.state.client.fname} {this.state.client.lname}</Text>
           <Text style={{ color: Colors.white, fontSize: 15, fontStyle: 'italic' }}>{this.state.client.occupation}</Text>
           <View style={{ flexDirection: "row" }}>
-            {this.state.client.cell_phone &&
-              <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("tel:" + this.state.client.cell_phone) }}>
+
+            {(this.state.client.cell_phone || this.state.client.home_phone) &&
+              <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._showCallOptions() }}>
                 <Ionicons name="ios-call" size={32} color={Colors.blue} />
               </TouchableOpacity>
             }
@@ -170,6 +171,35 @@ export default class ClientProfileScreen extends Component {
     );
   }
 
+  _showCallOptions() {
+    if (this.state.client.cell_phone && !this.state.client.home_phone) {
+      // Just cell phone is set
+      Linking.openURL("tel:" + this.state.client.cell_phone);
+      return;
+    } else if (!this.state.client.cell_phone && this.state.client.home_phone) {
+      // Just home phone is set
+      Linking.openURL("tel:" + this.state.client.home_phone);
+      return;
+    }
+
+    // Both are set, so we give the user the option...
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Cell Phone - ' + this.state.client.cell_phone, 'Home Phone - ' + this.state.client.home_phone],
+      cancelButtonIndex: 0,
+    },
+      (buttonIndex) => {
+        switch (buttonIndex) {
+          case 1:
+            Linking.openURL("tel:" + this.state.client.cell_phone);
+            break;
+          case 2:
+            Linking.openURL("tel:" + this.state.client.home_phone);
+            break;
+        }
+      }
+    )
+  }
+
   _showMoreOptions(navigation) {
     ActionSheetIOS.showActionSheetWithOptions({
       options: ['Cancel', 'Add Meeting', 'Add Relationship', 'Quick Start Meeting', 'Edit Client', 'Mark Client Inactive'],
@@ -219,9 +249,9 @@ const styles = StyleSheet.create({
   },
   circleContactButton: {
     //flex: 1,
-    width: 60,
-    height: 60,
-    borderRadius: (60 / 2),
+    width: 50,
+    height: 50,
+    borderRadius: (50 / 2),
     backgroundColor: Colors.white,
     alignItems: "center",
     justifyContent: "center",
@@ -230,9 +260,9 @@ const styles = StyleSheet.create({
     //opacity: 0.50
   },
   circleRelationshipButton: {
-    width: 75,
-    height: 75,
-    borderRadius: (75 / 2),
+    width: 60,
+    height: 60,
+    borderRadius: (60 / 2),
     backgroundColor: Colors.blue,
     alignItems: "center",
     justifyContent: "center",
