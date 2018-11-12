@@ -34,9 +34,9 @@ class ClientController extends Controller
      */
     public function getClientList()
     {
-        $active = $this->request->auth->clients()->where('isActive', true)->get();
+        $active = $this->request->auth->clients()->where('isActive', true)->orderBy('updated_at', 'desc')->get();
 
-        $inactive = $this->request->auth->clients()->where('isActive', false)->get();
+        $inactive = $this->request->auth->clients()->where('isActive', false)->orderBy('updated_at', 'desc')->get();
 
         $clients = [
             'active' => $active,
