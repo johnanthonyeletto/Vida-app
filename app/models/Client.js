@@ -146,4 +146,42 @@ export default class Client {
         });
     }
 
+    async markInactive() {
+        
+        let result = Auth.getToken().then(token => {
+            return fetch(Environment.API_HOST + '/1.0/client/' + this.pid, {
+                method: 'DELETE',
+                headers: {
+                    // Accept: 'application/json',
+                    // 'Content-Type': 'application/json',
+                    token
+                },
+            }).then((response) => {
+                if (response.status != 200) {
+                    response.json().then(errors => {
+                        var errorMessage = '';
+                        for (var key in errors) {
+                            errorMessage = errorMessage + errors[key] + ' ';
+                        }
+                        console.error(errorMessage);
+                    });
+                } else {
+                    return response.json().then(result => {
+                        return result;
+                    });
+                }
+
+            }).catch((error) => {
+                console.error(error);
+            });
+
+        }).catch(error => {
+            console.error(error);
+        });
+        return result.then(res => {
+            return res;
+        }).catch(error => {
+            console.error(error);
+        });
+    }
 }

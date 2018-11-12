@@ -202,7 +202,7 @@ export default class ClientProfileScreen extends Component {
 
   _showMoreOptions(navigation) {
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Add Meeting', 'Add Relationship', 'Quick Start Meeting', 'Edit Client', 'Mark Client Inactive'],
+      options: ['Cancel', 'Add Meeting', 'Add Relationship', 'Quick Start Meeting', 'Edit Client', (_this.state.client.isActive) ? 'Mark Client Inactive' : 'Mark Client Active'],
       cancelButtonIndex: 0,
       destructiveButtonIndex: 5,
     },
@@ -217,8 +217,21 @@ export default class ClientProfileScreen extends Component {
           case 4:
             navigation.navigate('AddClient', { 'pid': _this.state.client.pid });
             break;
+          case 5:
+            _this._markInactive().then(res => {
+              navigation.navigate("Home");
+            });
+            break;
         }
       });
+  }
+
+  async _markInactive() {
+    var client = new Client();
+    client.pid = _this.state.client.pid;
+    client.markInactive().then(res => {
+      return res;
+    });
   }
 
   _openLink(url) {

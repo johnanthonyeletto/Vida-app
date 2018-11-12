@@ -52,6 +52,8 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->get('client/{pid}', 'ClientController@getClient');
 
+        $router->delete('client/{pid}', 'ClientController@markClientInactive');
+
         $router->post('client/', 'ClientController@createClient');
 
         $router->patch('client/', 'ClientController@updateClient');

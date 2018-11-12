@@ -127,4 +127,23 @@ class ClientController extends Controller
         return response()->json($client->pid);
 
     }
+
+    public function markClientInactive($pid)
+    {
+        $client = Person::find($pid);
+
+        if ($client == null) {
+            abort(404);
+        }
+
+        if ($client->isActive) {
+            $client->isActive = false;
+        } else {
+            $client->isActive = true;
+        }
+
+        $client->save();
+
+        return response()->json($client->pid);
+    }
 }
