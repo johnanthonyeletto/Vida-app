@@ -27,7 +27,7 @@ export default class SettingsScreen extends React.Component {
       <ScrollView>
         <SettingsGroupSeparator title={"Accounts"} />
         <SettingsItem title={"Edit My Account"} onPress={() => { alert("Edit Account") }} />
-        <SettingsItem title={"Edit Coaches"} onPress={() => { alert("Edit Coaches") }} />
+        <SettingsItem title={"Manage Company"} onPress={() => { alert("Manage Company") }} />
 
         <SettingsGroupSeparator title={"About"} />
         <SettingsItem title="Help/FAQ" onPress={() => { alert("Help / FAQ") }}  />
