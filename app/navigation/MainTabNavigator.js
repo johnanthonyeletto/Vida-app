@@ -3,19 +3,23 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 // CLIENT SCREENS
+import HomeScreen from '../screens/HomeScreen';
 import ClientProfileScreen from '../screens/Client/ClientProfileScreen';
 import ClientGraphScreen from '../screens/Client/ClientGraphScreen';
 import AddClientScreen from '../screens/Client/AddClientScreen';
 
-import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
+// EVENT SCREENS
 import MeetingsScreen from '../screens/MeetingsScreen';
-import SettingsScreen from '../screens/Settings/SettingsScreen';
-
 import eventView from '../screens/eventScreens/eventView';
 import eventEntry from '../screens/eventScreens/eventEntry';
-
 import NoteScreen from '../screens/ClientProfile/NoteScreen';
+
+// SETTINGS SCREENS
+import SettingsScreen from '../screens/Settings/SettingsScreen';
+
+// OTHER COMPONENTS
+import TabBarIcon from '../components/TabBarIcon';
+
 
 
 const HomeStack = createStackNavigator({
