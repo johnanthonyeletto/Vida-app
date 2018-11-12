@@ -86,16 +86,16 @@ class ClientController extends Controller
 
         $client = Person::findOrNew($this->request->input('pid'));
 
-        $client->fname = $this->request->input('fname');
-        $client->lname = $this->request->input('lname');
-        $client->address = $this->request->input('address');
-        $client->address2 = $this->request->input('address2');
-        $client->city = $this->request->input('city');
-        $client->state_province = $this->request->input('state_province');
-        $client->cell_phone = $this->request->input('cell_phone');
-        $client->home_phone = $this->request->input('home_phone');
-        $client->email = $this->request->input('email');
-        $client->occupation = $this->request->input('occupation');
+        $client->fname = trim($this->request->input('fname'));
+        $client->lname = trim($this->request->input('lname'));
+        $client->address = trim($this->request->input('address'));
+        $client->address2 = trim($this->request->input('address2'));
+        $client->city = trim($this->request->input('city'));
+        $client->state_province = trim($this->request->input('state_province'));
+        $client->cell_phone = trim($this->request->input('cell_phone'));
+        $client->home_phone = trim($this->request->input('home_phone'));
+        $client->email = trim($this->request->input('email'));
+        $client->occupation = trim($this->request->input('occupation'));
 
         $image = $this->request->input('image_base64'); // your base64 encoded
         $image_path = $this->request->input('image_path');

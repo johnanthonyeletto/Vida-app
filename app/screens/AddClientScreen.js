@@ -203,6 +203,11 @@ export default class AddClientScreen extends Component {
     }
 
     _save = async () => {
+
+        if (this.state.fname == null || this.state.lname == null) {
+            alert("First name and last name are both required.");
+            return;
+        }
         // if (this.state.pid == null) {
         this.setState({ loading: true });
         var client = new Client();
