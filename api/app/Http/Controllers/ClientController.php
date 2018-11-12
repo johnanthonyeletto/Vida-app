@@ -84,7 +84,7 @@ class ClientController extends Controller
             'occupation' => 'string|nullable',
         ]);
 
-        $client = Person::firstOrNew(['pid' => $this->request->input('pid')]);
+        $client = Person::findOrNew($this->request->input('pid'));
 
         $client->fname = $this->request->input('fname');
         $client->lname = $this->request->input('lname');

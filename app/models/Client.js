@@ -124,7 +124,8 @@ export default class Client {
                         for (var key in errors) {
                             errorMessage = errorMessage + errors[key] + ' ';
                         }
-                        console.error(errorMessage);
+                        //console.error(errorMessage);
+                        throw errorMessage;
                     });
                 } else {
                     return response.json().then(result => {
@@ -133,21 +134,24 @@ export default class Client {
                 }
 
             }).catch((error) => {
-                console.error(error);
+                //console.error(error);
+                throw error;
             });
 
         }).catch(error => {
-            console.error(error);
+            //console.error(error);
+            throw error;
         });
         return result.then(res => {
             return res;
         }).catch(error => {
-            console.error(error);
+            //console.error(error);
+            throw error;
         });
     }
 
     async markInactive() {
-        
+
         let result = Auth.getToken().then(token => {
             return fetch(Environment.API_HOST + '/1.0/client/' + this.pid, {
                 method: 'DELETE',

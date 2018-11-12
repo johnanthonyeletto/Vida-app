@@ -23,7 +23,7 @@ export default class AddClientScreen extends Component {
         },
         headerLeft: (
             <TouchableOpacity onPress={() => {
-                navigation.navigate("Home")
+                navigation.goBack(null);
             }} style={{ marginLeft: 15 }}>
                 <Text style={{ fontSize: 20, color: Colors.white }}>Cancel</Text>
             </TouchableOpacity>
