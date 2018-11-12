@@ -23,7 +23,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $primaryKey = 'pid';
 
     protected $fillable = [
-        'name', 'email', 'username', 'super_coach', 'createdat', 'updatedat',
+        'name', 'email', 'username', 'super_coach', 'created_at', 'updated_at', 'password',
     ];
 
     /**

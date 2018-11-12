@@ -47,6 +47,7 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
     $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
 
         $router->get('account', 'AuthController@getCurrentUser');
+        $router->post('account', 'AuthController@updateCurrentUser');
 
         $router->get('client-list', 'ClientController@getClientList');
 

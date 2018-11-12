@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Person;
 use App\User;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use App\Models\Person;
 
 class AuthController extends BaseController
 {
@@ -99,8 +99,40 @@ class AuthController extends BaseController
             'pid' => $person->pid,
             'fname' => $person->fname,
             'lname' => $person->lname,
-            'email' => $coach->email
+            'email' => $coach->email,
         ];
         return response()->json($response);
+    }
+
+    public function updateCurrentUser()
+    {
+
+        $validatedData = $this->validate($this->request, [
+            'fname' => 'required|max:100',
+            'lname' => 'required|max:100',
+            'email' => 'max:100|email|nullable',
+        ]);
+
+        $coach = $this->request->auth;
+
+        $person = Person::find($coach->pid);
+
+        $coach->email = $this->request->input('email');
+
+        if ($this->request->input('newPassword') !== null
+            && $this->request->input('newPassword') === $this->request->input('confirmNewPassword')
+            && Hash::check($this->request->input('currentPassword'), $coach->password)) {
+            $coach->password = Hash::make($this->request->input('newPassword'));
+        }
+
+        $coach->save();
+
+        $person->fname = $this->request->input('fname');
+        $person->lname = $this->request->input('lname');
+
+        $person->save();
+
+        return response()->json($person->pid);
+
     }
 }
