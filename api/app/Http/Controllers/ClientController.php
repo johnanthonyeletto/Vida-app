@@ -78,8 +78,8 @@ class ClientController extends Controller
             'address2' => 'max:255|string|nullable',
             'city' => 'max:100|string|nullable',
             'state_province' => 'max:100|string|nullable',
-            'cell_phone' => 'numeric|nullable',
-            'home_phone' => 'numeric|nullable',
+            'cell_phone' => 'nullable',
+            'home_phone' => 'nullable',
             'email' => 'max:100|email|nullable',
             'occupation' => 'string|nullable',
         ]);

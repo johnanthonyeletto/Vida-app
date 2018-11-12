@@ -78,7 +78,18 @@ export default class EditAccountScreen extends Component {
         <FormGroup
           onChangeText={(password) => this.setState({ password })}
           value={this.state.password}
-          placeholder={"Password"}
+          placeholder={"Current Password"}
+          keyboardType={"default"}
+          autoCapitalize={"none"}
+          autoCorrect={false}
+          secureTextEntry={true}
+          maxLength={100}
+        />
+
+        <FormGroup
+          onChangeText={(newPassword) => this.setState({ newPassword })}
+          value={this.state.newPassword}
+          placeholder={"New Password"}
           keyboardType={"default"}
           autoCapitalize={"none"}
           autoCorrect={false}
@@ -89,7 +100,7 @@ export default class EditAccountScreen extends Component {
         <FormGroup
           onChangeText={(confirmPassword) => this.setState({ confirmPassword })}
           value={this.state.password}
-          placeholder={"Confirm Password"}
+          placeholder={"Confirm New Password"}
           keyboardType={"default"}
           autoCapitalize={"none"}
           autoCorrect={false}

@@ -71,7 +71,7 @@ export default class ClientProfileScreen extends Component {
 
         <View style={styles.clientInfo}>
           <Image
-            style={{ width: 100, height: 100, borderRadius: (100 / 2), alignSelf: "center" }}
+            style={{ width: 125, height: 125, borderRadius: (125 / 2), alignSelf: "center" }}
             source={{
               uri: Environment.API_HOST + this.state.client.image_path
             }}
