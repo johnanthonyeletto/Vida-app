@@ -52,13 +52,13 @@ export default class ClientProfileScreen extends Component {
       <ScrollView style={styles.container}>
         <View style={styles.clientInfo}>
           <Image
-            style={{ width: 150, height: 150, borderRadius: (150 / 2), alignSelf: "center" }}
+            style={{ width: 100, height: 100, borderRadius: (100 / 2), alignSelf: "center" }}
             source={{
               uri: Environment.API_HOST + this.state.client.image_path
             }}
           />
-          <Text style={{ color: Colors.white, fontSize: 25, marginTop: 10 }}>{this.state.client.fname} {this.state.client.lname}</Text>
-          <Text style={{ color: Colors.white, fontSize: 16, fontStyle: 'italic' }}>{this.state.client.occupation}</Text>
+          <Text style={{ color: Colors.white, fontSize: 20, marginTop: 10 }}>{this.state.client.fname} {this.state.client.lname}</Text>
+          <Text style={{ color: Colors.white, fontSize: 15, fontStyle: 'italic' }}>{this.state.client.occupation}</Text>
           <View style={{ flexDirection: "row" }}>
             {this.state.client.cell_phone &&
               <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("tel:" + this.state.client.cell_phone) }}>

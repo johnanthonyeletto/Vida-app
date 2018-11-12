@@ -84,79 +84,7 @@ class ClientController extends Controller
             'occupation' => 'string|nullable',
         ]);
 
-        if ($this->request->input('pid') == null) {
-            $newClient = new Person();
-        } else {
-
-            $newClient = Person::find($this->request->input('pid'));
-            if ($newClient == null) {
-                abort(404);
-            }
-        }
-
-        $newClient->fname = $this->request->input('fname');
-        $newClient->lname = $this->request->input('lname');
-        $newClient->address = $this->request->input('address');
-        $newClient->address2 = $this->request->input('address2');
-        $newClient->city = $this->request->input('city');
-        $newClient->state_province = $this->request->input('state_province');
-        $newClient->cell_phone = $this->request->input('cell_phone');
-        $newClient->home_phone = $this->request->input('home_phone');
-        $newClient->email = $this->request->input('email');
-        $newClient->occupation = $this->request->input('occupation');
-
-        $image = $this->request->input('image_base64'); // your base64 encoded
-        $image_path = $this->request->input('image_path'); // your base64 encoded
-        if ($image != null) {
-            $image = str_replace('data:image/png;base64,', '', $image);
-            $image = str_replace(' ', '+', $image);
-            $imageName = '/img/people_images/' . $this->request->auth->pid . "-" . time() . "-" . str_random(100) . '.' . 'png';
-            File::put(base_path() . '/public' . $imageName, base64_decode($image));
-        } else if ($image_path == null) {
-            $imageName = "/img/people_images/default.png";
-        } else {
-            $imageName = $image_path;
-        }
-        $newClient->image_path = $imageName;
-
-        $newClient->save();
-
-        if ($this->request->input('pid') == null) {
-            \DB::table('coach_clients')->insert(
-                [
-                    'coach_id' => $this->request->auth->pid,
-                    'client_id' => $newClient->pid,
-                    "created_at" => \Carbon\Carbon::now(), # \Datetime()
-                    "updated_at" => \Carbon\Carbon::now(), # \Datetime()
-                ]
-            );
-        }
-
-        return response()->json($newClient->pid);
-
-    }
-
-    public function updateClient()
-    {
-
-        $validatedData = $this->validate($this->request, [
-            'pid' => 'required|numeric',
-            'fname' => 'required|max:100',
-            'lname' => 'required|max:100',
-            'address' => 'max:100|string|nullable',
-            'address2' => 'max:255|string|nullable',
-            'city' => 'max:100|string|nullable',
-            'state_province' => 'max:100|string|nullable',
-            'cell_phone' => 'numeric|nullable',
-            'home_phone' => 'numeric|nullable',
-            'email' => 'max:100|email|nullable',
-            'occupation' => 'string|nullable',
-        ]);
-
-        $client = Person::find($this->request->input('pid'));
-        if ($client == null) {
-            abort(404);
-        }
+        $client = Person::firstOrNew(['pid' => $this->request->input('pid')]);
 
         $client->fname = $this->request->input('fname');
         $client->lname = $this->request->input('lname');
@@ -170,6 +98,7 @@ class ClientController extends Controller
         $client->occupation = $this->request->input('occupation');
 
         $image = $this->request->input('image_base64'); // your base64 encoded
+        $image_path = $this->request->input('image_path');
 
         if ($image != null) {
             $image = str_replace('data:image/png;base64,', '', $image);
@@ -177,9 +106,23 @@ class ClientController extends Controller
             $imageName = '/img/people_images/' . $this->request->auth->pid . "-" . time() . "-" . str_random(100) . '.' . 'png';
             File::put(base_path() . '/public' . $imageName, base64_decode($image));
             $client->image_path = $imageName;
+        } else if ($image_path == null) {
+            $imageName = "/img/people_images/default.png";
+            $client->image_path = $imageName;
         }
 
         $client->save();
+
+        if ($this->request->input('pid') == null) {
+            \DB::table('coach_clients')->insert(
+                [
+                    'coach_id' => $this->request->auth->pid,
+                    'client_id' => $client->pid,
+                    "created_at" => \Carbon\Carbon::now(), # \Datetime()
+                    "updated_at" => \Carbon\Carbon::now(), # \Datetime()
+                ]
+            );
+        }
 
         return response()->json($client->pid);
 

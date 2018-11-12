@@ -5,6 +5,7 @@ import Colors from '../constants/Colors';
 import { ImagePicker } from 'expo';
 import Client from '../models/Client';
 import Environment from '../constants/Environment';
+import FormGroup from '../components/forms/FormGroup';
 
 let _this = null;
 
@@ -68,96 +69,118 @@ export default class AddClientScreen extends Component {
                     <View style={{ marginBottom: 20 }}>
                         <TouchableOpacity style={{ alignSelf: 'center' }} onPress={this._pickImage}>
                             <Image
-                                style={{ width: 150, height: 150, borderRadius: (150 / 2), alignSelf: "center", margin: 10 }}
+                                style={{ width: 100, height: 100, borderRadius: (100 / 2), alignSelf: "center", margin: 10 }}
                                 source={{ uri: this.state.image_path }}
                             />
+                            <Text style={{ alignSelf: 'center', fontWeight: 'bold', color: Colors.blue }}>Change Photo</Text>
                         </TouchableOpacity>
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(fname) => this.setState({ fname })}
                             value={this.state.fname}
                             placeholder={"First Name"}
                             keyboardType={"default"}
+                            autoCapitalize={"words"}
+                            autoCorrect={true}
+                            textContentType={"givenName"}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(lname) => this.setState({ lname })}
                             value={this.state.lname}
                             placeholder={"Last Name"}
                             keyboardType={"default"}
+                            autoCapitalize={"words"}
+                            autoCorrect={true}
+                            textContentType={"familyName"}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(occupation) => this.setState({ occupation })}
                             value={this.state.occupation}
                             placeholder={"Occupation"}
                             keyboardType={"default"}
+                            autoCapitalize={"words"}
+                            autoCorrect={true}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(cell_phone) => this.setState({ cell_phone })}
                             value={this.state.cell_phone}
                             placeholder={"Cell Phone"}
                             keyboardType={"phone-pad"}
+                            autoCapitalize={"none"}
+                            autoCorrect={false}
+                            textContentType={"telephoneNumber"}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(home_phone) => this.setState({ home_phone })}
                             value={this.state.home_phone}
                             placeholder={"Home Phone"}
                             keyboardType={"phone-pad"}
+                            autoCapitalize={"none"}
+                            autoCorrect={false}
+                            textContentType={"telephoneNumber"}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(email) => this.setState({ email })}
                             value={this.state.email}
                             placeholder={"Email Address"}
                             keyboardType={"email-address"}
+                            autoCapitalize={"none"}
+                            autoCorrect={false}
+                            textContentType={"emailAddress"}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(address) => this.setState({ address })}
                             value={this.state.address}
                             placeholder={"Address 1"}
                             keyboardType={"default"}
+                            autoCapitalize={"words"}
+                            autoCorrect={true}
+                            textContentType={"streetAddressLine1"}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(address2) => this.setState({ address2 })}
                             value={this.state.address2}
                             placeholder={"Address 2"}
                             keyboardType={"default"}
+                            autoCapitalize={"words"}
+                            autoCorrect={true}
+                            textContentType={"streetAddressLine2"}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(city) => this.setState({ city })}
                             value={this.state.city}
                             placeholder={"City"}
                             keyboardType={"default"}
+                            autoCapitalize={"words"}
+                            autoCorrect={true}
+                            textContentType={"addressCity"}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(state_province) => this.setState({ state_province })}
                             value={this.state.state_province}
                             placeholder={"State"}
                             keyboardType={"default"}
+                            autoCapitalize={"words"}
+                            autoCorrect={true}
+                            textContentType={"addressState"}
                         />
 
-                        <TextInput
-                            style={styles.input}
+                        <FormGroup
                             onChangeText={(postal_code) => this.setState({ postal_code })}
                             value={this.state.postal_code}
                             placeholder={"Postal Code"}
                             keyboardType={"numeric"}
+                            autoCapitalize={"words"}
+                            autoCorrect={true}
+                            textContentType={"postalCode"}
                         />
 
                     </View>
@@ -183,6 +206,7 @@ export default class AddClientScreen extends Component {
         client.email = this.state.email;
         client.occupation = this.state.occupation;
         client.image_base64 = this.state.image_base64;
+        client.image_path = this.state.image_path;
 
         client.save().then(pid => {
             this.props.navigation.navigate('ClientProfile', { 'pid': pid });
@@ -257,15 +281,3 @@ export default class AddClientScreen extends Component {
 
     };
 }
-
-const styles = StyleSheet.create({
-    input: {
-        height: 50,
-        borderBottomColor: Colors.grey,
-        borderBottomWidth: 1,
-        marginTop: 5,
-        marginBottom: 5,
-        marginLeft: 20,
-        marginRight: 20,
-    }
-});

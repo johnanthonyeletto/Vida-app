@@ -110,10 +110,10 @@ export default class Client {
     async save() {
         let result = Auth.getToken().then(token => {
             return fetch(Environment.API_HOST + '/1.0/client', {
-                method: (this.pid == null) ? 'POST' : 'PUT',
+                method: 'POST',
                 headers: {
                     Accept: 'application/json',
-                    'Content-Type': (this.pid == null) ? 'application/json' : 'x-www-form-urlencode',
+                    'Content-Type': 'application/json',
                     token
                 },
                 body: JSON.stringify(this),
