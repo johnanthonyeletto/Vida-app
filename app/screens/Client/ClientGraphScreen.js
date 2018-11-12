@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, WebView, TouchableOpacity } from 'react-native';
-import Colors from '../constants/Colors';
+import Colors from '../../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 
-const GraphHTML = require('../assets/html/vida_graph.html');
+const GraphHTML = require('../../assets/html/vida_graph.html');
 
 export default class ClientGraphScreen extends Component {
     static navigationOptions = {

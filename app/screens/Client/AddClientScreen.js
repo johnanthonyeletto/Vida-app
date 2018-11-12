@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, KeyboardAvoidingView, ActionSheetIOS, Image } from 'react-native';
-import ScrollContainer from '../components/ScrollContainer';
-import Colors from '../constants/Colors';
+import ScrollContainer from '../../components/ScrollContainer';
+import Colors from '../../constants/Colors';
 import { ImagePicker } from 'expo';
-import Client from '../models/Client';
-import Environment from '../constants/Environment';
-import FormGroup from '../components/forms/FormGroup';
-import LoadingOverlay from '../components/loadingOverlay';
+import Client from '../../models/Client';
+import Environment from '../../constants/Environment';
+import FormGroup from '../../components/forms/FormGroup';
+import LoadingOverlay from '../../components/loadingOverlay';
 
 let _this = null;
 

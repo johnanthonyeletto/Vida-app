@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionSheetIOS, Linking, RefreshControl } from 'react-native';
-import Client from '../models/Client';
-import Colors from '../constants/Colors';
-import ListSeparator from '../components/ListSeparator';
+import Client from '../../models/Client';
+import Colors from '../../constants/Colors';
+import ListSeparator from '../../components/ListSeparator';
 import { Ionicons } from '@expo/vector-icons';
-import EventCard from '../components/events/EventCard';
-import Environment from '../constants/Environment';
-import LoadingOverlay from '../components/loadingOverlay';
+import EventCard from '../../components/events/EventCard';
+import Environment from '../../constants/Environment';
+import LoadingOverlay from '../../components/loadingOverlay';
 
 let _this = null;
 

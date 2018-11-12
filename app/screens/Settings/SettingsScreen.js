@@ -3,11 +3,11 @@ import {
   AsyncStorage,
   ScrollView,
 } from 'react-native';
-import ScrollContainer from '../components/ScrollContainer';
-import Colors from '../constants/Colors';
+import ScrollContainer from '../../components/ScrollContainer';
+import Colors from '../../constants/Colors';
 import Navigator from 'react-navigation';
-import SettingsItem from '../components/settings/SettingsItem';
-import SettingsGroupSeparator from '../components/settings/SettingsGroupSeparator';
+import SettingsItem from '../../components/settings/SettingsItem';
+import SettingsGroupSeparator from '../../components/settings/SettingsGroupSeparator';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
