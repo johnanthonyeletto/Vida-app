@@ -90,7 +90,7 @@ class AuthController extends BaseController
         ], 400);
     }
 
-    public function currentUser()
+    public function getCurrentUser()
     {
         $coach = $this->request->auth;
         $person = Person::find($this->request->auth->pid);
