@@ -92,6 +92,7 @@ class ClientController extends Controller
         $client->address2 = trim($this->request->input('address2'));
         $client->city = trim($this->request->input('city'));
         $client->state_province = trim($this->request->input('state_province'));
+        $client->postal_code = trim($this->request->input('postal_code'));
         $client->cell_phone = trim($this->request->input('cell_phone'));
         $client->home_phone = trim($this->request->input('home_phone'));
         $client->email = trim($this->request->input('email'));

@@ -218,6 +218,7 @@ export default class AddClientScreen extends Component {
         client.address2 = this.state.address2;
         client.city = this.state.city;
         client.state_province = this.state.state_province;
+        client.postal_code = this.state.postal_code;
         client.cell_phone = this.state.cell_phone;
         client.home_phone = this.state.home_phone;
         client.email = this.state.email;
