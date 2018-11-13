@@ -1,5 +1,3 @@
-import Environment from '../constants/Environment';
-import Auth from '../constants/Auth';
 import APIRequest from '../helpers/APIRequest';
 
 export default class ClientList {
