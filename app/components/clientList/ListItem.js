@@ -4,6 +4,36 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import Environment from '../../constants/Environment';
 
+const styles = new StyleSheet.create({
+    row: {
+        flexDirection: 'row',
+        height: '100%',
+    },
+    column: {
+        flexDirection: 'column',
+        height: '100%',
+        paddingRight: 5,
+        paddingLeft: 5,
+    },
+    justifyCenter: {
+        justifyContent: 'center',
+    },
+    item: {
+        height: 100,
+        borderBottomColor: Colors.lightGrey,
+        borderBottomWidth: 1,
+    },
+    flex: {
+        flex: 1,
+    },
+    name: {
+        fontSize: 17,
+    },
+    date: {
+        fontWeight: '100',
+    }
+});
+
 export default class ListItem extends Component {
     constructor(props) {
         super(props);
@@ -11,24 +41,28 @@ export default class ListItem extends Component {
 
     render() {
         return (
-            <View style={styles.item}>
-                <View style={styles.imageSection}>
-                    <Image
-                        style={{ width: 65, height: 65, borderRadius: 32.5 }}
-                        source={{
-                            uri: Environment.API_HOST + this.props.client.image_path
-                        }}
-                    />
+            <View style={[styles.row, styles.item]}>
+                <View style={[styles.column, styles.flex]}>
+                    <View style={[styles.row]}>
+                        <View style={[styles.column, styles.justifyCenter]}>
+                            <Image
+                                style={{ width: 60, height: 60, borderRadius: (60 / 2) }}
+                                source={{
+                                    uri: Environment.API_HOST + this.props.client.image_path
+                                }}
+                            />
+                        </View>
+                        <View style={[styles.column, styles.justifyCenter]}>
+                            <Text style={[styles.name]}>{this.props.client.fname} {this.props.client.lname}</Text>
+                            <Text style={[styles.date]}>Updated {this._parseTimestamp(this.props.client.updated_at)}</Text>
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.clientInfo}>
-                    <Text style={styles.name}>{this.props.client.fname} {this.props.client.lname}</Text>
-                    <Text style={styles.lastInteraction}>Updated {this._parseTimestamp(this.props.client.updated_at)}</Text>
+
+
+                <View style={[styles.column, styles.justifyCenter]}>
+                    <Ionicons name="ios-arrow-forward" size={20} style={{ alignSelf: 'center', }} />
                 </View>
-                {/* <View style={styles.more}>
-                    <TouchableOpacity onPress={this._showMoreOptions}>
-                        <Ionicons name="ios-more" size={32} style={{ alignSelf: 'center', flex: 1 }} />
-                    </TouchableOpacity>
-                </View> */}
             </View>
         );
     }
@@ -58,15 +92,15 @@ export default class ListItem extends Component {
         if (minutes <= 1) {
             result = "less than a minute ago";
         } else if (minutes < 60) {
-            result = minutes + " minutes ago";
+            result = minutes + ((minutes > 1) ? " minutes ago" : " minute ago");
         } else if (hours < 24) {
-            result = hours + " hours ago";
+            result = hours + ((hours > 1) ? " hours ago" : " hour ago");
         } else if (days < 31) {
-            result = days + " days ago";
+            result = days + ((days > 1) ? " days ago" : " day ago");
         } else if (months < 12) {
-            result = months + " months ago";
+            result = months + ((months > 1) ? " months ago" : " month ago");
         } else {
-            result = years + " years ago";
+            result = years + ((years > 1) ? " years ago" : " year ago");
         }
 
         return result;
@@ -92,40 +126,3 @@ export default class ListItem extends Component {
             });
     }
 }
-
-const styles = new StyleSheet.create({
-    item: {
-        flex: 1,
-        flexDirection: 'row',
-        borderBottomWidth: 0.5,
-        borderBottomColor: Colors.lightGrey,
-        paddingTop: 20,
-        paddingBottom: 20,
-        paddingRight: 10,
-        paddingLeft: 10,
-        backgroundColor: Colors.white,
-    },
-    name: {
-        fontSize: 17,
-    },
-    lastInteraction: {
-        fontWeight: '100',
-    },
-    clientInfo: {
-        paddingLeft: 20,
-        justifyContent: 'center',
-        //alignItems: 'center'
-    },
-    more: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        right: 20,
-        paddingTop: 35
-    },
-    imageSection: {
-        paddingLeft: 10
-    }
-});
-
-
