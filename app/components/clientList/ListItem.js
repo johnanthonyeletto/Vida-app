@@ -22,6 +22,7 @@ const styles = new StyleSheet.create({
         height: 100,
         borderBottomColor: Colors.lightGrey,
         borderBottomWidth: 1,
+        padding: 5,
     },
     flex: {
         flex: 1,
