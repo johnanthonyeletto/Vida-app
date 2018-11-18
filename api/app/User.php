@@ -40,6 +40,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->belongsToMany('App\Models\Person', 'coach_clients', 'coach_id', 'client_id');
     }
 
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company', 'company_id', 'company_id');
+    }
+
     public function ActiveClients()
     {
         return DB::select('SELECT people.* FROM people join coach_clients on people.pid = coach_clients.client_id where people."isActive" = true AND coach_clients.coach_id = :coach_id', ["coach_id" => $this->pid]);
@@ -61,12 +66,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function Relationships()
     {
-      $relationships = DB::select("SELECT person1.pid, person1.fname, person1.lname , person2.pid,
+        $relationships = DB::select("SELECT person1.pid, person1.fname, person1.lname , person2.pid,
       person2.fname,person2.lname,relationships.relationshiptoclient
       from relationships join people person1 on relationships.pid1 = person1.pid
       join people person2 on relationships.pid2 = person2.pid
       WHERE relationships.client_id = 11");
-      return $relationships;
+        return $relationships;
     }
 
 }

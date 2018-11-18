@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../constants/Colors';
-import FormGroup from '../../components/forms/FormGroup';
 import ScrollContainer from '../../components/ScrollContainer';
 import ListSeparator from '../../components/ListSeparator';
 
-export default class ManageCompanyScreen extends Component {
+export default class ManageEmployeesScreen extends Component {
     static navigationOptions = {
-        title: 'Manage Company',
+        title: 'Manage Employees',
         headerTintColor: Colors.white,
         headerTitleStyle: {
             color: Colors.white
@@ -25,18 +24,6 @@ export default class ManageCompanyScreen extends Component {
     render() {
         return (
             <ScrollContainer>
-                <ListSeparator>
-                    <Text>Company Info</Text>
-                </ListSeparator>
-                <FormGroup
-                    onChangeText={(name) => this.setState({ name })}
-                    value={this.state.fname}
-                    placeholder={"Company Name"}
-                    keyboardType={"default"}
-                    autoCapitalize={"words"}
-                    autoCorrect={true}
-                    maxLength={100}
-                />
                 <ListSeparator>
                     <Text>Employees</Text>
                 </ListSeparator>
