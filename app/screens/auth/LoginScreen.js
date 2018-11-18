@@ -17,6 +17,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import Environment from '../../constants/Environment';
+import LoadingOverlay from '../../components/loadingOverlay';
+
 
 const win = Dimensions.get('window');
 
@@ -35,26 +37,15 @@ export default class LoginScreen extends React.Component {
 
     render() {
         return (
-            <SafeAreaView style={{
-                flex: 1,
-                backgroundColor: Colors.lightBlue,
-                height: '90%',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
 
-                <KeyboardAvoidingView behavior="padding">
+            <SafeAreaView style={styles.container}>
+
+                <KeyboardAvoidingView behavior="position" enabled>
                     <Image
                         source={require('../../assets/images/logo_1280x800.png')}
                         resizeMode={'contain'}
-                        style={{
-                            width: (win.width * 0.5), // This makes the image take up 50% of the window's width
-                            //height: win.height,
-                            flex: 1,
-                            alignSelf: 'center'
-                        }}
+                        style={styles.logo}
                     />
-
                     {
                         this.state.errorMessage &&
                         <View style={styles.errorMessage}>
@@ -62,44 +53,43 @@ export default class LoginScreen extends React.Component {
                             <Text style={styles.errorMessageText}>{this.state.errorMessage}</Text>
                         </View>
                     }
-                    <View>
-                        <TextInput
-                            style={styles.loginInput}
-                            onChangeText={(email) => this.setState({ email })}
-                            placeholder={"Email"}
-                            returnKeyType={"next"}
-                            keyboardType={"email-address"}
-                            textContentType={"emailAddress"}
-                            onSubmitEditing={() => { this.passwordInput.focus(); }}
-                            blurOnSubmit={false}
-                            autoCapitalize={"none"}
-                        />
-                        <TextInput
-                            style={styles.loginInput}
-                            onChangeText={(password) => this.setState({ password })}
-                            placeholder={"Password"}
-                            secureTextEntry={true}
-                            returnKeyType={"go"}
-                            textContentType={"password"}
-                            ref={(input) => { this.passwordInput = input; }}
-                            onSubmitEditing={() => { this._loginAsync() }}
-                            autoCapitalize={"none"}
-                        />
-                        <TouchableOpacity style={styles.loginButton} onPress={this._loginAsync}>
-                            {
-                                !this.state.loading &&
-                                <Text style={styles.loginButtonText}>
-                                    Login
-                        </Text>
-                            }
-                            {
-                                this.state.loading &&
-                                <ActivityIndicator color={Colors.white} size={"large"} />
-                            }
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAvoidingView>
+                    <TextInput
+                        style={styles.loginInput}
+                        onChangeText={(email) => this.setState({ email })}
+                        placeholder={"Email"}
+                        returnKeyType={"next"}
+                        keyboardType={"email-address"}
+                        textContentType={"emailAddress"}
+                        onSubmitEditing={() => { this.passwordInput.focus(); }}
+                        blurOnSubmit={false}
+                        autoCapitalize={"none"}
+                        placeholderTextColor={Colors.grey}
+                        clearButtonMode={'while-editing'}
+                    />
+                    <TextInput
+                        style={styles.loginInput}
+                        onChangeText={(password) => this.setState({ password })}
+                        placeholder={"Password"}
+                        secureTextEntry={true}
+                        returnKeyType={"go"}
+                        textContentType={"password"}
+                        ref={(input) => { this.passwordInput = input; }}
+                        onSubmitEditing={() => { this._loginAsync() }}
+                        autoCapitalize={"none"}
+                        placeholderTextColor={Colors.grey}
+                        clearButtonMode={'while-editing'}
+                    />
+                    <TouchableOpacity style={styles.loginButton} onPress={this._loginAsync}>
+                        <Text style={styles.loginButtonText}>Login</Text>
+                    </TouchableOpacity>
 
+                    <TouchableOpacity style={{ padding: 20, alignItems: 'center', }}>
+                        <Text style={{ color: Colors.blue }}>Have a signup code? Make an account.</Text>
+                    </TouchableOpacity>
+                </KeyboardAvoidingView>
+                {this.state.loading &&
+                    <LoadingOverlay />
+                }
             </SafeAreaView>
 
 
@@ -157,13 +147,28 @@ export default class LoginScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    loginInput: {
-        width: win.width * 0.85,
-        height: 50,
-        margin: 10,
-        padding: 5,
+    container: {
+        height: '100%',
+        width: '100%',
         backgroundColor: Colors.white,
-        fontSize: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    logo: {
+        width: (win.width * 0.5),
+        height: ((win.width * 0.5) * 0.625),
+        alignSelf: 'center',
+        marginBottom: (win.height * 0.05),
+    },
+    loginInput: {
+        width: win.width * 0.75,
+        height: 50,
+        borderBottomColor: Colors.grey,
+        borderBottomWidth: 1,
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 10,
+        marginRight: 10,
     },
     loginButton: {
         backgroundColor: Colors.blue,
