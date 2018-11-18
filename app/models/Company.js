@@ -46,4 +46,19 @@ export default class Company {
         return response;
     }
 
+    async addEmployee(email) {
+        var request = new APIRequest();
+        request.method = "POST";
+        request.route = "/1.0/company/employees/add";
+        request.body = { email };
+
+        let response = request.go().then(response => {
+            return response;
+        }).catch(error => {
+            throw new Error(error);
+        });
+
+        return response;
+    }
+
 }

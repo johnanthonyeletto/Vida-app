@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, SectionList } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, SectionList, Keyboard } from 'react-native';
 import Colors from '../../constants/Colors';
 import ScrollContainer from '../../components/ScrollContainer';
 import ListSeparator from '../../components/ListSeparator';
 import Company from '../../models/Company';
 import ListItem from '../../components/clientList/ListItem';
-
+import LoadingOverlay from '../../components/loadingOverlay';
 
 export default class ManageEmployeesScreen extends Component {
     static navigationOptions = {
@@ -23,6 +23,7 @@ export default class ManageEmployeesScreen extends Component {
         this.state = {
             inactiveEmployees: [],
             activeEmployees: [],
+            loading: false,
         };
     }
 
@@ -56,7 +57,7 @@ export default class ManageEmployeesScreen extends Component {
                         textContentType={"emailAddress"}
                         maxLength={100}
                     />
-                    <TouchableOpacity onPress={() => { alert("Add Client") }} style={styles.addEmployeeButton}>
+                    <TouchableOpacity onPress={() => { this._add() }} style={styles.addEmployeeButton}>
                         <Text style={styles.addEmployeeButtonText}>Add</Text>
                     </TouchableOpacity>
                 </View>
@@ -77,9 +78,24 @@ export default class ManageEmployeesScreen extends Component {
                     ]}
                     keyExtractor={(item, index) => item + index}
                 />
-
+                {this.state.loading &&
+                    <LoadingOverlay />
+                }
             </ScrollContainer>
         );
+    }
+
+    _add() {
+        this.setState({ loading: true });
+
+        var comp = new Company();
+        comp.addEmployee(this.state.email).then(response => {
+            this.componentDidMount();
+            this.setState({ email: null, loading: false });
+            Keyboard.dismiss();
+        }).catch(error => {
+            alert(error);
+        });
     }
 
     renderNoContent = (section) => {

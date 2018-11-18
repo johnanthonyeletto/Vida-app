@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SignupCode;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -57,5 +58,28 @@ class CompanyController extends Controller
         ];
 
         return response()->json($employees);
+    }
+
+    public function addEmployee()
+    {
+        $validatedData = $this->validate($this->request, [
+            'email' => 'required|max:255|email',
+        ]);
+
+        $code = strtoupper(str_random(6));
+
+        while (SignupCode::where('code', $code)->exists()) {
+            $code = strtoupper(str_random(6));
+        }
+
+        $signupCode = new SignupCode();
+
+        $signupCode->email = $this->request->input('email');
+        $signupCode->code = $code;
+        $signupCode->company_id = $this->request->auth->company_id;
+
+        $signupCode->save();
+
+        return response()->json();
     }
 }

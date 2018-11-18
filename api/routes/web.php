@@ -73,6 +73,9 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->get('company/employees', 'CompanyController@getEmployees');
 
+        $router->post('company/employees/add', 'CompanyController@addEmployee');
+
+
 
     });
 
