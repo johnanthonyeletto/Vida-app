@@ -56,7 +56,7 @@ export default class LoginScreen extends React.Component {
                     <TextInput
                         style={styles.loginInput}
                         onChangeText={(email) => this.setState({ email })}
-                        placeholder={"Email"}
+                        placeholder={"Enter your email"}
                         returnKeyType={"next"}
                         keyboardType={"email-address"}
                         textContentType={"emailAddress"}
@@ -69,7 +69,7 @@ export default class LoginScreen extends React.Component {
                     <TextInput
                         style={styles.loginInput}
                         onChangeText={(password) => this.setState({ password })}
-                        placeholder={"Password"}
+                        placeholder={"Enter your password"}
                         secureTextEntry={true}
                         returnKeyType={"go"}
                         textContentType={"password"}
@@ -84,7 +84,9 @@ export default class LoginScreen extends React.Component {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{ padding: 20, alignItems: 'center', }}>
-                        <Text style={{ color: Colors.blue }}>Have a signup code? Make an account.</Text>
+                        <Text style={{ color: Colors.blue }}>
+                            Have a signup code? <Text style={{ fontWeight: '600' }}>Make an account.</Text>
+                        </Text>
                     </TouchableOpacity>
                 </KeyboardAvoidingView>
                 {this.state.loading &&
@@ -152,23 +154,24 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: Colors.white,
         alignItems: 'center',
-        justifyContent: 'center',
+        //justifyContent: 'center',
     },
     logo: {
         width: (win.width * 0.5),
         height: ((win.width * 0.5) * 0.625),
         alignSelf: 'center',
         marginBottom: (win.height * 0.05),
+        marginTop: (win.height * 0.1),
     },
     loginInput: {
-        width: win.width * 0.75,
-        height: 50,
+        width: win.width * 0.8,
+        height: 60,
         borderBottomColor: Colors.grey,
         borderBottomWidth: 1,
-        marginTop: 5,
-        marginBottom: 5,
-        marginLeft: 10,
-        marginRight: 10,
+        marginTop: 10,
+        marginBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     loginButton: {
         backgroundColor: Colors.blue,
@@ -176,7 +179,8 @@ const styles = StyleSheet.create({
         padding: 5,
         alignItems: 'center',
         justifyContent: 'center',
-        height: 50,
+        height: 60,
+        borderRadius: 5,
     },
     loginButtonText: {
         color: Colors.white,
