@@ -69,6 +69,9 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->get('company', 'CompanyController@getCompany');
 
+        $router->post('company', 'CompanyController@saveCompany');
+
+
     });
 
     // Future event routes.

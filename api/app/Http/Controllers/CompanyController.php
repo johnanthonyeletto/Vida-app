@@ -30,4 +30,19 @@ class CompanyController extends Controller
 
         return response()->json($company);
     }
+
+    public function saveCompany()
+    {
+        $validatedData = $this->validate($this->request, [
+            'name' => 'required|max:100',
+        ]);
+
+        $company = $this->request->auth->company()->first();
+
+        $company->name = $this->request->input('name');
+
+        $company->save();
+
+        return response()->json($company);
+    }
 }

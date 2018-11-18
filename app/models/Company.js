@@ -18,4 +18,18 @@ export default class Company {
         return response;
     }
 
+    async saveCompanyInfo(info) {
+        var request = new APIRequest();
+        request.method = "POST";
+        request.route = "/1.0/company";
+        request.body = info;
+        let response = request.go().then(response => {
+            return response;
+        }).catch(error => {
+            throw new Error(error);
+        });
+
+        return response;
+    }
+
 }
