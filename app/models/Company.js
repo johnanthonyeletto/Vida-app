@@ -32,4 +32,18 @@ export default class Company {
         return response;
     }
 
+    async getEmployees() {
+        var request = new APIRequest();
+        request.method = "GET";
+        request.route = "/1.0/company/employees";
+
+        let response = request.go().then(response => {
+            return response;
+        }).catch(error => {
+            throw new Error(error);
+        });
+
+        return response;
+    }
+
 }

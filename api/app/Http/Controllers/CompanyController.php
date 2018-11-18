@@ -45,4 +45,17 @@ class CompanyController extends Controller
 
         return response()->json($company);
     }
+
+    public function getEmployees()
+    {
+        $activeEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', true);
+        $inactiveEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', false);
+
+        $employees = [
+            'active' => $activeEmployees,
+            'inactive' => $inactiveEmployees,
+        ];
+
+        return response()->json($employees);
+    }
 }

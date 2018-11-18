@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, SectionList } from 'react-native';
 import Colors from '../../constants/Colors';
 import ScrollContainer from '../../components/ScrollContainer';
 import ListSeparator from '../../components/ListSeparator';
+import Company from '../../models/Company';
+import ListItem from '../../components/clientList/ListItem';
+
 
 export default class ManageEmployeesScreen extends Component {
     static navigationOptions = {
@@ -18,7 +21,21 @@ export default class ManageEmployeesScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            inactiveEmployees: [],
+            activeEmployees: [],
         };
+    }
+
+    componentDidMount() {
+        var comp = new Company();
+
+        comp.getEmployees().then(foundEmployees => {
+            var employees = foundEmployees;
+            this.setState({ activeEmployees: foundEmployees.active });
+            this.setState({ inactiveEmployees: foundEmployees.inactive });
+        }).catch(error => {
+            alert(error);
+        });
     }
 
     render() {
@@ -43,8 +60,33 @@ export default class ManageEmployeesScreen extends Component {
                         <Text style={styles.addEmployeeButtonText}>Add</Text>
                     </TouchableOpacity>
                 </View>
+
+                <SectionList
+                    renderItem={({ item, index, section }) =>
+                        <TouchableOpacity onPress={() => { alert("Click!") }}>
+                            <ListItem client={item.person} />
+                        </TouchableOpacity>
+                    }
+                    renderSectionHeader={({ section: { title } }) => (
+                        <ListSeparator>{title}</ListSeparator>
+                    )}
+                    renderSectionFooter={({ section }) => this.renderNoContent(section)}
+                    sections={[
+                        { title: 'Active', data: this.state.activeEmployees },
+                        { title: 'Inactive', data: this.state.inactiveEmployees },
+                    ]}
+                    keyExtractor={(item, index) => item + index}
+                />
+
             </ScrollContainer>
         );
+    }
+
+    renderNoContent = (section) => {
+        if (section.data.length == 0) {
+            return <Text style={{ alignSelf: 'center', opacity: 0.6, fontSize: 15 }}>You Have No {section.title} Employees</Text>
+        }
+        return null
     }
 }
 
