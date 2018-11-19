@@ -4,7 +4,7 @@ import Colors from '../../constants/Colors';
 import ScrollContainer from '../../components/ScrollContainer';
 import ListSeparator from '../../components/ListSeparator';
 import Company from '../../models/Company';
-import ListItem from '../../components/clientList/ListItem';
+import EmployeeListItem from '../../components/ManageEmployees/EmployeeListItem';
 import LoadingOverlay from '../../components/loadingOverlay';
 
 export default class ManageEmployeesScreen extends Component {
@@ -23,6 +23,7 @@ export default class ManageEmployeesScreen extends Component {
         this.state = {
             inactiveEmployees: [],
             activeEmployees: [],
+            pendingEmployees: [],
             loading: false,
         };
     }
@@ -34,6 +35,7 @@ export default class ManageEmployeesScreen extends Component {
             var employees = foundEmployees;
             this.setState({ activeEmployees: foundEmployees.active });
             this.setState({ inactiveEmployees: foundEmployees.inactive });
+            this.setState({ pendingEmployees: foundEmployees.pending });
         }).catch(error => {
             alert(error);
         });
@@ -65,7 +67,7 @@ export default class ManageEmployeesScreen extends Component {
                 <SectionList
                     renderItem={({ item, index, section }) =>
                         <TouchableOpacity onPress={() => { alert("Click!") }}>
-                            <ListItem client={item.person} />
+                            <EmployeeListItem employee={item} status={section.title}/>
                         </TouchableOpacity>
                     }
                     renderSectionHeader={({ section: { title } }) => (
@@ -73,6 +75,7 @@ export default class ManageEmployeesScreen extends Component {
                     )}
                     renderSectionFooter={({ section }) => this.renderNoContent(section)}
                     sections={[
+                        { title: 'Pending', data: this.state.pendingEmployees },
                         { title: 'Active', data: this.state.activeEmployees },
                         { title: 'Inactive', data: this.state.inactiveEmployees },
                     ]}

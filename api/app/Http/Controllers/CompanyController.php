@@ -53,10 +53,12 @@ class CompanyController extends Controller
     {
         $activeEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', true);
         $inactiveEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', false);
+        $pendingEmployees = SignupCode::where('company_id', $this->request->auth->company_id)->get();
 
         $employees = [
             'active' => $activeEmployees,
             'inactive' => $inactiveEmployees,
+            'pending' => $pendingEmployees,
         ];
 
         return response()->json($employees);
