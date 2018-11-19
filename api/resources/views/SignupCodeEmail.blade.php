@@ -1,6 +1,6 @@
 @component('mail::message')
 
-# You have been invited by {company_name} to create a Vida account.
+# You have been invited by {{ $company->name }} to create a Vida account.
 
 Here's how to get started:
 
@@ -9,7 +9,7 @@ Here's how to get started:
 3. Enter the email address where you received this message and the following code:
 <br/>
 <br/>
-# 000000
+# {{$code}}
 4. Click continue and complete the account signup process.
 
 ### Welcome to Vida.

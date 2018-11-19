@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SignupCodeEmail;
 use App\Models\SignupCode;
 use Illuminate\Http\Request;
-use App\Mail\SignupCodeEmail;
 use Illuminate\Support\Facades\Mail;
-
 
 class CompanyController extends Controller
 {
@@ -69,21 +68,30 @@ class CompanyController extends Controller
             'email' => 'required|max:255|email',
         ]);
 
-        $code = strtoupper(str_random(6));
+        $pendingCheck = SignupCode::where('email', $this->request->input('email'))->first();
 
-        while (SignupCode::where('code', $code)->exists()) {
+        $code;
+        if ($pendingCheck != null) {
+            $code = $pendingCheck->code;
+        } else {
+
             $code = strtoupper(str_random(6));
+
+            while (SignupCode::where('code', $code)->exists()) {
+                $code = strtoupper(str_random(6));
+            }
+
+            $signupCode = new SignupCode();
+
+            $signupCode->email = $this->request->input('email');
+            $signupCode->code = $code;
+            $signupCode->company_id = $this->request->auth->company_id;
+
+            $signupCode->save();
+
         }
 
-        $signupCode = new SignupCode();
-
-        $signupCode->email = $this->request->input('email');
-        $signupCode->code = $code;
-        $signupCode->company_id = $this->request->auth->company_id;
-
-        $signupCode->save();
-
-        Mail::to($signupCode->email)->send(new SignupCodeEmail());
+        Mail::to($this->request->input('email'))->send(new SignupCodeEmail($code, $this->request->auth->company()->first()));
 
         return response()->json();
     }

@@ -8,6 +8,4 @@ use Carbon\Carbon;
 class SignupCode extends Model
 {
     protected $table = 'signup_codes';
-    protected $primaryKey = 'code';
-
 }
