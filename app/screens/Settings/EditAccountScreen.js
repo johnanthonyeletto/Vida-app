@@ -127,6 +127,12 @@ export default class EditAccountScreen extends Component {
       alert("First name and last name are both required.");
       return;
     }
+
+    if(this.state.newPassword != this.state.confirmNewPassword){
+      alert("Passwords do not match.");
+      return;
+    }
+
     _this.setState({ loading: true });
 
     var user = new User();

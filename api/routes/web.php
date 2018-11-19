@@ -39,6 +39,10 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
     $router->post('auth/login', 'AuthController@authenticate');
 
+    $router->post('auth/check-code', 'AuthController@checkCode');
+
+    $router->post('auth/signup', 'AuthController@signup');
+
     /*
     All routes within this group will require authentication.
     Most routes should be in here. With the exception of

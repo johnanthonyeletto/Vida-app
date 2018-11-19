@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\SignupCode;
 use App\User;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
@@ -133,6 +134,49 @@ class AuthController extends BaseController
         $person->save();
 
         return response()->json($person->pid);
+
+    }
+
+    public function checkCode()
+    {
+        $validatedData = $this->validate($this->request, [
+            'code' => 'required|max:6',
+            'email' => 'max:255|email|required',
+        ]);
+
+        $check = SignupCode::where([
+            ['email', trim($this->request->input('email'))],
+            ['code', trim($this->request->input('code'))],
+        ])->exists();
+
+        return response()->json($check);
+    }
+
+    public function signup()
+    {
+        $validatedData = $this->validate($this->request, [
+            'code' => 'required|max:6',
+            'email' => 'max:255|email|required',
+            'fname' => 'required|max:100',
+            'lname' => 'required|max:100',
+            'newPassword' => 'required',
+            'confirmNewPassword' => 'required',
+        ]);
+
+        $check = SignupCode::where([
+            ['email', trim($this->request->input('email'))],
+            ['code', trim($this->request->input('code'))],
+        ])->exists();
+
+        if (!check) {
+            abort();
+        }
+
+        // if we get to here, we're good to make an account.
+
+        $person = new Person();
+
+
 
     }
 }

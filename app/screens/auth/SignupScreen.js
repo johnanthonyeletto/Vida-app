@@ -5,6 +5,7 @@ import Colors from '../../constants/Colors';
 import FormGroup from '../../components/forms/FormGroup';
 import User from '../../models/User';
 import LoadingOverlay from '../../components/loadingOverlay';
+import APIRequest from '../../helpers/APIRequest';
 
 export default class componentName extends Component {
     static navigationOptions = {
@@ -49,7 +50,7 @@ export default class componentName extends Component {
                             placeholder={"Signup Code"}
                             keyboardType={"default"}
                             autoCapitalize={"characters"}
-                            autoCorrect={true}
+                            autoCorrect={false}
                             maxLength={6}
                         />
 
@@ -106,7 +107,7 @@ export default class componentName extends Component {
                             maxLength={100}
                         />
 
-                        <TouchableOpacity style={styles.loginButton} onPress={() => { alert("Signup!") }}>
+                        <TouchableOpacity style={styles.loginButton} onPress={() => { this._signup() }}>
                             <Text style={styles.loginButtonText}>Signup</Text>
                         </TouchableOpacity>
                     </View>
@@ -119,7 +120,43 @@ export default class componentName extends Component {
     }
 
     _continue() {
-        this.setState({ validCode: true });
+        if (this.state.email == null || this.state.code == null) {
+            alert("Email and code are both required.");
+            return;
+        }
+        this.setState({ loading: true });
+        var request = new APIRequest();
+        request.route = '/1.0/auth/check-code';
+        request.method = "POST";
+        request.body = { code: this.state.code, email: this.state.email };
+        request.auth = false;
+
+        request.go().then(result => {
+            this.setState({ loading: false });
+            if (result == true) {
+                this.setState({ validCode: true });
+            } else {
+                alert("This email and code do not match.");
+            }
+        }).catch(error => {
+            alert(error);
+        });
+
+
+    }
+
+    _signup() {
+        if (this.state.fname == null || this.state.lname == null || this.state.newPassword == null || this.state.confirmNewPassword == null) {
+            alert("All fields are required.");
+            return;
+        }
+
+        if (this.state.newPassword != this.state.confirmNewPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
+
+        
     }
 }
 
