@@ -12,9 +12,9 @@ import { Ionicons } from '@expo/vector-icons';
 import ClientList from '../../models/ClientList';
 import Event from '../../models/Event';
 
-export default class EventEntry extends React.Component {
+export default class EventUpdate extends React.Component {
   static navigationOptions = {
-    title: 'Add Event',
+    title: 'Update Event',
     headerTitleStyle:{
       color: Colors.white
     },
@@ -24,15 +24,19 @@ export default class EventEntry extends React.Component {
     },
   };
 
+  // Start cancelling all subscriptions and asyncs when component unmounts
+
   constructor(props) {
     super(props);
     this.state = {
+      event :[],
       inactiveClients: [],
       activeClients: [],
       chosenDate: new Date(),
       showDatePicker: false,
-      showClientPicker: false,
       chosenClient: null,
+      location:"",
+      notes:"",
     };
 
     this.setDate = this.setDate.bind(this);
@@ -40,36 +44,31 @@ export default class EventEntry extends React.Component {
 
 
   async componentDidMount() {
+    const { navigation } = this.props;
+    this.setState({ event: navigation.getParam('eventPKG', 'NONE') });
+
     var clientList = new ClientList();
     clientList.getClients().then(foundClients => {
       var clients = foundClients;
       this.setState({ activeClients: clients.active })
       this.setState({ inactiveClients: clients.inactive })
+      // console.log(this.state.event.event_datetime);
+      var match = this.state.event.event_datetime.match(/^(\d+)-(\d+)-(\d+) (\d+)\:(\d+)\:(\d+)$/)
+
+      this.setState({ chosenDate: new Date(match[1], match[2] - 1, match[3], match[4], match[5], match[6]) })
+      this.event = new Event();
     });
   }
 
+
   setDate(newDate) {
     this.setState({chosenDate: newDate})
-    console.log(this.state.chosenDate);
+    // console.log(this.state.chosenDate);
+    // console.log(this.state.event);
   }
 
-  // mAKE SURE YOU PASS THE CLIENT PID SO YOU CAN ADD VIA THE API
+
   render() {
-        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-        var showClientPicker = this.state.showClientPicker ?
-
-        <Picker
-          selectedValue={this.state.chosenClient}
-
-          onValueChange={(itemValue, itemIndex) => this.setState({chosenClient: itemValue})}>
-          {this.state.activeClients.map((connection, i) => {
-            return (
-              <Picker.Item key={i}
-              label={connection.fname} value={connection.pid}
-              />
-            );
-          })}
-        </Picker> : <View />
         var showDatePicker = this.state.showDatePicker ?
             <DatePickerIOS
                   minimumDate={new Date()}
@@ -80,19 +79,10 @@ export default class EventEntry extends React.Component {
     return (
       <DismissKeyboard>
         <View style={styles.eventAddContainer}>
-          // Need to deal with the datePicker not pushing everything down far enough
-          // Also need to represent the time instead of just the date
-
-
-          <TouchableOpacity onPress={() => this.setState({showClientPicker: !this.state.showClientPicker,showDatePicker: false})} >
-            <Text>Client: </Text>
-            <Text> {(this.state.chosenClient)} </Text>
-          </TouchableOpacity>
-          {showClientPicker}
 
           <TouchableOpacity onPress={() => this.setState({showDatePicker: !this.state.showDatePicker,showClientPicker: false})} >
             <Text>Starts:</Text>
-            <Text> {(this.state.chosenDate.toLocaleString('en-US',options))} </Text>
+            <Text> {(this.state.chosenDate.toUTCString())} </Text>
           </TouchableOpacity>
           {showDatePicker}
 
@@ -100,56 +90,31 @@ export default class EventEntry extends React.Component {
             clearButtonMode = "while-editing"
             textContentType = "location"
             placeholder='Location...'
-            onChangeText={(location) => this.setState({ location })}
-            value={this.state.location}
-           />
+            value={this.state.event.location}
+            onChangeText={(address) => this.setState({ address })}
+          />
+
 
           <TextInput style={styles.inputNotes}
             placeholder='Notes...'
             clearButtonMode = "while-editing"
             multiline={true}
-            onChangeText={(notes) => this.setState({ notes })}
-            value={this.state.notes}
-           />
+            value={this.state.event.notes}/>
 
           <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 100}}>
-            <TouchableOpacity onPress={() => {this._save();}}>
+            <TouchableOpacity>
               <Text style={{color:Colors.blue, marginRight: 25}}>Accept</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log(this.state)}>
-              <Text style={{color:Colors.red, marginLeft: 25}}>Cancel</Text>
+            <TouchableOpacity onPress={()=>{
+                                this.event.deleteEvent(this.state.event.event_id);
+                                this.props.navigation.goBack();
+                              }} >
+              <Text style={{color:Colors.red, marginLeft: 25}}>Delete</Text>
             </TouchableOpacity>
           </View>
         </View>
       </DismissKeyboard>
     );
-  }
-
-  _save = async () => {
-
-      if (this.state.chosenClient == null || this.state.chosenDate == null) {
-          alert("A client and date is required");
-          return;
-      }
-      // if (this.state.pid == null) {
-      // this.setState({ loading: true });
-      var event = new Event();
-      event.event_id = this.state.event_id;
-      event.pid = this.state.chosenClient;
-      event.event_datetime = this.state.chosenDate;
-      event.location = this.state.location;
-      event.notes = this.state.notes;
-      // Keep going here
-      // console.log("Testing something...");
-      // console.log(event);
-      event.save().then(
-          this.props.navigation.goBack()
-          // this.setState({ loading: false });
-      ).catch((errorMessage) => {
-          alert(errorMessage);
-          // this.setState({ loading: false });
-      });
-      //}
   }
 
 }
@@ -179,19 +144,12 @@ const styles = StyleSheet.create({
   },
 });
 
-
+// There seems to be a bug with deleting an event after just deleting another.
+// It looks like if you hit the delete button before it loads properly it'll throw errors.
+// Disable the delete button until it's ready to be activated.
 
 const DismissKeyboard = ({ children }) => (
 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 {children}
 </TouchableWithoutFeedback>
 );
-
-// {this.state.showDatePicker &&
-//     <DatePickerIOS
-//         style={{ height: 150 }}
-//           minimumDate={new Date()}
-//           mode="datetime"
-//           date={this.state.chosenDate}
-//           onDateChange={this.setDate}
-//     /> }

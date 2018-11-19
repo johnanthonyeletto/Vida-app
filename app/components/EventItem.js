@@ -11,7 +11,7 @@ export default class EventItem extends Component {
           clientName: " "
         };
     }
-
+      // Look at addClientScreen to see conditional loading of a client.
       // async componentDidMount() {
       //   var client = new Client();
       //   client.getClient(this.props.sEvent.pid).then(foundClient => {
@@ -19,6 +19,7 @@ export default class EventItem extends Component {
       //   });
       // }
     render() {
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
         return (
             <View>
             <View style={styles.item}>

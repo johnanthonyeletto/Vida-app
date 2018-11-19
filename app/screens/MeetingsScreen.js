@@ -70,7 +70,7 @@ export default class MeetingsScreen extends React.Component {
           data={this.state.events}
           renderItem={({item}) =>
             <TouchableOpacity onPress={() =>
-              { this.props.navigation.navigate('EView', { 'event_id': item.event_id }); }
+              { this.props.navigation.navigate('EUpdate', { 'eventPKG': item }); }
              }>
               <EventItem sEvent={item}/>
             </TouchableOpacity>
