@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use DB;
 
 class EventController extends Controller
 {
@@ -55,8 +56,39 @@ class EventController extends Controller
 
     // We want a function to add a specific meeting
 
-    public function addEvent($payload){
-        // DB::table('event')->insert( [] );
+    public function addEvent()
+    {
+
+        $validatedData = $this->validate($this->request, [
+            'event_id' => 'numeric|nullable',
+            'pid' => 'numeric|required',
+            'event_datetime' => 'date|required',
+            'location' => 'max:255|string|nullable',
+            'notes' => 'max:255|string|nullable',
+        ]);
+
+        $event = Event::findOrNew($this->request->input('event_id'));
+
+        $event->pid = trim($this->request->input('pid'));
+        $event->event_datetime = trim($this->request->input('event_datetime'));
+        $event->location = trim($this->request->input('location'));
+        $event->notes = trim($this->request->input('notes'));
+
+        $event->save();
+
+        // if ($this->request->input('event_id') == null) {
+        //     \DB::table('coach_clients')->insert(
+        //         [
+        //             'coach_id' => $this->request->auth->pid,
+        //             'client_id' => $client->pid,
+        //             "created_at" => \Carbon\Carbon::now(), # \Datetime()
+        //             "updated_at" => \Carbon\Carbon::now(), # \Datetime()
+        //         ]
+        //     );
+        // }
+
+        return response()->json($event->event_id);
+
     }
 
     // We want a function to delete a specific meeting

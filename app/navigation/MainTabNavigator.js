@@ -10,8 +10,9 @@ import AddClientScreen from '../screens/Client/AddClientScreen';
 
 // EVENT SCREENS
 import MeetingsScreen from '../screens/MeetingsScreen';
-import eventView from '../screens/eventScreens/eventView';
-import eventEntry from '../screens/eventScreens/eventEntry';
+import EventView from '../screens/eventScreens/eventView';
+import EventEntry from '../screens/eventScreens/eventEntry';
+import EventUpdate from '../screens/eventScreens/eventUpdate';
 import NoteScreen from '../screens/ClientProfile/NoteScreen';
 
 // SETTINGS SCREENS
@@ -49,8 +50,9 @@ HomeStack.navigationOptions = {
 
 const LinksStack = createStackNavigator({
   Meetings: MeetingsScreen,
-  EView: eventView,
-  EEntry: eventEntry,
+  EView: EventView,
+  EEntry: EventEntry,
+  EUpdate: EventUpdate,
 });
 
 LinksStack.navigationOptions = {
