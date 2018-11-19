@@ -163,20 +163,42 @@ class AuthController extends BaseController
             'confirmNewPassword' => 'required',
         ]);
 
+        $existingUser = User::where('email', $this->request->input('email'))->first();
+
+        if ($existingUser != null) {
+            abort(400, "A coach already exists with that email.");
+        }
+
         $check = SignupCode::where([
             ['email', trim($this->request->input('email'))],
             ['code', trim($this->request->input('code'))],
-        ])->exists();
+        ])->first();
 
-        if (!check) {
+        if ($check == null) {
             abort();
         }
 
         // if we get to here, we're good to make an account.
 
         $person = new Person();
+        $person->fname = $this->request->input('fname');
+        $person->lname = $this->request->input('lname');
+        $person->save();
 
+        $user = new User();
+        $user->pid = $person->pid;
+        $user->email = $this->request->input('email');
+        $user->password = Hash::make($this->request->input('newPassword'));
+        $user->company_id = $check->company_id;
+        $user->super_coach = false;
 
+        $user->save();
+
+        SignupCode::where('email', $user->email)->delete();
+
+        return response()->json([
+            'token' => $this->jwt($user),
+        ], 200);
 
     }
 }

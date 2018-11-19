@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
 import ScrollContainer from '../../components/ScrollContainer';
 import Colors from '../../constants/Colors';
 import FormGroup from '../../components/forms/FormGroup';
@@ -139,6 +139,7 @@ export default class componentName extends Component {
                 alert("This email and code do not match.");
             }
         }).catch(error => {
+            this.setState({ loading: false });
             alert(error);
         });
 
@@ -156,7 +157,23 @@ export default class componentName extends Component {
             return;
         }
 
-        
+        this.setState({ loading: true });
+        var request = new APIRequest();
+        request.route = '/1.0/auth/signup';
+        request.method = "POST";
+        request.body = this.state;
+        request.auth = false;
+
+        request.go().then(result => {
+            this.setState({ loading: false });
+            AsyncStorage.setItem('token', result.token);
+            this.props.navigation.navigate('App');
+        }).catch(error => {
+            this.setState({ loading: false });
+            alert(error);
+        });
+
+
     }
 }
 
