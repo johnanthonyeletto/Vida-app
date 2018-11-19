@@ -93,6 +93,7 @@ export default class ManageEmployeesScreen extends Component {
             this.componentDidMount();
             this.setState({ email: null, loading: false });
             Keyboard.dismiss();
+            alert("We sent a message with instructions on how to signup.");
         }).catch(error => {
             alert(error);
         });
