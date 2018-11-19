@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\SignupCode;
 use Illuminate\Http\Request;
+use App\Mail\SignupCodeEmail;
+use Illuminate\Support\Facades\Mail;
+
 
 class CompanyController extends Controller
 {
@@ -79,6 +82,8 @@ class CompanyController extends Controller
         $signupCode->company_id = $this->request->auth->company_id;
 
         $signupCode->save();
+
+        Mail::to($signupCode->email)->send(new SignupCodeEmail());
 
         return response()->json();
     }

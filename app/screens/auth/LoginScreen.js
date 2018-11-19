@@ -12,7 +12,9 @@ import {
     Text,
     ActivityIndicator,
     TouchableOpacity,
-    View
+    View,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
@@ -37,63 +39,65 @@ export default class LoginScreen extends React.Component {
 
     render() {
         return (
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-            <SafeAreaView style={styles.container}>
 
-                <KeyboardAvoidingView behavior="position" enabled>
-                    <Image
-                        source={require('../../assets/images/logo_1280x800.png')}
-                        resizeMode={'contain'}
-                        style={styles.logo}
-                    />
-                    {
-                        this.state.errorMessage &&
-                        <View style={styles.errorMessage}>
-                            <Ionicons name="ios-close-circle" size={32} style={{ marginRight: 15 }} color={Colors.white} style={styles.errorMessageIcon} />
-                            <Text style={styles.errorMessageText}>{this.state.errorMessage}</Text>
-                        </View>
+                <SafeAreaView style={styles.container}>
+
+                    <KeyboardAvoidingView behavior="position" enabled keyboardShouldPersistTaps='never'>
+                        <Image
+                            source={require('../../assets/images/logo_1280x800.png')}
+                            resizeMode={'contain'}
+                            style={styles.logo}
+                        />
+                        {
+                            this.state.errorMessage &&
+                            <View style={styles.errorMessage}>
+                                <Ionicons name="ios-close-circle" size={32} style={{ marginRight: 15 }} color={Colors.white} style={styles.errorMessageIcon} />
+                                <Text style={styles.errorMessageText}>{this.state.errorMessage}</Text>
+                            </View>
+                        }
+                        <TextInput
+                            style={styles.loginInput}
+                            onChangeText={(email) => this.setState({ email })}
+                            placeholder={"Enter your email"}
+                            returnKeyType={"next"}
+                            keyboardType={"email-address"}
+                            textContentType={"emailAddress"}
+                            onSubmitEditing={() => { this.passwordInput.focus(); }}
+                            blurOnSubmit={false}
+                            autoCapitalize={"none"}
+                            placeholderTextColor={Colors.grey}
+                            clearButtonMode={'while-editing'}
+                        />
+                        <TextInput
+                            style={styles.loginInput}
+                            onChangeText={(password) => this.setState({ password })}
+                            placeholder={"Enter your password"}
+                            secureTextEntry={true}
+                            returnKeyType={"go"}
+                            textContentType={"password"}
+                            ref={(input) => { this.passwordInput = input; }}
+                            onSubmitEditing={() => { this._loginAsync() }}
+                            autoCapitalize={"none"}
+                            placeholderTextColor={Colors.grey}
+                            clearButtonMode={'while-editing'}
+                        />
+                        <TouchableOpacity style={styles.loginButton} onPress={this._loginAsync}>
+                            <Text style={styles.loginButtonText}>Login</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{ padding: 20, alignItems: 'center', }} onPress={() => { this.props.navigation.navigate("Signup") }}>
+                            <Text style={{ color: Colors.blue }}>
+                                Have a signup code? <Text style={{ fontWeight: '600' }}>Make an account.</Text>
+                            </Text>
+                        </TouchableOpacity>
+                    </KeyboardAvoidingView>
+                    {this.state.loading &&
+                        <LoadingOverlay />
                     }
-                    <TextInput
-                        style={styles.loginInput}
-                        onChangeText={(email) => this.setState({ email })}
-                        placeholder={"Enter your email"}
-                        returnKeyType={"next"}
-                        keyboardType={"email-address"}
-                        textContentType={"emailAddress"}
-                        onSubmitEditing={() => { this.passwordInput.focus(); }}
-                        blurOnSubmit={false}
-                        autoCapitalize={"none"}
-                        placeholderTextColor={Colors.grey}
-                        clearButtonMode={'while-editing'}
-                    />
-                    <TextInput
-                        style={styles.loginInput}
-                        onChangeText={(password) => this.setState({ password })}
-                        placeholder={"Enter your password"}
-                        secureTextEntry={true}
-                        returnKeyType={"go"}
-                        textContentType={"password"}
-                        ref={(input) => { this.passwordInput = input; }}
-                        onSubmitEditing={() => { this._loginAsync() }}
-                        autoCapitalize={"none"}
-                        placeholderTextColor={Colors.grey}
-                        clearButtonMode={'while-editing'}
-                    />
-                    <TouchableOpacity style={styles.loginButton} onPress={this._loginAsync}>
-                        <Text style={styles.loginButtonText}>Login</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ padding: 20, alignItems: 'center', }}>
-                        <Text style={{ color: Colors.blue }}>
-                            Have a signup code? <Text style={{ fontWeight: '600' }}>Make an account.</Text>
-                        </Text>
-                    </TouchableOpacity>
-                </KeyboardAvoidingView>
-                {this.state.loading &&
-                    <LoadingOverlay />
-                }
-            </SafeAreaView>
-
+                </SafeAreaView>
+            </TouchableWithoutFeedback>
 
         );
     }
