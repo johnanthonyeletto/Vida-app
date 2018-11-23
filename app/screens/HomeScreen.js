@@ -4,6 +4,9 @@ import {
   Text,
   TouchableOpacity,
   RefreshControl,
+  View,
+  Image,
+  Dimensions,
 } from 'react-native';
 import ClientList from '../models/ClientList';
 import ScrollContainer from '../components/ScrollContainer'
@@ -12,16 +15,11 @@ import ListItem from '../components/clientList/ListItem';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 
+const win = Dimensions.get('window');
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Clients',
-    // headerTitleStyle: {
-    //   color: Colors.white
-    // },
-    // headerStyle: {
-    //   backgroundColor: Colors.blue
-    // },
     headerRight: (
       <TouchableOpacity onPress={() => { navigation.navigate('AddClient') }}>
         <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
@@ -56,6 +54,35 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+    if (this.state.activeClients.length < 1 && this.state.inactiveClients.length < 1) {
+      return (
+        <ScrollContainer
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }>
+          <View style={{ alignItems: 'center', alignContent: 'center' }}>
+            <Ionicons name="ios-people" size={200} style={{ alignSelf: 'center' }} color={Colors.lightBlue} />
+            <Text style={{ fontWeight: '300', fontSize: 30 }}>Welcome To</Text>
+            <Image
+              source={require('../assets/images/logo_1280x800.png')}
+              resizeMode={'contain'}
+              style={{
+                width: (win.width * 0.4),
+                height: ((win.width * 0.4) * 0.625),
+                alignSelf: 'center',
+              }}
+            />
+            <Text>You have no clients yet.</Text>
+            <Text>
+              If you want to add clients, click + in the top right of the screen.
+            </Text>
+          </View>
+        </ScrollContainer>
+      )
+    }
     return (
       <ScrollContainer
         refreshControl={
