@@ -16,12 +16,12 @@ import { Ionicons } from '@expo/vector-icons';
 export default class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Clients',
-    headerTitleStyle: {
-      color: Colors.white
-    },
-    headerStyle: {
-      backgroundColor: Colors.blue
-    },
+    // headerTitleStyle: {
+    //   color: Colors.white
+    // },
+    // headerStyle: {
+    //   backgroundColor: Colors.blue
+    // },
     headerRight: (
       <TouchableOpacity onPress={() => { navigation.navigate('AddClient') }}>
         <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />

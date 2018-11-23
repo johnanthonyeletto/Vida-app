@@ -25,6 +25,19 @@ import ManageEmployeesScreen from '../screens/Settings/ManageEmployeesScreen';
 import TabBarIcon from '../components/TabBarIcon';
 
 
+import Colors from '../constants/Colors';
+
+const defaultNavigationOptions = {
+  headerTitleStyle: {
+    color: Colors.white
+  },
+  headerStyle: {
+    backgroundColor: Colors.blue
+  },
+  mode: 'modal',
+  headerMode: 'float',
+  headerTransitionPreset: 'uikit',
+};
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -33,9 +46,7 @@ const HomeStack = createStackNavigator({
   ClientGraph: ClientGraphScreen,
   Notes: NoteScreen,
 }, {
-    navigationOptions: {
-      mode: 'modal',
-    }
+    defaultNavigationOptions: defaultNavigationOptions
   });
 
 HomeStack.navigationOptions = {
@@ -57,7 +68,9 @@ const LinksStack = createStackNavigator({
   EView: EventView,
   EEntry: EventEntry,
   EUpdate: EventUpdate,
-});
+}, {
+    defaultNavigationOptions: defaultNavigationOptions
+  });
 
 LinksStack.navigationOptions = {
   tabBarLabel: 'Meetings',
@@ -74,7 +87,9 @@ const SettingsStack = createStackNavigator({
   EditAccount: EditAccountScreen,
   EditCompanyInfo: EditCompanyInfoScreen,
   ManageEmployees: ManageEmployeesScreen,
-});
+}, {
+    defaultNavigationOptions: defaultNavigationOptions
+  });
 
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
