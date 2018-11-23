@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, SectionList, Keyboard } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, SectionList, Keyboard,RefreshControl } from 'react-native';
 import Colors from '../../constants/Colors';
 import ScrollContainer from '../../components/ScrollContainer';
 import ListSeparator from '../../components/ListSeparator';
@@ -25,10 +25,17 @@ export default class ManageEmployeesScreen extends Component {
             activeEmployees: [],
             pendingEmployees: [],
             loading: false,
+            refreshing: false,
         };
     }
+    _onRefresh = () => {
+        this.setState({ refreshing: true });
+        this.componentDidMount().then(() => {
+          this.setState({ refreshing: false });
+        });
+      }
 
-    componentDidMount() {
+    async componentDidMount() {
         var comp = new Company();
 
         comp.getEmployees().then(foundEmployees => {
@@ -43,7 +50,12 @@ export default class ManageEmployeesScreen extends Component {
 
     render() {
         return (
-            <ScrollContainer>
+            <ScrollContainer refreshControl={
+                <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                />
+            }>
                 <ListSeparator>
                     <Text>Employees</Text>
                 </ListSeparator>
@@ -67,7 +79,7 @@ export default class ManageEmployeesScreen extends Component {
                 <SectionList
                     renderItem={({ item, index, section }) =>
                         <TouchableOpacity onPress={() => { alert("Click!") }}>
-                            <EmployeeListItem employee={item} status={section.title}/>
+                            <EmployeeListItem employee={item} status={section.title} />
                         </TouchableOpacity>
                     }
                     renderSectionHeader={({ section: { title } }) => (

@@ -32,7 +32,11 @@ const HomeStack = createStackNavigator({
   AddClient: AddClientScreen,
   ClientGraph: ClientGraphScreen,
   Notes: NoteScreen,
-});
+}, {
+    navigationOptions: {
+      mode: 'modal',
+    }
+  });
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Clients',
