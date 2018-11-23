@@ -14,6 +14,7 @@ import ListSeparator from '../components/ListSeparator';
 import ListItem from '../components/clientList/ListItem';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import LoadingOverlay from '../components/loadingOverlay';
 
 const win = Dimensions.get('window');
 
@@ -34,6 +35,7 @@ export default class HomeScreen extends React.Component {
       inactiveClients: [],
       activeClients: [],
       refreshing: false,
+      isLoading: true,
     }
   }
 
@@ -48,12 +50,18 @@ export default class HomeScreen extends React.Component {
     var clientList = new ClientList();
     clientList.getClients().then(foundClients => {
       var clients = foundClients;
-      this.setState({ activeClients: clients.active })
-      this.setState({ inactiveClients: clients.inactive })
+      this.setState({ activeClients: clients.active });
+      this.setState({ inactiveClients: clients.inactive });
+      this.setState({ isLoading: false });
     });
   }
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <LoadingOverlay />
+      )
+    }
     if (this.state.activeClients.length < 1 && this.state.inactiveClients.length < 1) {
       return (
         <ScrollContainer

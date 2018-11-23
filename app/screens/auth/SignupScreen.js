@@ -27,7 +27,10 @@ export default class componentName extends Component {
     render() {
         return (
             <ScrollContainer>
-                <Text style={styles.welcomeText}>Welcome.</Text>
+                <Text style={styles.welcomeText}>
+                    Welcome
+                <Text style={{ color: Colors.blue }}>.</Text>
+                </Text>
 
                 {!this.state.validCode &&
                     <View>

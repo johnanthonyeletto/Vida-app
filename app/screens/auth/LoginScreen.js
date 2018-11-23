@@ -46,10 +46,14 @@ export default class LoginScreen extends React.Component {
 
                     <KeyboardAvoidingView behavior="position" enabled keyboardShouldPersistTaps='never'>
                         <Image
-                            source={require('../../assets/images/logo_1280x800.png')}
+                            source={require('../../assets/images/logo_heart.png')}
                             resizeMode={'contain'}
                             style={styles.logo}
                         />
+                        <Text style={{ fontSize: 35 }}>
+                            Login
+                            <Text style={{ color: Colors.blue }}>.</Text>
+                        </Text>
                         {
                             this.state.errorMessage &&
                             <View style={styles.errorMessage}>
@@ -169,7 +173,7 @@ const styles = StyleSheet.create({
     },
     loginInput: {
         width: win.width * 0.8,
-        height: 60,
+        height: 50,
         borderBottomColor: Colors.grey,
         borderBottomWidth: 1,
         marginTop: 10,
@@ -183,7 +187,7 @@ const styles = StyleSheet.create({
         padding: 5,
         alignItems: 'center',
         justifyContent: 'center',
-        height: 60,
+        height: 50,
         borderRadius: 5,
     },
     loginButtonText: {
