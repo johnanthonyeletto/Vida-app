@@ -71,24 +71,35 @@ export default class HomeScreen extends React.Component {
               onRefresh={this._onRefresh}
             />
           }>
-          <View style={{ alignItems: 'center', alignContent: 'center' }}>
-            <Ionicons name="ios-people" size={200} style={{ alignSelf: 'center' }} color={Colors.lightBlue} />
-            <Text style={{ fontWeight: '300', fontSize: 30 }}>Welcome To</Text>
-            <Image
-              source={require('../assets/images/logo_1280x800.png')}
-              resizeMode={'contain'}
+          <View style={{ alignItems: 'center', alignContent: 'center', }}>
+            <Ionicons name="ios-people"
+              size={150}
               style={{
-                width: (win.width * 0.4),
-                height: ((win.width * 0.4) * 0.625),
                 alignSelf: 'center',
+                marginBottom: 0,
+                marginTop: 20,
               }}
-            />
-            <Text>You have no clients yet.</Text>
-            <Text>
-              If you want to add clients, click + in the top right of the screen.
+              color={Colors.lightGrey} />
+            <Text style={{ fontWeight: '200', fontSize: 30, marginTop: 0, textAlign: 'center', color: Colors.grey }}>
+              It seems like you don't have any clients yet.
             </Text>
+            <TouchableOpacity style={{
+              backgroundColor: Colors.blue,
+              marginTop: 20,
+              padding: 5,
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 50,
+              borderRadius: 5,
+              width: 200,
+            }} onPress={() => { this.props.navigation.navigate('AddClient') }}>
+              <Text style={{
+                color: Colors.white,
+                fontSize: 18,
+              }}>Add A Client</Text>
+            </TouchableOpacity>
           </View>
-        </ScrollContainer>
+        </ScrollContainer >
       )
     }
     return (
