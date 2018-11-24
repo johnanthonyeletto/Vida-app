@@ -184,7 +184,7 @@ export default class componentName extends Component {
 
 const styles = StyleSheet.create({
     welcomeText: {
-        fontSize: 50,
+        fontSize: 40,
         fontWeight: '600',
     },
     instructionsText: {
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
         padding: 5,
         alignItems: 'center',
         justifyContent: 'center',
-        height: 60,
+        height: 50,
         borderRadius: 5,
     },
     loginButtonText: {
