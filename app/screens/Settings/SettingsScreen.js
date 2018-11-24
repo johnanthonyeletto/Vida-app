@@ -15,12 +15,6 @@ const app = require('../../app.json');
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Settings',
-    headerTitleStyle: {
-      color: Colors.white
-    },
-    headerStyle: {
-      backgroundColor: Colors.blue
-    },
   };
 
 

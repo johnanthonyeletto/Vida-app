@@ -29,10 +29,10 @@ import Colors from '../constants/Colors';
 
 const defaultNavigationOptions = {
   headerTitleStyle: {
-    color: Colors.white
+    color: Colors.blue
   },
   headerStyle: {
-    backgroundColor: Colors.blue
+    backgroundColor: Colors.white
   },
   mode: 'modal',
   headerMode: 'float',

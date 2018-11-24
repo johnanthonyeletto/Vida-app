@@ -14,25 +14,18 @@ export default class AddClientScreen extends Component {
     static navigationOptions = ({ navigation }) => ({
         gesturesEnabled: false,
         title: null,
-        headerTintColor: Colors.white,
-        headerTitleStyle: {
-            color: Colors.white
-        },
-        headerStyle: {
-            backgroundColor: Colors.blue
-        },
         headerLeft: (
             <TouchableOpacity onPress={() => {
                 navigation.goBack(null);
             }} style={{ marginLeft: 15 }}>
-                <Text style={{ fontSize: 20, color: Colors.white }}>Cancel</Text>
+                <Text style={{ fontSize: 20, color: Colors.blue }}>Cancel</Text>
             </TouchableOpacity>
         ),
         headerRight: (
             <TouchableOpacity onPress={() => {
                 _this._save();
             }} style={{ marginRight: 15 }}>
-                <Text style={{ fontSize: 20, color: Colors.white }}>Save</Text>
+                <Text style={{ fontSize: 20, color: Colors.blue }}>Save</Text>
             </TouchableOpacity>
         ),
     });

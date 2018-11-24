@@ -23,7 +23,7 @@ export default class HomeScreen extends React.Component {
     title: 'Clients',
     headerRight: (
       <TouchableOpacity onPress={() => { navigation.navigate('AddClient') }}>
-        <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.white} />
+        <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.blue} />
       </TouchableOpacity>
     ),
   });
