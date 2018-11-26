@@ -101,6 +101,7 @@ class AuthController extends BaseController
             'fname' => $person->fname,
             'lname' => $person->lname,
             'email' => $coach->email,
+            'super_coach' => $coach->super_coach,
         ];
         return response()->json($response);
     }
