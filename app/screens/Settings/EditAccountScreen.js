@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import Colors from '../../constants/Colors';
 import ScrollContainer from '../../components/ScrollContainer';
 import FormGroup from '../../components/forms/FormGroup';

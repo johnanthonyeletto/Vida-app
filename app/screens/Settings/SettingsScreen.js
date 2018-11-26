@@ -6,7 +6,6 @@ import {
   View,
 } from 'react-native';
 import Colors from '../../constants/Colors';
-import Navigator from 'react-navigation';
 import SettingsItem from '../../components/settings/SettingsItem';
 import SettingsGroupSeparator from '../../components/settings/SettingsGroupSeparator';
 import User from '../../models/User';
