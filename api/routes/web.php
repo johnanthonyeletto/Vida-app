@@ -73,15 +73,16 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->get('relationship-list', 'GraphController@getRelationshipList');
 
-        $router->get('company', 'CompanyController@getCompany');
+        // All routes in here can only be accessed by a super coach.
+        $router->group(['middleware' => 'supercoach.auth'], function () use ($router) {
+            $router->get('company', 'CompanyController@getCompany');
 
-        $router->post('company', 'CompanyController@saveCompany');
+            $router->post('company', 'CompanyController@saveCompany');
 
-        $router->get('company/employees', 'CompanyController@getEmployees');
+            $router->get('company/employees', 'CompanyController@getEmployees');
 
-        $router->post('company/employees/add', 'CompanyController@addEmployee');
-
-
+            $router->post('company/employees/add', 'CompanyController@addEmployee');
+        });
 
     });
 

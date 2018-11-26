@@ -69,6 +69,7 @@ $app->singleton(
 
 $app->routeMiddleware([
     'jwt.auth' => App\Http\Middleware\JWTAuthMiddleware::class,
+    'supercoach.auth' => App\Http\Middleware\SuperCoachMiddleware::class,
 ]);
 
 /*
