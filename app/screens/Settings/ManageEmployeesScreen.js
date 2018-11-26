@@ -10,13 +10,6 @@ import LoadingOverlay from '../../components/loadingOverlay';
 export default class ManageEmployeesScreen extends Component {
     static navigationOptions = {
         title: 'Manage Employees',
-        headerTintColor: Colors.white,
-        headerTitleStyle: {
-            color: Colors.white
-        },
-        headerStyle: {
-            backgroundColor: Colors.blue
-        },
     };
     constructor(props) {
         super(props);

@@ -11,18 +11,11 @@ let _this = null;
 export default class EditAccountScreen extends Component {
   static navigationOptions = {
     title: 'Edit Account',
-    headerTintColor: Colors.white,
-    headerTitleStyle: {
-      color: Colors.white
-    },
-    headerStyle: {
-      backgroundColor: Colors.blue
-    },
     headerRight: (
       <TouchableOpacity onPress={() => {
         _this._save();
       }} style={{ marginRight: 15 }}>
-        <Text style={{ fontSize: 20, color: Colors.white }}>Save</Text>
+        <Text style={{ fontSize: 20, color: Colors.blue }}>Save</Text>
       </TouchableOpacity>
     ),
   };
