@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, KeyboardAvoidingView, ActionSheetIOS, Image } from 'react-native';
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, ActionSheetIOS, Image } from 'react-native';
 import ScrollContainer from '../../components/ScrollContainer';
 import Colors from '../../constants/Colors';
 import { ImagePicker } from 'expo';

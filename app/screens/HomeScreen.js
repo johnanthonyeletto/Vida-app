@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   RefreshControl,
   View,
-  Image,
   Dimensions,
 } from 'react-native';
 import ClientList from '../models/ClientList';

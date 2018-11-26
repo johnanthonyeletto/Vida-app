@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-na
 import ScrollContainer from '../../components/ScrollContainer';
 import Colors from '../../constants/Colors';
 import FormGroup from '../../components/forms/FormGroup';
-import User from '../../models/User';
 import LoadingOverlay from '../../components/loadingOverlay';
 import APIRequest from '../../helpers/APIRequest';
 
