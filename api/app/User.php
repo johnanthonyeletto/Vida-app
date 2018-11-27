@@ -64,7 +64,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         // I want to get all meetings that the coach logged in has in the system
 
-        $meetings = DB::table('events')->join('people', 'events.pid', '=', 'people.pid')->join('coach_clients', 'people.pid', '=', 'coach_clients.client_id')->where('coach_clients.coach_id', $this->pid)->select('events.*')->get();
+        $meetings = DB::table('events')->join('people', 'events.pid', '=', 'people.pid')->join('coach_clients', 'people.pid', '=', 'coach_clients.client_id')->where('coach_clients.coach_id', $this->pid)->select('events.*')->orderBy('event_datetime', 'asc')->get();
         // $meetings = app('db')->select("SELECT ev.* FROM events as ev, coach_clients as cc, people as pe where cc.client_id = pe.pid and pe.pid = ev.pid and cc.coach_id = :coach_id", ["coach_id" => $this->pid]);
         return $meetings;
     }

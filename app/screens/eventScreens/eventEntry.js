@@ -142,10 +142,12 @@ export default class EventEntry extends React.Component {
       // Keep going here
       // console.log("Testing something...");
       // console.log(event);
-      event.save().then(
-          this.props.navigation.goBack()
+      event.save().then(() =>{
+
+          this.props.navigation.state.params.onNavigateBack();
+          this.props.navigation.goBack();
           // this.setState({ loading: false });
-      ).catch((errorMessage) => {
+      }).catch((errorMessage) => {
           alert(errorMessage);
           // this.setState({ loading: false });
       });

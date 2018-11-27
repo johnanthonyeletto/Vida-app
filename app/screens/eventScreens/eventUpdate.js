@@ -107,6 +107,7 @@ export default class EventUpdate extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity onPress={()=>{
                                 this.event.deleteEvent(this.state.event.event_id);
+                                this.props.navigation.state.params.onNavigateBack();
                                 this.props.navigation.goBack();
                               }} >
               <Text style={{color:Colors.red, marginLeft: 25}}>Delete</Text>
