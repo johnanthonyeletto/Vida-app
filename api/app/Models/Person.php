@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use DB;
+
 
 class Person extends Model
 {
@@ -27,11 +29,13 @@ class Person extends Model
 
     public function Relationships()
     {
-      $relationships = DB::select("SELECT person1.pid, person1.fname, person1.lname , person2.pid,
-      person2.fname,person2.lname,relationships.relationshiptoclient
-      from relationships join people person1 on relationships.pid1 = person1.pid
+      $relationships = DB::select('SELECT person1.pid, person1.fname, person1.lname , person2.pid,
+      person2.fname,person2.lname,relationships.relationshiptoclient, relationships.client_id, client.pid as clientpid, client.fname as clientfname, client.lname as clientlname
+      from relationships
+      join people person1 on relationships.pid1 = person1.pid
       join people person2 on relationships.pid2 = person2.pid
-      WHERE relationships.client_id = 11");
+      join people client on relationships.client_id = client.pid
+      WHERE relationships.client_id = :client_id', ["client_id" => $this->pid]);
       return $relationships;
     }
 

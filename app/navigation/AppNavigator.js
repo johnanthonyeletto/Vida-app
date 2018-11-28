@@ -19,5 +19,4 @@ const AppNavigator = createSwitchNavigator({
   {
     initialRouteName: 'AuthLoading',
   });
-
 export default createAppContainer(AppNavigator);

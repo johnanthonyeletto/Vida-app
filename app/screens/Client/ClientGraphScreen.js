@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
-import { WebView, TouchableOpacity } from 'react-native';
-import Colors from '../../constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
+import {
+  Image,
+  ScrollView,
+  SectionList,
+  StyleSheet,
+  RefreshControl,
+  FlatList,
+  View, Text, WebView, TouchableOpacity } from 'react-native';
 
+import { Ionicons } from '@expo/vector-icons';
+import Colors from '../../constants/Colors';
+import GraphList from '../../models/GraphList';
 const GraphHTML = require('../../assets/html/vida_graph.html');
 
 export default class ClientGraphScreen extends Component {
@@ -24,26 +32,72 @@ export default class ClientGraphScreen extends Component {
         ),
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      relationship: [],
+      loading: true,
+    }
+
+  }
+
+  _onRefresh = () => {
+      this.setState({ refreshing: true });
+      this.componentDidMount().then(() => {
+      this.setState({ refreshing: false });
+      });
     }
 
     async componentDidMount() {
-        Auth.getToken().then(token => {
-            this.setState({ "token": token });
-        });
+      var { navigation } = this.props;
+      var pid = navigation.getParam('pid', 'NONE');
+      var relationshipList = new GraphList();
+      relationshipList.getRelationships(pid).then(foundRelation => {
+        var relationship = foundRelation;
+        this.setState({ relationship: relationship })
+        this.setState({ loading: false })
+      });
     }
 
+  /*  render() {
+
+          return (
+            <View>
+                <Text>{JSON.stringify(this.state.events)}</Text>
+            </View>
+            );
+    } */
+
+    injectjs() {
+
+        let message =  JSON.stringify(this.state.relationship) ;
+
+        let jsCode = `
+          setTimeout(() => {
+            dumb('${message}');
+          }, 1500)`;
+
+        return jsCode;
+      }
+
     render() {
-        return (
-            <WebView
-                originWhitelist={['*']}
-                source={GraphHTML}
-                style={{ backgroundColor: Colors.lightGrey }}
-                //injectedJavaScript={'(alert("Token: ' +  this.state.token  + '"))'}
-            />
-        );
-    }
-}
+      var data = JSON.stringify(this.state.relationship);
+
+           return (
+             ( !this.state.loading &&
+               <WebView
+                   originWhitelist={['*']}
+                   javaScriptEnabled={true}
+                   injectedJavaScript={this.injectjs()}
+                   source={GraphHTML}
+                   mixedContentMode={'compatibility'}
+                   style={{ backgroundColor: Colors.lightGrey }}
+                   //injectedJavaScript={'dumb("' + (this.state.events) + '")'}
+
+               />
+             )
+           );
+       }
+   }

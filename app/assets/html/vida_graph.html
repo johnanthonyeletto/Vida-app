@@ -2,6 +2,19 @@
 <html>
 
 <head>
+  <script>
+
+   //alert(name());
+
+
+  function dumb(data){
+    //alert(data);
+    x = parse(data);
+    //alert(x);
+  }
+
+  </script>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -23,25 +36,78 @@
 <body>
   <svg width="100%" height="100vh"></svg>
 
-
   <script type="text/javascript" src="d3.min.js"></script>
   <script>
-    var nodes = [
-      { id: "Client", group: 0, label: "Client", level: 1 },
-      { id: "Pablo", group: 0, label: "Pablo", level: 2 },
-      { id: "Hunter", group: 0, label: "Hunter", level: 2 },
-      { id: "Jenna", group: 0, label: "Jenna", level: 2 },
-      { id: "Andrew", group: 0, label: "Andrew", level: 2 },
-      { id: "John", group: 1, label: "John", level: 2 }
-    ]
-    var links = [
-      { target: "Client", source: "Pablo", strength: 0.7 },
-      { target: "Client", source: "Hunter", strength: 0.7 },
-      { target: "Client", source: "Jenna", strength: 0.7 },
-      { target: "Client", source: "Andrew", strength: 0.7 },
-      { target: "Hunter", source: "Andrew", strength: 0.1 },
-      { target: "Andrew", source: "John", strength: 0.1 }
-    ]
+
+
+
+
+    //d3.json(data, test);
+
+
+  function parse(data){
+    data = eval(data);
+    firstname1 = ( JSON.stringify(data[0].fname)); //prints "Able"
+    firstname2 = ( JSON.stringify(data[1].fname));
+
+    function Client(client_id, pid, fname, lname) {
+        this.client_id = client_id;
+        this.pid = pid;
+        this.fname = fname;
+        this.lname = lname;
+    }
+
+
+
+    function Node(id, group, label, relationship, level){
+        this.id = id;
+        this.group = group;
+        this.label = label;
+        this.level = level;
+        this.relationship = relationship;
+    }
+
+    clients = [];
+    clients.push(new Node(data[0].clientpid, 0, data[0].clientfname, '',  1));
+
+    for(var k=0; k<data.length; k++){
+        clients.push(new Node(data[k].pid, 0, data[k].fname, data[k].relationshiptoclient, 2));
+    }
+
+     // alert(JSON.stringify(clients[0]));
+     // alert(JSON.stringify(clients[1]));
+     // alert(JSON.stringify(clients[2]));
+
+    //level 1 = main node // level 2 = secondary node
+    //group
+
+    // var nodes = [
+    //   { id: (clients[0]).id, group: (clients[0]).group, label: (clients[0]).label, level: (clients[0]).level},
+    //   { id: (clients[1]).id, group: (clients[1]).group, label: (clients[1]).label, level: (clients[1]).level},
+    //   { id: (clients[2]).id, group: (clients[2]).group, label: (clients[2]).label, level: (clients[2]).level},
+    //
+    //   // { id: "Jenna", group: 0, label: "Jenna", level: 2 },
+    //   // { id: "Andrew", group: 0, label: "Andrew", level: 2 },
+    //   // { id: "John", group: 1, label: "John", level: 2 }
+    // ]
+    var nodes = [];
+    for(var i=0; i<clients.length; i++){
+      nodes.push({ id: (clients[i]).id, group: (clients[i]).group, label: (clients[i]).label, relation: (clients[i]).relationship, level: (clients[i]).level});
+    }
+
+    var links = [];
+    for(var i=1; i<clients.length; i++){
+      links.push({ target: (clients[0]).id, source: (clients[i]).id, strength: .7 });
+    }
+    // //strength = length of line
+    // var links = [
+    //   { target: (clients[0]).id, source: (clients[1]).id, strength: 0.7 },
+    //   { target: (clients[0]).id, source: (clients[2]).id, strength: 0.7 },
+    //   // { target: (clients[0]).id, source: "Jenna", strength: 0.7 },
+    //   // { target: (clients[0]).id, source: "Andrew", strength: 0.7 },
+    //   // { target: "Andrew", source: "John", strength: 0.7 }
+    // ]
+
     function getNeighbors(node) {
       return links.reduce(function (neighbors, link) {
         if (link.target.id === node.id) {
@@ -113,8 +179,12 @@
       // we modify the styles to highlight selected nodes
       nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
       textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
+      textElements2.attr('fill', function (node) { return getTextColor(node, neighbors) })
       linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
     }
+
+
+
 
     //links nodes together
     var linkElements = svg.append("g")
@@ -142,9 +212,34 @@
       .data(nodes)
       .enter().append("text")
       .text(function (node) { return node.label })
+    //  .text(function (node) { return node.relationship })
       .attr("font-size", 14)
       .attr("dx", 15)
       .attr("dy", 4)
+
+      var textElements2 = svg.append("g")
+        .attr("class", "texts")
+        .selectAll("text")
+        .data(nodes)
+        .enter().append("text")
+        .text(function (node) { return node.relation })
+      //  .text(function (node) { return node.relationship })
+        .attr("font-size", 14)
+        .attr("dx", 20)
+        .attr("dy", 10)
+
+      // var imgs = svg.selectAll("image").data([0]);
+      //       imgs.enter()
+      //       .append("svg:image")
+      //       .attr('x', -9)
+      //       .attr('y', -12)
+      //       .attr('width', 20)
+      //       .attr('height', 24)
+      //       .attr("xlink:href", "resources/images/check.png")
+      // source={{
+      //         uri: Environment.API_HOST + this.state.client.image_path
+      //       }}
+
     simulation.nodes(nodes).on('tick', () => {
       nodeElements
         .attr('cx', function (node) { return node.x })
@@ -152,6 +247,9 @@
       textElements
         .attr('x', function (node) { return node.x })
         .attr('y', function (node) { return node.y })
+      textElements2
+        .attr('x', function (node) { return node.x })
+        .attr('y', function (node) { return node.y+8 })
       linkElements
         .attr('x1', function (link) { return link.source.x })
         .attr('y1', function (link) { return link.source.y })
@@ -159,6 +257,7 @@
         .attr('y2', function (link) { return link.target.y })
     })
     simulation.force("link").links(links)
+  }
 
   </script>
 </body>

@@ -71,7 +71,7 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->delete('event/{event_id}', 'EventController@deleteEvent');
 
-        $router->get('relationship-list', 'GraphController@getRelationshipList');
+          $router->get('relationship-list/{client_id}', 'GraphController@getRelationshipList');
 
         // All routes in here can only be accessed by a super coach.
         $router->group(['middleware' => 'supercoach.auth'], function () use ($router) {

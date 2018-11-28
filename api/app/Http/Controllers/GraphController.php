@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Person;
 
 class GraphController extends Controller
 {
@@ -30,29 +31,20 @@ class GraphController extends Controller
      *
      * @return json
      */
-     public function getRelationshipList()
-     {
-         return response()->json($this->request->auth->Relationships());
-     }
-  /*
-  // We want a function to get pid1
-   public function getClientPid($pid1){
-     $clientPid = $this->request->auth->Relationships()->where('pid1', $pid1)->first();
-     if ($clientPid == null) {
-         abort(404, 'This client could not be found.');
-     }
-     return response()->json($clientPid);
-   }
+      // public function getRelationshipList()
+      // {
+      //     return response()->json($this->request->auth->Relationships());
+      // }
 
-    // We want a function to get a specific meeting
+      public function getRelationshipList($client_id){
 
-    public function getEvent($event_id){
-      $event = $this->request->auth->Meetings()->where('event_id', $event_id)->first();
-      if ($event == null) {
-          abort(404, 'This event could not be found.');
+
+        $client = Person::find($client_id)->Relationships();
+
+        if ($client == null) {
+            abort(404, 'This client could not be found.');
+        }
+        return response()->json($client);
       }
-      return response()->json($event);
-    }
-*/
 
 }
