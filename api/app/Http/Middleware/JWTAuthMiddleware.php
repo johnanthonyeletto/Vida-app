@@ -35,6 +35,12 @@ class JWTAuthMiddleware
 
         $user = User::find($credentials->sub);
 
+        if(!$user->Person()->first()->isActive){
+            return response()->json([
+                'error' => 'Email does not exist.',
+            ], 400);
+        }
+
         // Now let's put the user in the request class so that you can grab it from there
         $request->auth = $user;
 

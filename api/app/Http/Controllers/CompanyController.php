@@ -51,9 +51,9 @@ class CompanyController extends Controller
 
     public function getEmployees()
     {
-        $activeEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', true);
-        $inactiveEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', false);
-        $pendingEmployees = SignupCode::where('company_id', $this->request->auth->company_id)->get();
+        $activeEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', true)->sortBy('person.fname')->values()->all();
+        $inactiveEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', false)->sortBy('person.fname')->values()->all();
+        $pendingEmployees = SignupCode::where('company_id', $this->request->auth->company_id)->orderBy('created_at', 'desc')->get();
 
         $employees = [
             'active' => $activeEmployees,
@@ -72,7 +72,7 @@ class CompanyController extends Controller
 
         $employee->clients = [
             'active' => $active,
-            'inactive' => $inactive
+            'inactive' => $inactive,
         ];
 
         return response()->json($employee);
@@ -108,6 +108,19 @@ class CompanyController extends Controller
         }
 
         Mail::to($this->request->input('email'))->send(new SignupCodeEmail($code, $this->request->auth->company()->first()));
+
+        return response()->json();
+    }
+
+    public function setSuperCoach()
+    {
+        $pid = $this->request->input('pid');
+
+        $employee = $this->request->auth->company()->first()->employees()->where('pid', $pid)->first();
+
+        $employee->super_coach = $this->request->input('super_coach');
+
+        $employee->save();
 
         return response()->json();
     }

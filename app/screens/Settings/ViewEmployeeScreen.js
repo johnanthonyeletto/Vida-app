@@ -18,9 +18,9 @@ export default class ViewEmployeeScreen extends Component {
         this.state = {
             activeClients: [],
             inactiveClients: [],
+            person: [],
             loading: false,
             refreshing: false,
-            name: "John Eletto",
         };
     };
     _onRefresh = () => {
@@ -38,7 +38,7 @@ export default class ViewEmployeeScreen extends Component {
         var emp = new Employee();
 
         emp.getEmployee(pid).then(employee => {
-            this.setState({ 'super_coach': employee.super_coach, 'activeClients': employee.clients.active, 'inactiveClients': employee.clients.inactive });
+            this.setState({ 'super_coach': employee.super_coach, 'activeClients': employee.clients.active, 'inactiveClients': employee.clients.inactive, 'person': employee.person });
         }).catch(error => alert(error));
     }
 
@@ -53,13 +53,24 @@ export default class ViewEmployeeScreen extends Component {
                 <ListSeparator>
                     <Text>User Settings</Text>
                 </ListSeparator>
-                <View style={styles.addEmployeeContainer}>
-                    <View style={{ flexDirection: 'column' }}>
-                        <Text>Admin Privleges</Text>
+                <View style={styles.userSettingItem}>
+                    <View style={styles.userSettingLeft}>
+                        <Text style={styles.userSettingText}>Active</Text>
                     </View>
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={styles.userSettingRight}>
                         <Switch
-                            onValueChange={() => { this.setState({ super_coach: !this.state.super_coach }) }}
+                            onValueChange={() => { this.setState({ active: !this.state.active }) }}
+                            value={this.state.active} />
+                    </View>
+                </View>
+
+                <View style={styles.userSettingItem}>
+                    <View style={styles.userSettingLeft}>
+                        <Text style={styles.userSettingText}>Super Coach Privleges</Text>
+                    </View>
+                    <View style={styles.userSettingRight}>
+                        <Switch
+                            onValueChange={() => { this._toggleSuperCoach() }}
                             value={this.state.super_coach} />
                     </View>
                 </View>
@@ -87,54 +98,51 @@ export default class ViewEmployeeScreen extends Component {
         );
     }
 
-    _add() {
-        this.setState({ loading: true });
-
-        var comp = new Company();
-        comp.addEmployee(this.state.email).then(response => {
-            this.componentDidMount();
-            this.setState({ email: null, loading: false });
-            Keyboard.dismiss();
-            alert("We sent a message with instructions on how to signup.");
-        }).catch(error => {
-            alert(error);
-        });
-    }
-
     renderNoContent = (section) => {
         if (section.data.length == 0) {
-            return <Text style={{ alignSelf: 'center', opacity: 0.6, fontSize: 15 }}>You Have No {section.title} Employees</Text>
+            return <Text style={{ alignSelf: 'center', opacity: 0.6, fontSize: 15 }}>{this.state.person.fname} {this.state.person.lname} has no {section.title.toLowerCase()} clients.</Text>
         }
         return null
+    }
+
+    _toggleSuperCoach() {
+        var super_coach = !this.state.super_coach;
+
+        this.setState({ "super_coach": super_coach, "loading": true });
+
+        var emp = new Employee();
+
+        emp.setSuperCoach(this.state.person.pid, super_coach).then(result => {
+            this.setState({ loading: false });
+        }).catch(error => {
+            alert(error);
+            this.setState({ loading: false });
+        });
     }
 }
 
 const styles = StyleSheet.create({
-    addEmployeeContainer: {
-        flexDirection: 'row'
-    },
-    newEmployeeInput: {
-        height: 50,
-        borderBottomColor: Colors.lightGrey,
+    userSettingItem: {
+        flexDirection: 'row',
+        width: '100%',
+        height: 55,
+        padding: 15,
+        justifyContent: 'center',
         borderBottomWidth: 1,
-        marginTop: 5,
-        marginBottom: 5,
-        marginLeft: 10,
-        marginRight: 10,
+        borderBottomColor: Colors.lightGrey,
+    },
+    userSettingLeft: {
         flexDirection: 'column',
         flex: 1,
-    },
-    addEmployeeButton: {
-        backgroundColor: Colors.blue,
-        alignItems: 'center',
-        height: 50,
         justifyContent: 'center',
-        flexDirection: 'column',
-        paddingLeft: 20,
-        paddingRight: 20,
     },
-    addEmployeeButtonText: {
-        color: Colors.white,
+    userSettingRight: {
+        flexDirection: 'column',
+        flex: 1,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+    },
+    userSettingText: {
         fontSize: 15,
     }
 });

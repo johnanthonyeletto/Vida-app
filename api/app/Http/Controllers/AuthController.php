@@ -68,7 +68,7 @@ class AuthController extends BaseController
         // $user = app('db')->select("SELECT * FROM coach_profiles WHERE email = :email", ['email' => $this->request->input('email')])[0];
         $user = User::where('email', $this->request->input('email'))->first();
 
-        if (!$user) {
+        if (!$user || !$user->Person()->first()->isActive) {
             // You wil probably have some sort of helpers or whatever
             // to make sure that you have the same response format for
             // differents kind of responses. But let's return the

@@ -59,7 +59,7 @@ export default class EmployeeListItem extends Component {
                             }
 
                             {this.props.employee.super_coach &&
-                                <Text style={{ fontStyle: 'italic' }}>Admin</Text>
+                                <Text style={{ fontStyle: 'italic' }}>Super</Text>
                             }
                         </View>
                         <View style={[styles.column, styles.justifyCenter]}>

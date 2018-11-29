@@ -109,7 +109,7 @@ export default class ManageEmployeesScreen extends Component {
 
     renderNoContent = (section) => {
         if (section.data.length == 0) {
-            return <Text style={{ alignSelf: 'center', opacity: 0.6, fontSize: 15 }}>You Have No {section.title} Employees</Text>
+            return <Text style={{ alignSelf: 'center', opacity: 0.6, fontSize: 15 }}>You have no {section.title.toLowerCase()} employees.</Text>
         }
         return null
     }
