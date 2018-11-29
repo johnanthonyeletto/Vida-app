@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, SectionList, Keyboard, RefreshControl } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, SectionList, Keyboard, RefreshControl, Switch } from 'react-native';
 import Colors from '../../constants/Colors';
 import ScrollContainer from '../../components/ScrollContainer';
 import ListSeparator from '../../components/ListSeparator';
-import Company from '../../models/Company';
-import EmployeeListItem from '../../components/ManageEmployees/EmployeeListItem';
+import Employee from '../../models/Employee';
+import ListItem from '../../components/clientList/ListItem';
 import LoadingOverlay from '../../components/loadingOverlay';
 
-export default class ManageEmployeesScreen extends Component {
-    static navigationOptions = {
-        title: 'Manage Employees',
-    };
+let _this = null;
+
+export default class ViewEmployeeScreen extends Component {
+    static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('name').toString(),
+    });
     constructor(props) {
         super(props);
         this.state = {
-            inactiveEmployees: [],
-            activeEmployees: [],
-            pendingEmployees: [],
+            activeClients: [],
+            inactiveClients: [],
             loading: false,
             refreshing: false,
+            name: "John Eletto",
         };
-    }
+    };
     _onRefresh = () => {
         this.setState({ refreshing: true });
         this.componentDidMount().then(() => {
@@ -29,16 +31,15 @@ export default class ManageEmployeesScreen extends Component {
     }
 
     async componentDidMount() {
-        var comp = new Company();
+        _this = this;
+        const { navigation } = this.props;
+        const pid = navigation.getParam('pid', 'NONE');
 
-        comp.getEmployees().then(foundEmployees => {
-            var employees = foundEmployees;
-            this.setState({ activeEmployees: foundEmployees.active });
-            this.setState({ inactiveEmployees: foundEmployees.inactive });
-            this.setState({ pendingEmployees: foundEmployees.pending });
-        }).catch(error => {
-            alert(error);
-        });
+        var emp = new Employee();
+
+        emp.getEmployee(pid).then(employee => {
+            this.setState({ 'super_coach': employee.super_coach, 'activeClients': employee.clients.active, 'inactiveClients': employee.clients.inactive });
+        }).catch(error => alert(error));
     }
 
     render() {
@@ -50,29 +51,23 @@ export default class ManageEmployeesScreen extends Component {
                 />
             }>
                 <ListSeparator>
-                    <Text>Employees</Text>
+                    <Text>User Settings</Text>
                 </ListSeparator>
                 <View style={styles.addEmployeeContainer}>
-                    <TextInput
-                        style={styles.newEmployeeInput}
-                        onChangeText={(email) => this.setState({ email })}
-                        value={this.state.email}
-                        placeholder={"Add employee by email"}
-                        keyboardType={"email-address"}
-                        autoCapitalize={"none"}
-                        autoCorrect={false}
-                        textContentType={"emailAddress"}
-                        maxLength={100}
-                    />
-                    <TouchableOpacity onPress={() => { this._add() }} style={styles.addEmployeeButton}>
-                        <Text style={styles.addEmployeeButtonText}>Add</Text>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Text>Admin Privleges</Text>
+                    </View>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Switch
+                            onValueChange={() => { this.setState({ super_coach: !this.state.super_coach }) }}
+                            value={this.state.super_coach} />
+                    </View>
                 </View>
 
                 <SectionList
                     renderItem={({ item, index, section }) =>
-                        <TouchableOpacity onPress={() => { (section.title == "Pending") ? alert("This user has not created their account yet.") : this.props.navigation.navigate("ViewEmployee", { "pid": item.pid, "name": item.person.fname + " " + item.person.lname }) }}>
-                            <EmployeeListItem employee={item} status={section.title} />
+                        <TouchableOpacity onPress={() => { alert("Click!") }}>
+                            <ListItem client={item} />
                         </TouchableOpacity>
                     }
                     renderSectionHeader={({ section: { title } }) => (
@@ -80,9 +75,8 @@ export default class ManageEmployeesScreen extends Component {
                     )}
                     renderSectionFooter={({ section }) => this.renderNoContent(section)}
                     sections={[
-                        { title: 'Pending', data: this.state.pendingEmployees },
-                        { title: 'Active', data: this.state.activeEmployees },
-                        { title: 'Inactive', data: this.state.inactiveEmployees },
+                        { title: 'Active', data: this.state.activeClients },
+                        { title: 'Inactive', data: this.state.inactiveClients },
                     ]}
                     keyExtractor={(item, index) => item + index}
                 />

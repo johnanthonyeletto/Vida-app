@@ -64,6 +64,20 @@ class CompanyController extends Controller
         return response()->json($employees);
     }
 
+    public function getEmployee($pid)
+    {
+        $employee = $this->request->auth->company()->first()->employees()->where('pid', $pid)->with("Person")->first();
+        $active = $employee->ActiveClients();
+        $inactive = $employee->InactiveClients();
+
+        $employee->clients = [
+            'active' => $active,
+            'inactive' => $inactive
+        ];
+
+        return response()->json($employee);
+    }
+
     public function addEmployee()
     {
         $validatedData = $this->validate($this->request, [

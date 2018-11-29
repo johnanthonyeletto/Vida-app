@@ -20,6 +20,7 @@ import SettingsScreen from '../screens/Settings/SettingsScreen';
 import EditAccountScreen from '../screens/Settings/EditAccountScreen';
 import EditCompanyInfoScreen from '../screens/Settings/EditCompanyInfoScreen';
 import ManageEmployeesScreen from '../screens/Settings/ManageEmployeesScreen';
+import ViewEmployeeScreen from '../screens/Settings/ViewEmployeeScreen';
 
 // OTHER COMPONENTS
 import TabBarIcon from '../components/TabBarIcon';
@@ -87,6 +88,7 @@ const SettingsStack = createStackNavigator({
   EditAccount: EditAccountScreen,
   EditCompanyInfo: EditCompanyInfoScreen,
   ManageEmployees: ManageEmployeesScreen,
+  ViewEmployee: ViewEmployeeScreen,
 }, {
     defaultNavigationOptions: defaultNavigationOptions
   });
