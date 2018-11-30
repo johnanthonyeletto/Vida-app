@@ -51,9 +51,13 @@ class CompanyController extends Controller
 
     public function getEmployees()
     {
-        $activeEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', true)->where('pid', '!=', $this->request->auth->pid)->sortBy('person.fname')->values()->all();
-        $inactiveEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', false)->where('pid', '!=', $this->request->auth->pid)->sortBy('person.fname')->values()->all();
+        $activeEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', true)->sortBy('person.fname')->values()->all();
+        $inactiveEmployees = $this->request->auth->company()->first()->employees()->with("Person")->get()->where('person.isActive', false)->sortBy('person.fname')->values()->all();
         $pendingEmployees = SignupCode::where('company_id', $this->request->auth->company_id)->orderBy('created_at', 'desc')->get();
+
+        $activeEmployees = collect($activeEmployees);
+
+        $activeEmployees->where('pid', $this->request->auth->pid)->first()->me = true;
 
         $employees = [
             'active' => $activeEmployees,

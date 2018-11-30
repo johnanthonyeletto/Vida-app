@@ -39,6 +39,11 @@ class Person extends Model
       return $relationships;
     }
 
+    public function coach()
+    {
+        return $this->belongsToMany('App\User', 'coach_clients', 'client_id', 'coach_id')->latest();
+    }
+
 }
 
 //client id =! to pid

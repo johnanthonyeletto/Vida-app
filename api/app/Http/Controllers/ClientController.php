@@ -53,10 +53,10 @@ class ClientController extends Controller
             // This is a security vulnerbility because it will also allow them to select users from other comapnies,
             // but I'll let it slide for now.
             // - John Eletto
-            $person = Person::where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2')->first();
+            $person = Person::where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2', 'coach')->first();
         } else {
             // This will allow normal coaches to only view their clients. This works good.
-            $person = $this->request->auth->clients()->where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2')->first();
+            $person = $this->request->auth->clients()->where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2', 'coach')->first();
 
         }
 
@@ -71,6 +71,8 @@ class ClientController extends Controller
         if (sizeof($person->relationships) < 1) {
             unset($person->relationships);
         }
+        $person->coach_id = $person->coach[0]->pid;
+        unset($person->coach);
 
         return response()->json($person);
     }
@@ -92,7 +94,7 @@ class ClientController extends Controller
             'occupation' => 'string|nullable',
         ]);
 
-        // THIS IS A SEVERE SECURITY VULNERBILITY WHICH ALLOWS ANY AUTHENTICATED USER TO EDIT ANY CLIENT THROUGH THE API.
+        // THIS IS A SEVERE SECURITY VULNERBILITY WHICH ALLOWS ANY  AUTHENTICATED USER TO EDIT ANY CLIENT THROUGH THE API.
         $client = Person::findOrNew($this->request->input('pid'));
 
         $client->fname = trim($this->request->input('fname'));
