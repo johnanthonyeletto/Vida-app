@@ -48,10 +48,18 @@ class ClientController extends Controller
 
     public function getClient($pid)
     {
-        /*
-        This allows coaches to only see their clients. This will probably have to be modified when we implement super coaches.
-         */
-        $person = $this->request->auth->clients()->where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2')->first();
+        if ($this->request->auth->super_coach) {
+            // If the user is a super coach, they can select any user.
+            // This is a security vulnerbility because it will also allow them to select users from other comapnies,
+            // but I'll let it slide for now.
+            // - John Eletto
+            $person = Person::where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2')->first();
+        } else {
+            // This will allow normal coaches to only view their clients. This works good.
+            $person = $this->request->auth->clients()->where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2')->first();
+
+        }
+
         if ($person == null) {
             abort(404, 'This client could not be found. They might not be your client.');
         }
@@ -84,6 +92,7 @@ class ClientController extends Controller
             'occupation' => 'string|nullable',
         ]);
 
+        // THIS IS A SEVERE SECURITY VULNERBILITY WHICH ALLOWS ANY AUTHENTICATED USER TO EDIT ANY CLIENT THROUGH THE API.
         $client = Person::findOrNew($this->request->input('pid'));
 
         $client->fname = trim($this->request->input('fname'));

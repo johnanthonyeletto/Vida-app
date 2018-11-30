@@ -77,7 +77,7 @@ export default class ViewEmployeeScreen extends Component {
 
                 <SectionList
                     renderItem={({ item, index, section }) =>
-                        <TouchableOpacity onPress={() => { alert("Click!") }}>
+                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientProfile', { 'pid': item.pid, 'coach_name':  this.props.navigation.getParam('name').toString()}); }}>
                             <ListItem client={item} />
                         </TouchableOpacity>
                     }

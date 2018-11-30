@@ -12,6 +12,7 @@ let _this = null;
 
 export default class ClientProfileScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
+    title: (navigation.getParam('coach_name') != null) ? navigation.getParam('coach_name').toString() + "'s Client" : null,
     headerTitleStyle: {
       color: Colors.white
     },
@@ -134,7 +135,7 @@ export default class ClientProfileScreen extends Component {
               >
                 <View>
                   <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph', { 'pid': _this.state.client.pid }) }} style={styles.circleRelationshipButton}>
-                  <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
+                    <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
                   </TouchableOpacity>
                   <Text style={{ alignSelf: 'center' }}>Graph</Text>
                 </View>

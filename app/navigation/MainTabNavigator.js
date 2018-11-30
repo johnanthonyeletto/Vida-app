@@ -51,6 +51,7 @@ const ClientProfileStack = createStackNavigator({
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
+  AddClient: AddClientScreen,
   ClientProfile: {
     screen: ClientProfileStack,
     navigationOptions: {
@@ -100,6 +101,12 @@ const SettingsStack = createStackNavigator({
   EditCompanyInfo: EditCompanyInfoScreen,
   ManageEmployees: ManageEmployeesScreen,
   ViewEmployee: ViewEmployeeScreen,
+  ClientProfile: {
+    screen: ClientProfileStack,
+    navigationOptions: {
+      header: null,
+    }
+  },
 }, {
     defaultNavigationOptions: defaultNavigationOptions
   });
