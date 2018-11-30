@@ -38,7 +38,7 @@ export default class ViewEmployeeScreen extends Component {
         var emp = new Employee();
 
         emp.getEmployee(pid).then(employee => {
-            this.setState({ 'super_coach': employee.super_coach, 'activeClients': employee.clients.active, 'inactiveClients': employee.clients.inactive, 'person': employee.person });
+            this.setState({ 'super_coach': employee.super_coach, 'activeClients': employee.clients.active, 'inactiveClients': employee.clients.inactive, 'person': employee.person, 'isActive': employee.person.isActive });
         }).catch(error => alert(error));
     }
 
@@ -59,8 +59,8 @@ export default class ViewEmployeeScreen extends Component {
                     </View>
                     <View style={styles.userSettingRight}>
                         <Switch
-                            onValueChange={() => { this.setState({ active: !this.state.active }) }}
-                            value={this.state.active} />
+                            onValueChange={() => { this._toggleActive() }}
+                            value={this.state.isActive} />
                     </View>
                 </View>
 
@@ -113,6 +113,21 @@ export default class ViewEmployeeScreen extends Component {
         var emp = new Employee();
 
         emp.setSuperCoach(this.state.person.pid, super_coach).then(result => {
+            this.setState({ loading: false });
+        }).catch(error => {
+            alert(error);
+            this.setState({ loading: false });
+        });
+    }
+
+    _toggleActive() {
+        var isActive = !this.state.isActive;
+
+        this.setState({ "isActive": isActive, "loading": true });
+
+        var emp = new Employee();
+
+        emp.setActive(this.state.person.pid, isActive).then(result => {
             this.setState({ loading: false });
         }).catch(error => {
             alert(error);

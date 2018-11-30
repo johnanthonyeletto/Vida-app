@@ -24,4 +24,15 @@ export default class Employee {
             return result;
         }).catch(error => { return error; });
     }
+
+    async setActive(pid, isActive) {
+        var request = new APIRequest();
+        request.route = '/1.0/company/employee/active';
+        request.method = "POST";
+        request.body = { 'pid': pid, 'isActive': isActive };
+
+        return request.go().then(result => {
+            return result;
+        }).catch(error => { return error; });
+    }
 }

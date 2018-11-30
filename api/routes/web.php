@@ -86,6 +86,8 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
             $router->get('company/employee/{pid}', 'CompanyController@getEmployee');
 
             $router->post('company/employee/super-coach', 'CompanyController@setSuperCoach');
+
+            $router->post('company/employee/active', 'CompanyController@setActive');
         });
 
     });

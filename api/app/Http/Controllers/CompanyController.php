@@ -84,6 +84,13 @@ class CompanyController extends Controller
             'email' => 'required|max:255|email',
         ]);
 
+        $existingCoachCheck = User::where('email', $this->request->input('email'))->first();
+
+        if ($existingCoachCheck != null) {
+            return (new Response("Coach already exists.", 400));
+
+        }
+
         $pendingCheck = SignupCode::where('email', $this->request->input('email'))->first();
 
         $code;
@@ -119,6 +126,19 @@ class CompanyController extends Controller
         $employee = $this->request->auth->company()->first()->employees()->where('pid', $pid)->first();
 
         $employee->super_coach = $this->request->input('super_coach');
+
+        $employee->save();
+
+        return response()->json();
+    }
+
+    public function setActive()
+    {
+        $pid = $this->request->input('pid');
+
+        $employee = $this->request->auth->company()->first()->employees()->where('pid', $pid)->first()->person()->first();
+
+        $employee->isActive = $this->request->input('isActive');
 
         $employee->save();
 
