@@ -29,7 +29,7 @@ class Person extends Model
 
     public function Relationships()
     {
-      $relationships = DB::select('SELECT person1.pid, person1.fname, person1.lname , person2.pid,
+      $relationships = DB::select('SELECT person1.pid as pid1, person1.fname, person1.lname , person2.pid as pid2,
       person2.fname,person2.lname,relationships.relationshiptoclient, relationships.client_id, client.pid as clientpid, client.fname as clientfname, client.lname as clientlname
       from relationships
       join people person1 on relationships.pid1 = person1.pid
