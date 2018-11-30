@@ -8,6 +8,7 @@ import Environment from '../../constants/Environment';
 import FormGroup from '../../components/forms/FormGroup';
 import LoadingOverlay from '../../components/loadingOverlay';
 import Company from '../../models/Company';
+import User from '../../models/User';
 
 let _this = null;
 
@@ -55,20 +56,28 @@ export default class AddClientScreen extends Component {
             });
         }
 
-        var comp = new Company();
-        comp.getEmployees().then(result => {
-            var employees = result.active;
-            var options = [];
+        var user = new User();
+        user.getCurrentUser().then(currentUser => {
+            var super_coach = currentUser.super_coach;
+            this.setState({ 'super_coach': super_coach });
 
-            employees.map((emp, i) => {
-                if (emp.me) {
-                    this.setState({ defaultEmployee: emp.pid });
-                }
+            if (super_coach) {
+                var comp = new Company();
+                comp.getEmployees().then(result => {
+                    var employees = result.active;
+                    var options = [];
 
-                options.push({ label: emp.person.fname + " " + emp.person.lname, value: emp.pid });
-            });
+                    employees.map((emp, i) => {
+                        if (emp.me) {
+                            this.setState({ defaultEmployee: emp.pid });
+                        }
 
-            this.setState({ employeeOptions: options });
+                        options.push({ label: emp.person.fname + " " + emp.person.lname, value: emp.pid });
+                    });
+
+                    this.setState({ employeeOptions: options });
+                });
+            }
         });
     }
 
@@ -78,20 +87,20 @@ export default class AddClientScreen extends Component {
                 <KeyboardAvoidingView
                     keyboardVerticalOffset={100} behavior={"padding"}>
                     <View style={{ marginBottom: 20 }}>
-
-                        <FormGroup
-                            onChangeText={(assignedCoach) => this.setState({ assignedCoach })}
-                            value={(this.state.coach_id != null) ? this.state.coach_id : this.state.defaultEmployee}
-                            placeholder={"Assigned Coach"}
-                            keyboardType={"default"}
-                            autoCapitalize={"words"}
-                            autoCorrect={true}
-                            textContentType={"givenName"}
-                            maxLength={100}
-                            type={"picker"}
-                            options={this.state.employeeOptions}
-                        />
-
+                        {this.state.super_coach &&
+                            <FormGroup
+                                onChangeText={(assignedCoach) => this.setState({ assignedCoach })}
+                                value={(this.state.coach_id != null) ? this.state.coach_id : this.state.defaultEmployee}
+                                placeholder={"Assigned Coach"}
+                                keyboardType={"default"}
+                                autoCapitalize={"words"}
+                                autoCorrect={true}
+                                textContentType={"givenName"}
+                                maxLength={100}
+                                type={"picker"}
+                                options={this.state.employeeOptions}
+                            />
+                        }
                         <TouchableOpacity style={{ alignSelf: 'center' }} onPress={this._pickImage}>
                             <Image
                                 style={{ width: 100, height: 100, borderRadius: (100 / 2), alignSelf: "center", margin: 10 }}
