@@ -12,7 +12,6 @@ let _this = null;
 
 export default class ClientProfileScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-    // title: 'Pablo Rivas',
     headerTitleStyle: {
       color: Colors.white
     },

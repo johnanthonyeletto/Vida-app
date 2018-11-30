@@ -40,12 +40,23 @@ const defaultNavigationOptions = {
   headerTransitionPreset: 'uikit',
 };
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+const ClientProfileStack = createStackNavigator({
   ClientProfile: ClientProfileScreen,
   AddClient: AddClientScreen,
   ClientGraph: ClientGraphScreen,
   Notes: NoteScreen,
+}, {
+    defaultNavigationOptions: defaultNavigationOptions
+  });
+
+const HomeStack = createStackNavigator({
+  Home: HomeScreen,
+  ClientProfile: {
+    screen: ClientProfileStack,
+    navigationOptions: {
+      header: null,
+    }
+  },
 }, {
     defaultNavigationOptions: defaultNavigationOptions
   });
