@@ -47,8 +47,7 @@
 
   function parse(data){
     data = eval(data);
-    firstname1 = ( JSON.stringify(data[0].fname)); //prints "Able"
-    firstname2 = ( JSON.stringify(data[1].fname));
+
 
     function Client(client_id, pid, fname, lname) {
         this.client_id = client_id;
@@ -59,8 +58,9 @@
 
 
 
-    function Node(id, group, label, relationship, level){
-        this.id = id;
+    function Node(pid1, pid2, group, label, relationship, level){
+        this.pid1 = pid1;
+        this.pid2 = pid2;
         this.group = group;
         this.label = label;
         this.level = level;
@@ -68,45 +68,23 @@
     }
 
     clients = [];
-    clients.push(new Node(data[0].clientpid, 0, data[0].clientfname, '',  1));
+    clients.push(new Node(data[0].clientpid,  data[0].pid1, 0, data[0].clientfname, '',  1));
 
     for(var k=0; k<data.length; k++){
-        clients.push(new Node(data[k].pid, 0, data[k].fname, data[k].relationshiptoclient, 2));
+
+        clients.push(new Node(data[k].pid1, data[k].pid2, 0, data[k].fname, data[k].relationshiptoclient, 2));
     }
 
-     // alert(JSON.stringify(clients[0]));
-     // alert(JSON.stringify(clients[1]));
-     // alert(JSON.stringify(clients[2]));
-
-    //level 1 = main node // level 2 = secondary node
-    //group
-
-    // var nodes = [
-    //   { id: (clients[0]).id, group: (clients[0]).group, label: (clients[0]).label, level: (clients[0]).level},
-    //   { id: (clients[1]).id, group: (clients[1]).group, label: (clients[1]).label, level: (clients[1]).level},
-    //   { id: (clients[2]).id, group: (clients[2]).group, label: (clients[2]).label, level: (clients[2]).level},
-    //
-    //   // { id: "Jenna", group: 0, label: "Jenna", level: 2 },
-    //   // { id: "Andrew", group: 0, label: "Andrew", level: 2 },
-    //   // { id: "John", group: 1, label: "John", level: 2 }
-    // ]
     var nodes = [];
     for(var i=0; i<clients.length; i++){
-      nodes.push({ id: (clients[i]).id, group: (clients[i]).group, label: (clients[i]).label, relation: (clients[i]).relationship, level: (clients[i]).level});
+      nodes.push({ id: (clients[i]).pid2, group: (clients[i]).group, label: (clients[i]).label, relation: (clients[i]).relationship, level: (clients[i]).level});
     }
 
     var links = [];
     for(var i=1; i<clients.length; i++){
-      links.push({ target: (clients[0]).id, source: (clients[i]).id, strength: .7 });
+      links.push({ target: (clients[i]).pid1, source: (clients[i]).pid2, strength: .7 });
     }
-    // //strength = length of line
-    // var links = [
-    //   { target: (clients[0]).id, source: (clients[1]).id, strength: 0.7 },
-    //   { target: (clients[0]).id, source: (clients[2]).id, strength: 0.7 },
-    //   // { target: (clients[0]).id, source: "Jenna", strength: 0.7 },
-    //   // { target: (clients[0]).id, source: "Andrew", strength: 0.7 },
-    //   // { target: "Andrew", source: "John", strength: 0.7 }
-    // ]
+
 
     function getNeighbors(node) {
       return links.reduce(function (neighbors, link) {
