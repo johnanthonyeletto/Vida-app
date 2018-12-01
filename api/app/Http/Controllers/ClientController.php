@@ -125,6 +125,21 @@ class ClientController extends Controller
 
         $client->save();
 
+        if ($this->request->auth->super_coach && $this->request->input('coach_id') != null) {
+            // Super coach is trying to reassign client to new coach.
+
+            DB::table('coach_clients')->where('client_id', $client->pid)->delete();
+
+            DB::table('coach_clients')->insert(
+                [
+                    'coach_id' => $this->request->input('coach_id'),
+                    'client_id' => $client->pid,
+                    "created_at" => \Carbon\Carbon::now(), # \Datetime()
+                    "updated_at" => \Carbon\Carbon::now(), # \Datetime()
+                ]
+            );
+        }
+
         if ($this->request->input('pid') == null) {
             \DB::table('coach_clients')->insert(
                 [

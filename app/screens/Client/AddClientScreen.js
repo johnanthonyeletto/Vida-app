@@ -37,6 +37,7 @@ export default class AddClientScreen extends Component {
         super(props);
         this.state = {
             image_path: Environment.API_HOST + "/img/people_images/default.png",
+            super_coach: false,
         };
     }
 
@@ -72,7 +73,7 @@ export default class AddClientScreen extends Component {
                             this.setState({ defaultEmployee: emp.pid });
                         }
 
-                        options.push({ label: emp.person.fname + " " + emp.person.lname, value: emp.pid });
+                        options.push({ label: emp.person.fname + " " + emp.person.lname + ((emp.me) ? " (me)" : ""), value: emp.pid });
                     });
 
                     this.setState({ employeeOptions: options });
@@ -89,14 +90,9 @@ export default class AddClientScreen extends Component {
                     <View style={{ marginBottom: 20 }}>
                         {this.state.super_coach &&
                             <FormGroup
-                                onChangeText={(assignedCoach) => this.setState({ assignedCoach })}
+                                onChangeText={(coach_id) => this.setState({ coach_id })}
                                 value={(this.state.coach_id != null) ? this.state.coach_id : this.state.defaultEmployee}
                                 placeholder={"Assigned Coach"}
-                                keyboardType={"default"}
-                                autoCapitalize={"words"}
-                                autoCorrect={true}
-                                textContentType={"givenName"}
-                                maxLength={100}
                                 type={"picker"}
                                 options={this.state.employeeOptions}
                             />
@@ -258,6 +254,10 @@ export default class AddClientScreen extends Component {
         client.occupation = this.state.occupation;
         client.image_base64 = this.state.image_base64;
         client.image_path = this.state.image_path;
+
+        if (this.state.super_coach) {
+            client.coach_id = this.state.coach_id;
+        }
 
         client.save().then(pid => {
             this.props.navigation.navigate('ClientProfile', { 'pid': pid });
