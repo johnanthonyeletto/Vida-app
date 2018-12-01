@@ -8,13 +8,13 @@ import ClientProfileScreen from '../screens/Client/ClientProfileScreen';
 import ClientGraphScreen from '../screens/Client/ClientGraphScreen';
 import AddClientScreen from '../screens/Client/AddClientScreen';
 import AddRelationshipScreen from '../screens/Client/AddRelationshipScreen';
+import NoteScreen from '../screens/Client/NoteScreen';
 
 // EVENT SCREENS
 import MeetingsScreen from '../screens/MeetingsScreen';
 import EventView from '../screens/eventScreens/eventView';
 import EventEntry from '../screens/eventScreens/eventEntry';
 import EventUpdate from '../screens/eventScreens/eventUpdate';
-import NoteScreen from '../screens/ClientProfile/NoteScreen';
 
 // SETTINGS SCREENS
 import SettingsScreen from '../screens/Settings/SettingsScreen';

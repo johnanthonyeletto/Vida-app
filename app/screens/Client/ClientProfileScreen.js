@@ -276,7 +276,7 @@ export default class ClientProfileScreen extends Component {
 
   _showMoreOptions(navigation) {
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Add Meeting', 'Add Relationship', 'Quick Start Meeting', 'Edit Client', (_this.state.client.isActive) ? 'Mark Client Inactive' : 'Mark Client Active'],
+      options: ['Cancel', 'Add Meeting', 'Add Relationship', 'Add A Note', 'Edit Client', (_this.state.client.isActive) ? 'Mark Client Inactive' : 'Mark Client Active'],
       cancelButtonIndex: 0,
       destructiveButtonIndex: 5,
     },

@@ -4,33 +4,20 @@ import Colors from '../../constants/Colors';
 
 const NotesHTML = require('../../assets/html/notes_text_editor.html');
 
+let _this = null;
 
 export default class NoteScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-    gesturesEnabled: false,
-    title: '0:00',
-    headerTintColor: Colors.white,
-    headerTitleStyle: {
-      color: Colors.white
-    },
     headerStyle: {
-      backgroundColor: Colors.blue
+      borderBottomWidth: 0,
     },
     headerRight: (
       <TouchableOpacity onPress={() => {
-        Alert.alert(
-          'End Meeting?',
-          'Are you sure that you want to end this meeting?',
-          [
-            { text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-            { text: 'Yes', onPress: () => navigation.navigate("ClientProfile") },
-          ],
-        )
-      }} style={{ marginRight: 25 }}>
-        <Text style={{ color: Colors.red, fontSize: 20, fontWeight: "bold" }}>End</Text>
+        _this._save();
+      }} style={{ marginRight: 15 }}>
+        <Text style={{ fontSize: 20, color: Colors.blue }}>Save</Text>
       </TouchableOpacity>
     ),
-    headerLeft: null,
   });
 
   constructor(props) {
@@ -39,13 +26,23 @@ export default class NoteScreen extends Component {
     };
   }
 
+  componentDidMount() {
+    _this = this;
+  }
+
   render() {
     return (
       <WebView
         originWhitelist={['*']}
         source={NotesHTML}
         style={{ backgroundColor: Colors.white }}
+        onMessage={(event) => this.setState({ note: event.nativeEvent.data })}
       />
     );
+  }
+
+  _save() {
+    var note = _this.state.note;
+    alert(note);
   }
 }
