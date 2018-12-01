@@ -1,5 +1,6 @@
 import Environment from '../constants/Environment';
 import Auth from '../constants/Auth';
+import APIRequest from '../helpers/APIRequest';
 
 export default class Client {
     constructor() {
@@ -187,5 +188,24 @@ export default class Client {
         }).catch(error => {
             console.error(error);
         });
+    }
+
+    async note(note_id, note) {
+        var pid = this.pid;
+
+        var request = new APIRequest();
+        request.method = "POST";
+        request.route = "/1.0/client/note";
+        request.body = {
+            'pid': pid,
+            'note_id': note_id,
+            'note': note
+        };
+
+        return request.go().then(response => {
+            return response;
+        }).catch(error => {
+            throw new Error(error);
+        })
     }
 }

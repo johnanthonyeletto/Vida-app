@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Note;
 use App\Models\Person;
 use DB;
 use Illuminate\Http\Request;
@@ -172,5 +173,26 @@ class ClientController extends Controller
         $client->save();
 
         return response()->json($client->pid);
+    }
+
+    public function createUpdateNote()
+    {
+        if ($this->request->auth->super_coach) {
+            $client = Person::find($this->request->input('pid'));
+        } else {
+            $client = $this->request->auth->clients()->find($this->request->input('pid'));
+        }
+
+        if ($client == null) {
+            abort(404);
+        }
+
+        $note = $client->notes()->findOrNew($this->request->input('note_id'));
+        $note->client_id = $this->request->input('pid');
+        $note->note = $this->request->input('note');
+
+        $note->save();
+
+        return response()->json($note->note_id);
     }
 }
