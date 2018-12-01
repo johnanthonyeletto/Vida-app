@@ -283,7 +283,7 @@ export default class ClientProfileScreen extends Component {
       (buttonIndex) => {
         switch (buttonIndex) {
           case 2:
-            Linking.openURL('tel:5164689725');
+            navigation.navigate('AddRelationship', { 'pid': _this.state.client.pid });
             break;
           case 3:
             navigation.navigate('Notes');
