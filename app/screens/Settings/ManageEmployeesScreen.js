@@ -71,6 +71,8 @@ export default class ManageEmployeesScreen extends Component {
 
                 <SectionList
                     renderItem={({ item, index, section }) =>
+                        // Don't render your own item.
+                        !item.me &&
                         <TouchableOpacity onPress={() => { (section.title == "Pending") ? alert("This user has not created their account yet.") : this.props.navigation.navigate("ViewEmployee", { "pid": item.pid, "name": item.person.fname + " " + item.person.lname }) }}>
                             <EmployeeListItem employee={item} status={section.title} />
                         </TouchableOpacity>
