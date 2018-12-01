@@ -53,10 +53,10 @@ class ClientController extends Controller
             // This is a security vulnerbility because it will also allow them to select users from other comapnies,
             // but I'll let it slide for now.
             // - John Eletto
-            $person = Person::where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2', 'coach')->first();
+            $person = Person::where('pid', $pid)->with('nextMeeting', 'relationshipsPID2', 'coach')->first();
         } else {
             // This will allow normal coaches to only view their clients. This works good.
-            $person = $this->request->auth->clients()->where('pid', $pid)->with('nextMeeting', 'relationshipsPID1', 'relationshipsPID2', 'coach')->first();
+            $person = $this->request->auth->clients()->where('pid', $pid)->with('nextMeeting', 'relationshipsPID2', 'coach')->first();
 
         }
 

@@ -34,6 +34,7 @@ export default class ClientProfileScreen extends Component {
     this.state = {
       client: [],
       refreshing: false,
+      loading: true,
     };
 
   }
@@ -53,7 +54,7 @@ export default class ClientProfileScreen extends Component {
 
     var client = new Client();
     client.getClient(pid).then(foundClient => {
-      this.setState({ client: foundClient, nextMeeting: foundClient.next_meeting[0], relationships: foundClient.relationships });
+      this.setState({ loading: false, client: foundClient, nextMeeting: foundClient.next_meeting[0], relationships: foundClient.relationships });
     });
   }
 
@@ -115,7 +116,7 @@ export default class ClientProfileScreen extends Component {
 
             {
               !this.state.nextMeeting &&
-              <Text style={{ color: Colors.grey, padding: 15 }}>You have no upcoming meetings with {this.state.client.fname} {this.state.client.lname}.</Text>
+              <Text style={{ color: Colors.grey, padding: 5 }}>You have no upcoming meetings with {this.state.client.fname} {this.state.client.lname}.</Text>
             }
           </View>
 
@@ -160,12 +161,84 @@ export default class ClientProfileScreen extends Component {
             }
 
             {!this.state.relationships &&
-              <Text style={{ color: Colors.grey, padding: 15 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any relationships yet.</Text>
+              <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any relationships yet.</Text>
             }
           </View>
           {/* END RELATIONSHIPS SECTION */}
+
+          {/* BEGIN ADDRESS SECTION */}
+          <View>
+            <ListSeparator>
+              <Text>Contact Info</Text>
+            </ListSeparator>
+
+            {!(this.state.client.cell_phone || this.state.client.home_phone || this.state.client.email || this.state.client.address || this.state.client.address2 || this.state.client.city || this.state.client.state_province || this.state.client.postal_code) &&
+              <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any contact info.</Text>
+            }
+
+            {this.state.client.cell_phone &&
+              <View style={styles.contactInfoRow}>
+                <View style={styles.contactInfoLeft}>
+                  <Text style={styles.contactInfoLabel}>Cell Phone:</Text>
+                </View>
+                <View style={styles.contactInfoRight}>
+                  <Text style={styles.contactInfoText}>
+                    {this.state.client.cell_phone}
+                  </Text>
+                </View>
+              </View>
+            }
+
+
+            {this.state.client.home_phone &&
+              <View style={styles.contactInfoRow}>
+                <View style={styles.contactInfoLeft}>
+                  <Text style={styles.contactInfoLabel}>Home Phone:</Text>
+                </View>
+                <View style={styles.contactInfoRight}>
+                  <Text style={styles.contactInfoText}>
+                    {this.state.client.home_phone}
+                  </Text>
+                </View>
+              </View>
+            }
+
+            {this.state.client.email &&
+              <View style={styles.contactInfoRow}>
+                <View style={styles.contactInfoLeft}>
+                  <Text style={styles.contactInfoLabel}>Email Address:</Text>
+                </View>
+                <View style={styles.contactInfoRight}>
+                  <Text style={styles.contactInfoText}>
+                    {this.state.client.email}
+                  </Text>
+                </View>
+              </View>
+            }
+
+            {(this.state.client.address || this.state.client.address2 || this.state.client.city || this.state.client.state_province || this.state.client.postal_code) &&
+              <View style={styles.contactInfoRow}>
+                <View style={styles.contactInfoLeft}>
+                  <Text style={styles.contactInfoLabel}>Address:</Text>
+                </View>
+                <View style={styles.contactInfoRight}>
+                  <Text style={styles.contactInfoText}>
+                    {this.state.client.address}
+                    {(this.state.client.address2) ? "\n" + this.state.client.address2 : ""}
+                    {
+                      "\n" + this.state.client.city +
+                      ((this.state.client.state_province) ? ", " + this.state.client.state_province : "") +
+                      ((this.state.client.postal_code) ? ", " + this.state.client.postal_code : "")
+                    }
+                  </Text>
+                </View>
+              </View>
+            }
+          </View>
+          {/* END ADDRESS SECTION */}
         </View>
-        {this.state.loading &&
+        {
+          this.state.loading &&
           <LoadingOverlay />
         }
       </ ScrollView >
@@ -279,5 +352,30 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     margin: 10,
     alignContent: 'center'
+  },
+  contactInfoRow: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  contactInfoLeft: {
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  contactInfoRight: {
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  contactInfoLabel: {
+    fontSize: 15,
+    padding: 5,
+    fontWeight: '600',
+  },
+  contactInfoText: {
+    padding: 5,
+    fontSize: 15,
   }
 });
