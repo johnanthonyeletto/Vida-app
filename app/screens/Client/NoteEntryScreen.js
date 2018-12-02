@@ -25,6 +25,7 @@ export default class NoteEntryScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
     };
 
     this.webView = null;
@@ -51,6 +52,7 @@ export default class NoteEntryScreen extends Component {
     if (this.state.note) {
       this.webView.postMessage(this.state.note);
     }
+    this.setState({ loading: false });
   }
 
   render() {

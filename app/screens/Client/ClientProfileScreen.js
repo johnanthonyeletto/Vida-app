@@ -252,9 +252,9 @@ export default class ClientProfileScreen extends Component {
             {(this.state.notes && this.state.notes.length > 0) &&
               <View>
                 <TouchableOpacity onPress={() => { this.props.navigation.navigate('NoteEntry', { 'pid': this.state.client.pid, 'note': this.state.notes[0] }) }}>
-                  <NoteListItem note={this.state.notes[0]} />
+                  <NoteListItem note={this.state.notes[0]}  />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { alert("See all notes") }}>
+                <TouchableOpacity onPress={() => { this.props.navigation.navigate('AllNotes', { 'notes': this.state.notes, 'pid': this.state.client.pid }) }}>
                   <Text style={{ fontSize: 17, color: Colors.blue, textAlign: 'right', padding: 5, marginVertical: 5 }}>See All Notes</Text>
                 </TouchableOpacity>
               </View>

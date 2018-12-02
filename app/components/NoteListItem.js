@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
+import Swipeout from 'react-native-swipeout';
+import Client from '../models/Client';
+
+
+let _this = null;
+
 
 export default class NoteListItem extends Component {
     constructor(props) {
@@ -10,8 +16,13 @@ export default class NoteListItem extends Component {
         };
     }
 
+
+
     render() {
+
+
         return (
+
             <View style={styles.note}>
                 <View style={styles.noteLeft}>
                     {/* Strip out all html tags and remove excess space. */}
@@ -24,6 +35,7 @@ export default class NoteListItem extends Component {
             </View>
         );
     }
+
 
     _parseTimestamp(timestamp) {
         // Split timestamp into [ Y, M, D, h, m, s ]
@@ -42,8 +54,7 @@ export default class NoteListItem extends Component {
 const styles = StyleSheet.create({
     note: {
         paddingHorizontal: 5,
-        paddingVertical: 10,
-        marginVertical: 5,
+        paddingVertical: 15,
         borderBottomColor: Colors.lightGrey,
         borderBottomWidth: 1,
         flexDirection: 'row',

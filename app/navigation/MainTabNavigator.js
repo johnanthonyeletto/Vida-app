@@ -9,6 +9,7 @@ import ClientGraphScreen from '../screens/Client/ClientGraphScreen';
 import AddClientScreen from '../screens/Client/AddClientScreen';
 import AddRelationshipScreen from '../screens/Client/AddRelationshipScreen';
 import NoteEntryScreen from '../screens/Client/NoteEntryScreen';
+import AllNotesScreen from '../screens/Client/AllNotesScreen';
 
 // EVENT SCREENS
 import MeetingsScreen from '../screens/MeetingsScreen';
@@ -46,6 +47,7 @@ const ClientProfileStack = createStackNavigator({
   AddClient: AddClientScreen,
   ClientGraph: ClientGraphScreen,
   NoteEntry: NoteEntryScreen,
+  AllNotes: AllNotesScreen,
   AddRelationship: AddRelationshipScreen,
 }, {
     defaultNavigationOptions: defaultNavigationOptions

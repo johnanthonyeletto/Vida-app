@@ -195,4 +195,30 @@ class ClientController extends Controller
 
         return response()->json($note->note_id);
     }
+
+    public function getNotes($pid)
+    {
+        if ($this->request->auth->super_coach) {
+            $client = Person::find($pid);
+        } else {
+            $client = $this->request->auth->clients()->find($pid);
+        }
+
+        return response()->json($client->notes()->get());
+    }
+
+    public function deleteNote($pid, $note_id)
+    {
+        if ($this->request->auth->super_coach) {
+            $client = Person::find($pid);
+        } else {
+            $client = $this->request->auth->clients()->find($pid);
+        }
+
+        $note = $client->notes->find($note_id);
+
+        $note->delete();
+
+        return response();
+    }
 }

@@ -63,7 +63,11 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
 
         $router->patch('client/', 'ClientController@updateClient');
 
+        $router->get('client/{pid}/notes', 'ClientController@getNotes');
+
         $router->post('client/note', 'ClientController@createUpdateNote');
+
+        $router->delete('client/{pid}/note/{note_id}', 'ClientController@deleteNote');
 
         $router->get('event-list', 'EventController@getEventList');
 

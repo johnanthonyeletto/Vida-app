@@ -21,6 +21,7 @@
     "g": "^2.0.1",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "react-native-swipeout": "^2.3.6",
     "react-navigation": "^3.0.0"
   },
   "devDependencies": {

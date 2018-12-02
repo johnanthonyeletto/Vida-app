@@ -206,6 +206,34 @@ export default class Client {
             return response;
         }).catch(error => {
             throw new Error(error);
-        })
+        });
+    }
+
+    async getNotes() {
+        var pid = this.pid;
+
+        var request = new APIRequest();
+
+        request.method = "GET";
+
+        request.route = "/1.0/client/" + pid + "/notes";
+
+        return request.go().then(response => { return response }).catch(error => {
+            throw new Error(error);
+        });
+    }
+
+    async deleteNote(note_id) {
+        var pid = this.pid;
+
+        var request = new APIRequest();
+
+        request.method = "DELETE";
+
+        request.route = "/1.0/client/" + pid + "/note/" + note_id;
+
+        return request.go().then(response => { return response }).catch(error => {
+            throw new Error(error);
+        });
     }
 }
