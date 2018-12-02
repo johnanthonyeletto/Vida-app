@@ -1,7 +1,8 @@
 import React from 'react';
 import {
     ScrollView,
-    StyleSheet
+    StyleSheet,
+    SafeAreaView
 } from 'react-native';
 import Colors from '../constants/Colors';
 
@@ -12,9 +13,11 @@ export default class ScrollContainer extends React.Component {
 
     render() {
         return (
-            <ScrollView style={[styles.container, this.props.style]} refreshControl={this.props.refreshControl} keyboardShouldPersistTaps='handled' >
-                {this.props.children}
-            </ScrollView>
+            <SafeAreaView style={{ flex: 1, }}>
+                <ScrollView style={[styles.container, this.props.style]} refreshControl={this.props.refreshControl} keyboardShouldPersistTaps='handled' >
+                    {this.props.children}
+                </ScrollView>
+            </SafeAreaView>
         )
     }
 }

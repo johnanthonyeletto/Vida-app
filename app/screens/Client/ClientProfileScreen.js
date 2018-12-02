@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionSheetIOS, Linking, RefreshControl } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActionSheetIOS, Linking, RefreshControl, SafeAreaView } from 'react-native';
 import Client from '../../models/Client';
 import Colors from '../../constants/Colors';
 import ListSeparator from '../../components/ListSeparator';
@@ -61,213 +61,216 @@ export default class ClientProfileScreen extends Component {
 
   render() {
     return (
-      <ScrollView
-        style={styles.container}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh}
-            tintColor={Colors.white}
-          />}
-      >
+      <SafeAreaView style={{ flex: 1, }}>
 
-        <View style={styles.clientInfo}>
-          <Image
-            style={{ width: 125, height: 125, borderRadius: (125 / 2), alignSelf: "center" }}
-            source={{
-              uri: Environment.API_HOST + this.state.client.image_path
-            }}
-          />
-          <Text style={{ color: Colors.white, fontSize: 20, marginTop: 10 }}>{this.state.client.fname} {this.state.client.lname}</Text>
-          <Text style={{ color: Colors.white, fontSize: 15, fontStyle: 'italic' }}>{this.state.client.occupation}</Text>
-          <View style={{ flexDirection: "row" }}>
+        <ScrollView
+          style={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+              tintColor={Colors.white}
+            />}
+        >
 
-            {(this.state.client.cell_phone || this.state.client.home_phone) &&
-              <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._showCallOptions() }}>
-                <Ionicons name="ios-call" size={32} color={Colors.blue} />
-              </TouchableOpacity>
-            }
+          <View style={styles.clientInfo}>
+            <Image
+              style={{ width: 125, height: 125, borderRadius: (125 / 2), alignSelf: "center" }}
+              source={{
+                uri: Environment.API_HOST + this.state.client.image_path
+              }}
+            />
+            <Text style={{ color: Colors.white, fontSize: 20, marginTop: 10 }}>{this.state.client.fname} {this.state.client.lname}</Text>
+            <Text style={{ color: Colors.white, fontSize: 15, fontStyle: 'italic' }}>{this.state.client.occupation}</Text>
+            <View style={{ flexDirection: "row" }}>
 
-            {this.state.client.cell_phone &&
-              <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("sms:" + this.state.client.cell_phone) }}>
-                <Ionicons name="ios-chatbubbles" size={32} color={Colors.blue} />
-              </TouchableOpacity>
-            }
+              {(this.state.client.cell_phone || this.state.client.home_phone) &&
+                <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._showCallOptions() }}>
+                  <Ionicons name="ios-call" size={32} color={Colors.blue} />
+                </TouchableOpacity>
+              }
 
-            {this.state.client.email &&
-              <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("mailto:" + this.state.client.email) }}>
-                <Ionicons name="ios-mail" size={32} color={Colors.blue} />
-              </TouchableOpacity>
-            }
-          </View>
-        </View>
+              {this.state.client.cell_phone &&
+                <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("sms:" + this.state.client.cell_phone) }}>
+                  <Ionicons name="ios-chatbubbles" size={32} color={Colors.blue} />
+                </TouchableOpacity>
+              }
 
-        <View style={styles.clientDetails}>
-
-          {/* BEGIN NEXT EVENT SECTION */}
-
-
-          <View>
-            <ListSeparator>
-              <Text>Next Meeting</Text>
-            </ListSeparator>
-            {this.state.nextMeeting &&
-              <EventCard meeting={this.state.nextMeeting} />
-            }
-
-            {
-              !this.state.nextMeeting &&
-              <Text style={{ color: Colors.grey, padding: 5 }}>You have no upcoming meetings with {this.state.client.fname} {this.state.client.lname}.</Text>
-            }
+              {this.state.client.email &&
+                <TouchableOpacity style={styles.circleContactButton} onPress={() => { this._openLink("mailto:" + this.state.client.email) }}>
+                  <Ionicons name="ios-mail" size={32} color={Colors.blue} />
+                </TouchableOpacity>
+              }
+            </View>
           </View>
 
+          <View style={styles.clientDetails}>
 
-          {/* END NEXT EVENT SECTION */}
-
-          {/* BEGIN RELATIONSHIPS SECTION */}
-          <View>
-            <ListSeparator>
-              <Text>Relationships</Text>
-            </ListSeparator>
-            {this.state.relationships &&
-              <ScrollView
-                style={{ flexDirection: "row" }}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              >
-                <View>
-                  <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph', { 'pid': _this.state.client.pid }) }} style={styles.circleRelationshipButton}>
-                    <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
-                  </TouchableOpacity>
-                  <Text style={{ alignSelf: 'center' }}>Graph</Text>
-                </View>
-                {this.state.relationships.map((connection, i) => {
-                  return (
-                    <TouchableOpacity key={i} style={{ alignItems: 'center' }}>
-                      <Image
-                        style={styles.circleRelationshipButton}
-                        source={{
-                          uri: Environment.API_HOST + connection.image_path
-                        }}
-                        resizeMode={'contain'}
-                      />
-                      <Text>{connection.fname} {connection.lname.substr(0, 1)}.</Text>
-                      <Text style={{ fontStyle: 'italic', fontSize: 10, }}>{connection.pivot.relationshiptoclient}</Text>
+            {/* BEGIN NEXT EVENT SECTION */}
 
 
+            <View>
+              <ListSeparator>
+                <Text>Next Meeting</Text>
+              </ListSeparator>
+              {this.state.nextMeeting &&
+                <EventCard meeting={this.state.nextMeeting} />
+              }
+
+              {
+                !this.state.nextMeeting &&
+                <Text style={{ color: Colors.grey, padding: 5 }}>You have no upcoming meetings with {this.state.client.fname} {this.state.client.lname}.</Text>
+              }
+            </View>
+
+
+            {/* END NEXT EVENT SECTION */}
+
+            {/* BEGIN RELATIONSHIPS SECTION */}
+            <View>
+              <ListSeparator>
+                <Text>Relationships</Text>
+              </ListSeparator>
+              {this.state.relationships &&
+                <ScrollView
+                  style={{ flexDirection: "row" }}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <View>
+                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph', { 'pid': _this.state.client.pid }) }} style={styles.circleRelationshipButton}>
+                      <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
                     </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-            }
+                    <Text style={{ alignSelf: 'center' }}>Graph</Text>
+                  </View>
+                  {this.state.relationships.map((connection, i) => {
+                    return (
+                      <TouchableOpacity key={i} style={{ alignItems: 'center' }} >
+                        <Image
+                          style={styles.circleRelationshipButton}
+                          source={{
+                            uri: Environment.API_HOST + connection.image_path
+                          }}
+                          resizeMode={'contain'}
+                        />
+                        <Text>{connection.fname} {connection.lname.substr(0, 1)}.</Text>
+                        <Text style={{ fontStyle: 'italic', fontSize: 10, }}>{connection.pivot.relationshiptoclient}</Text>
 
-            {!this.state.relationships &&
-              <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any relationships yet.</Text>
-            }
+
+                      </TouchableOpacity>
+                    );
+                  })}
+                </ScrollView>
+              }
+
+              {!this.state.relationships &&
+                <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any relationships yet.</Text>
+              }
+            </View>
+            {/* END RELATIONSHIPS SECTION */}
+
+            {/* BEGIN ADDRESS SECTION */}
+            <View>
+              <ListSeparator>
+                <Text>Contact Info</Text>
+              </ListSeparator>
+
+              {!(this.state.client.cell_phone || this.state.client.home_phone || this.state.client.email || this.state.client.address || this.state.client.address2 || this.state.client.city || this.state.client.state_province || this.state.client.postal_code) &&
+                <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any contact info.</Text>
+              }
+
+              {this.state.client.cell_phone &&
+                <View style={styles.contactInfoRow}>
+                  <View style={styles.contactInfoLeft}>
+                    <Text style={styles.contactInfoLabel}>Cell Phone:</Text>
+                  </View>
+                  <View style={styles.contactInfoRight}>
+                    <Text style={styles.contactInfoText}>
+                      {this.state.client.cell_phone}
+                    </Text>
+                  </View>
+                </View>
+              }
+
+
+              {this.state.client.home_phone &&
+                <View style={styles.contactInfoRow}>
+                  <View style={styles.contactInfoLeft}>
+                    <Text style={styles.contactInfoLabel}>Home Phone:</Text>
+                  </View>
+                  <View style={styles.contactInfoRight}>
+                    <Text style={styles.contactInfoText}>
+                      {this.state.client.home_phone}
+                    </Text>
+                  </View>
+                </View>
+              }
+
+              {this.state.client.email &&
+                <View style={styles.contactInfoRow}>
+                  <View style={styles.contactInfoLeft}>
+                    <Text style={styles.contactInfoLabel}>Email Address:</Text>
+                  </View>
+                  <View style={styles.contactInfoRight}>
+                    <Text style={styles.contactInfoText}>
+                      {this.state.client.email}
+                    </Text>
+                  </View>
+                </View>
+              }
+
+              {(this.state.client.address || this.state.client.address2 || this.state.client.city || this.state.client.state_province || this.state.client.postal_code) &&
+                <View style={styles.contactInfoRow}>
+                  <View style={styles.contactInfoLeft}>
+                    <Text style={styles.contactInfoLabel}>Address:</Text>
+                  </View>
+                  <View style={styles.contactInfoRight}>
+                    <Text style={styles.contactInfoText}>
+                      {this.state.client.address}
+                      {(this.state.client.address2) ? "\n" + this.state.client.address2 : ""}
+                      {
+                        "\n" + this.state.client.city +
+                        ((this.state.client.state_province) ? ", " + this.state.client.state_province : "") +
+                        ((this.state.client.postal_code) ? ", " + this.state.client.postal_code : "")
+                      }
+                    </Text>
+                  </View>
+                </View>
+              }
+            </View>
+            {/* END ADDRESS SECTION */}
+
+
+            {/* BEGIN NOTES SECTION */}
+            <View>
+              <ListSeparator>
+                <Text>Notes</Text>
+              </ListSeparator>
+
+              {(!this.state.notes || this.state.notes.length <= 0) &&
+                <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any notes yet.</Text>
+              }
+
+              {(this.state.notes && this.state.notes.length > 0) &&
+                <View>
+                  <TouchableOpacity onPress={() => { this.props.navigation.navigate('NoteEntry', { 'pid': this.state.client.pid, 'note': this.state.notes[0] }) }}>
+                    <NoteListItem note={this.state.notes[0]} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => { this.props.navigation.navigate('AllNotes', { 'notes': this.state.notes, 'pid': this.state.client.pid }) }}>
+                    <Text style={{ fontSize: 17, color: Colors.blue, textAlign: 'right', padding: 5, marginVertical: 5 }}>See All Notes</Text>
+                  </TouchableOpacity>
+                </View>
+              }
+
+            </View>
+            {/* END NOTES SECTION */}
           </View>
-          {/* END RELATIONSHIPS SECTION */}
-
-          {/* BEGIN ADDRESS SECTION */}
-          <View>
-            <ListSeparator>
-              <Text>Contact Info</Text>
-            </ListSeparator>
-
-            {!(this.state.client.cell_phone || this.state.client.home_phone || this.state.client.email || this.state.client.address || this.state.client.address2 || this.state.client.city || this.state.client.state_province || this.state.client.postal_code) &&
-              <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any contact info.</Text>
-            }
-
-            {this.state.client.cell_phone &&
-              <View style={styles.contactInfoRow}>
-                <View style={styles.contactInfoLeft}>
-                  <Text style={styles.contactInfoLabel}>Cell Phone:</Text>
-                </View>
-                <View style={styles.contactInfoRight}>
-                  <Text style={styles.contactInfoText}>
-                    {this.state.client.cell_phone}
-                  </Text>
-                </View>
-              </View>
-            }
-
-
-            {this.state.client.home_phone &&
-              <View style={styles.contactInfoRow}>
-                <View style={styles.contactInfoLeft}>
-                  <Text style={styles.contactInfoLabel}>Home Phone:</Text>
-                </View>
-                <View style={styles.contactInfoRight}>
-                  <Text style={styles.contactInfoText}>
-                    {this.state.client.home_phone}
-                  </Text>
-                </View>
-              </View>
-            }
-
-            {this.state.client.email &&
-              <View style={styles.contactInfoRow}>
-                <View style={styles.contactInfoLeft}>
-                  <Text style={styles.contactInfoLabel}>Email Address:</Text>
-                </View>
-                <View style={styles.contactInfoRight}>
-                  <Text style={styles.contactInfoText}>
-                    {this.state.client.email}
-                  </Text>
-                </View>
-              </View>
-            }
-
-            {(this.state.client.address || this.state.client.address2 || this.state.client.city || this.state.client.state_province || this.state.client.postal_code) &&
-              <View style={styles.contactInfoRow}>
-                <View style={styles.contactInfoLeft}>
-                  <Text style={styles.contactInfoLabel}>Address:</Text>
-                </View>
-                <View style={styles.contactInfoRight}>
-                  <Text style={styles.contactInfoText}>
-                    {this.state.client.address}
-                    {(this.state.client.address2) ? "\n" + this.state.client.address2 : ""}
-                    {
-                      "\n" + this.state.client.city +
-                      ((this.state.client.state_province) ? ", " + this.state.client.state_province : "") +
-                      ((this.state.client.postal_code) ? ", " + this.state.client.postal_code : "")
-                    }
-                  </Text>
-                </View>
-              </View>
-            }
-          </View>
-          {/* END ADDRESS SECTION */}
-
-
-          {/* BEGIN NOTES SECTION */}
-          <View>
-            <ListSeparator>
-              <Text>Notes</Text>
-            </ListSeparator>
-
-            {(!this.state.notes || this.state.notes.length <= 0) &&
-              <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any notes yet.</Text>
-            }
-
-            {(this.state.notes && this.state.notes.length > 0) &&
-              <View>
-                <TouchableOpacity onPress={() => { this.props.navigation.navigate('NoteEntry', { 'pid': this.state.client.pid, 'note': this.state.notes[0] }) }}>
-                  <NoteListItem note={this.state.notes[0]}  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => { this.props.navigation.navigate('AllNotes', { 'notes': this.state.notes, 'pid': this.state.client.pid }) }}>
-                  <Text style={{ fontSize: 17, color: Colors.blue, textAlign: 'right', padding: 5, marginVertical: 5 }}>See All Notes</Text>
-                </TouchableOpacity>
-              </View>
-            }
-
-          </View>
-          {/* END NOTES SECTION */}
-        </View>
-        {
-          this.state.loading &&
-          <LoadingOverlay />
-        }
-      </ ScrollView >
+          {
+            this.state.loading &&
+            <LoadingOverlay />
+          }
+        </ScrollView>
+      </SafeAreaView >
     );
   }
 

@@ -6,6 +6,7 @@ import {
   RefreshControl,
   View,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import ClientList from '../models/ClientList';
 import ScrollContainer from '../components/ScrollContainer'
