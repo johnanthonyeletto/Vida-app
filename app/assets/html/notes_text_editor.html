@@ -47,6 +47,7 @@
         .ql-container {
             padding-top: 50px;
             font-size: 1em;
+            border: none !important;
         }
     </style>
 </head>
@@ -62,11 +63,15 @@
     <script>
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Take notes for your meeting here.',
+            placeholder: 'You can take notes on your client here.',
         });
 
         quill.on('text-change', function (delta, oldDelta, source) {
             window.postMessage(quill.root.innerHTML.split('  ').join(' &nbsp;'));
+        });
+
+        document.addEventListener("message", function (data) {
+            quill.root.innerHTML = data.data;
         });
 
     </script>

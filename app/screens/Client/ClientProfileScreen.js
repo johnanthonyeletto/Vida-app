@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import EventCard from '../../components/events/EventCard';
 import Environment from '../../constants/Environment';
 import LoadingOverlay from '../../components/loadingOverlay';
+import NoteListItem from '../../components/NoteListItem';
 
 let _this = null;
 
@@ -54,7 +55,7 @@ export default class ClientProfileScreen extends Component {
 
     var client = new Client();
     client.getClient(pid).then(foundClient => {
-      this.setState({ loading: false, client: foundClient, nextMeeting: foundClient.next_meeting[0], relationships: foundClient.relationships });
+      this.setState({ loading: false, client: foundClient, nextMeeting: foundClient.next_meeting[0], relationships: foundClient.relationships, notes: foundClient.notes });
     });
   }
 
@@ -236,6 +237,31 @@ export default class ClientProfileScreen extends Component {
             }
           </View>
           {/* END ADDRESS SECTION */}
+
+
+          {/* BEGIN NOTES SECTION */}
+          <View>
+            <ListSeparator>
+              <Text>Notes</Text>
+            </ListSeparator>
+
+            {(!this.state.notes || this.state.notes.length <= 0) &&
+              <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any notes yet.</Text>
+            }
+
+            {(this.state.notes && this.state.notes.length > 0) &&
+              <View>
+                <TouchableOpacity onPress={() => { this.props.navigation.navigate('NoteEntry', { 'pid': this.state.client.pid, 'note': this.state.notes[0] }) }}>
+                  <NoteListItem note={this.state.notes[0]} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { alert("See all notes") }}>
+                  <Text style={{ fontSize: 17, color: Colors.blue, textAlign: 'right', padding: 5, marginVertical: 5 }}>See All Notes</Text>
+                </TouchableOpacity>
+              </View>
+            }
+
+          </View>
+          {/* END NOTES SECTION */}
         </View>
         {
           this.state.loading &&
@@ -286,7 +312,7 @@ export default class ClientProfileScreen extends Component {
             navigation.navigate('AddRelationship', { 'pid': _this.state.client.pid });
             break;
           case 3:
-            navigation.navigate('Notes', { 'pid': _this.state.client.pid });
+            navigation.navigate('NoteEntry', { 'pid': _this.state.client.pid });
             break;
           case 4:
             navigation.navigate('AddClient', { 'pid': _this.state.client.pid });

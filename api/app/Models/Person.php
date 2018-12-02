@@ -45,7 +45,7 @@ class Person extends Model
 
     public function notes()
     {
-        return $this->hasMany("App\Models\Note", 'client_id', 'pid');
+        return $this->hasMany("App\Models\Note", 'client_id', 'pid')->orderBy('updated_at', 'desc');
     }
 
 }
