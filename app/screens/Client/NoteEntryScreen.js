@@ -5,7 +5,9 @@ import Client from '../../models/Client';
 import LoadingOverlay from '../../components/loadingOverlay';
 import Environment from '../../constants/Environment';
 
-const NotesHTML = require(Environment.API_HOST + '/notes_text_editor.html');
+
+const NotesHTMLSource = Environment.API_HOST + '/notes_text_editor.html';
+// const NotesHTML = require(NotesHTMLSource);
 
 let _this = null;
 
@@ -61,7 +63,7 @@ export default class NoteEntryScreen extends Component {
       <SafeAreaView style={{ flex: 1 }}>
         <WebView
           originWhitelist={['*']}
-          source={NotesHTML}
+          source={{ uri: NotesHTMLSource }}
           style={{ backgroundColor: Colors.white, flex: 1, }}
           onMessage={(event) => this.setState({ note: event.nativeEvent.data })}
           ref={(webView) => this.webView = webView}
