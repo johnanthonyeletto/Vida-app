@@ -3,8 +3,9 @@ import { SafeAreaView, Text, TouchableOpacity, WebView, Alert } from 'react-nati
 import Colors from '../../constants/Colors';
 import Client from '../../models/Client';
 import LoadingOverlay from '../../components/loadingOverlay';
+import Environment from '../../constants/Environment';
 
-const NotesHTML = require('../../assets/html/notes_text_editor.html');
+const NotesHTML = require(Environment.API_HOST + '/notes_text_editor.html');
 
 let _this = null;
 
