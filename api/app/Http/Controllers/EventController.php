@@ -49,15 +49,30 @@ class EventController extends Controller
 
     // We want a function to update a specific meeting
 
-    public function updateEvent($event_id, $payload){
+    public function updateEvent(){
 
+        $validatedData = $this->validate($this->request, [
+            'event_id' => 'numeric|required',
+            'pid' => 'numeric|required',
+            'event_datetime' => 'date|required',
+            'location' => 'max:255|string|nullable',
+            'notes' => 'max:255|string|nullable',
+        ]);
+
+        $event = Event::findOrFail($this->request->input('event_id'));
+        $event->event_datetime = trim($this->request->input('event_datetime'));
+        $event->location = trim($this->request->input('location'));
+        $event->notes = trim($this->request->input('notes'));
+
+        $event->save();
+
+        return response()->json($event->event_id);
 
     }
 
     // We want a function to add a specific meeting
 
-    public function addEvent()
-    {
+    public function addEvent(){
 
         $validatedData = $this->validate($this->request, [
             'event_id' => 'numeric|nullable',
@@ -70,7 +85,7 @@ class EventController extends Controller
         $event = Event::findOrNew($this->request->input('event_id'));
 
         $event->pid = trim($this->request->input('pid'));
-        $event->event_datetime = trim($this->request->input('event_datetime'));
+        $event->event_datetime = $this->request->input('event_datetime');
         $event->location = trim($this->request->input('location'));
         $event->notes = trim($this->request->input('notes'));
 

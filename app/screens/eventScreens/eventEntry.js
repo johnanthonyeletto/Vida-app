@@ -33,6 +33,8 @@ export default class EventEntry extends React.Component {
       showDatePicker: false,
       showClientPicker: false,
       chosenClient: null,
+      fname:"Choose A",
+      lname:"Client",
     };
 
     this.setDate = this.setDate.bind(this);
@@ -47,11 +49,16 @@ export default class EventEntry extends React.Component {
       this.setState({ inactiveClients: clients.inactive })
     });
   }
+  getName(){
 
-  setDate(newDate) {
-    this.setState({chosenDate: newDate})
-    console.log(this.state.chosenDate);
   }
+  setDate(newDate) {
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+    this.setState({chosenDate: newDate})
+    console.log(this.state.chosenDate.toLocaleString('en-US',options));
+  }
+
+
 
   // mAKE SURE YOU PASS THE CLIENT PID SO YOU CAN ADD VIA THE API
   render() {
@@ -61,11 +68,19 @@ export default class EventEntry extends React.Component {
         <Picker
           selectedValue={this.state.chosenClient}
 
-          onValueChange={(itemValue, itemIndex) => this.setState({chosenClient: itemValue})}>
+          onValueChange={(itemValue, itemIndex) => {
+            this.setState({ chosenClient: itemValue },  () =>{for (var i = 0; i < this.state.activeClients.length; i++) {
+              if (this.state.activeClients[i].pid == this.state.chosenClient){
+                this.setState({fname:this.state.activeClients[i].fname});
+                this.setState({lname:this.state.activeClients[i].lname});
+              }
+            }} );
+
+          }}>
           {this.state.activeClients.map((connection, i) => {
             return (
               <Picker.Item key={i}
-              label={connection.fname} value={connection.pid}
+              label={connection.fname+ " " + connection.lname} value={connection.pid}
               />
             );
           })}
@@ -86,7 +101,7 @@ export default class EventEntry extends React.Component {
 
           <TouchableOpacity onPress={() => this.setState({showClientPicker: !this.state.showClientPicker,showDatePicker: false})} >
             <Text>Client: </Text>
-            <Text> {(this.state.chosenClient)} </Text>
+            <Text> {(this.state.fname + " " + this.state.lname)} </Text>
           </TouchableOpacity>
           {showClientPicker}
 
@@ -116,6 +131,9 @@ export default class EventEntry extends React.Component {
             <TouchableOpacity onPress={() => {this._save();}}>
               <Text style={{color:Colors.blue, marginRight: 25}}>Accept</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => {console.log(this.state.chosenClient);}}>
+                <Text style={{color:"rebeccapurple", marginRight: 25}}>Test this shitty fucking picker</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => console.log(this.state)}>
               <Text style={{color:Colors.red, marginLeft: 25}}>Cancel</Text>
             </TouchableOpacity>
@@ -133,6 +151,7 @@ export default class EventEntry extends React.Component {
       }
       // if (this.state.pid == null) {
       // this.setState({ loading: true });
+      this.state.chosenDate.setHours(this.state.chosenDate.getHours()-5);
       var event = new Event();
       event.event_id = this.state.event_id;
       event.pid = this.state.chosenClient;
