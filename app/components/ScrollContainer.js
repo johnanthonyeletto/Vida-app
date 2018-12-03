@@ -14,7 +14,7 @@ export default class ScrollContainer extends React.Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, }}>
-                <ScrollView style={[styles.container, this.props.style]} refreshControl={this.props.refreshControl} keyboardShouldPersistTaps='handled' >
+                <ScrollView style={[styles.container, this.props.style]} refreshControl={this.props.refreshControl} keyboardShouldPersistTaps='handled' showsVerticalScrollIndicator={false}>
                     {this.props.children}
                 </ScrollView>
             </SafeAreaView>

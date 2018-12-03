@@ -50,14 +50,14 @@ export default class eventView extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.eventAddContainer}>
+      <ScrollContainer style={styles.eventAddContainer}>
         <EventItem sEvent={this.state.event}/>
         <Button title="Update" onPress={()=>console.log("update pls")} />
         <Button title="Delete" color={Colors.red} onPress={()=>{
         this.event.deleteEvent(this.event_id);
         this.props.navigation.goBack();
         }} />
-      </ScrollView>
+      </ScrollContainer>
     );
   }
 

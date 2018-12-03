@@ -26,7 +26,11 @@ export default class NoteListItem extends Component {
             <View style={styles.note}>
                 <View style={styles.noteLeft}>
                     {/* Strip out all html tags and remove excess space. */}
-                    <Text style={styles.notePreview}>{this.props.note.note.replace(/<(?:.|\n)*?>/gm, ' ').replace(/\s\s+/g, ' ').substr(0, 40).trim()}...</Text>
+                    <Text style={styles.notePreview}>
+                        {this.props.note.note.replace(/<(?:.|\n)*?>/gm, ' ').replace(/\s\s+/g, ' ').trim().substr(0, 40)}
+                        {/* Only show '...' if there's actually more content to display. */}
+                        {(this.props.note.note.replace(/<(?:.|\n)*?>/gm, ' ').replace(/\s\s+/g, ' ').trim().length >= 40) ? "..." : ""}
+                    </Text>
                     <Text style={styles.noteDate}>{this._parseTimestamp(this.props.note.updated_at)}</Text>
                 </View>
                 <View style={styles.noteRight}>
