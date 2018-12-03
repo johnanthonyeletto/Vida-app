@@ -95,8 +95,6 @@ export default class EventEntry extends React.Component {
     return (
       <DismissKeyboard>
         <View style={styles.eventAddContainer}>
-          // Need to deal with the datePicker not pushing everything down far enough
-          // Also need to represent the time instead of just the date
 
 
           <TouchableOpacity onPress={() => this.setState({showClientPicker: !this.state.showClientPicker,showDatePicker: false})} >
@@ -130,9 +128,6 @@ export default class EventEntry extends React.Component {
           <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 100}}>
             <TouchableOpacity onPress={() => {this._save();}}>
               <Text style={{color:Colors.blue, marginRight: 25}}>Accept</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {console.log(this.state.chosenClient);}}>
-                <Text style={{color:"rebeccapurple", marginRight: 25}}>Test this shitty fucking picker</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => console.log(this.state)}>
               <Text style={{color:Colors.red, marginLeft: 25}}>Cancel</Text>
