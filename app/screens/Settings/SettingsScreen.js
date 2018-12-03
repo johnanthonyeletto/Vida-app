@@ -9,6 +9,7 @@ import Colors from '../../constants/Colors';
 import SettingsItem from '../../components/settings/SettingsItem';
 import SettingsGroupSeparator from '../../components/settings/SettingsGroupSeparator';
 import User from '../../models/User';
+import ScrollContainer from '../../components/ScrollContainer';
 
 const app = require('../../app.json');
 
@@ -36,7 +37,7 @@ export default class SettingsScreen extends React.Component {
   // All on onPress are set to logout for now just so the warning about them being null goes away.
   render() {
     return (
-      <ScrollView>
+      <ScrollContainer>
         <SettingsGroupSeparator title={"Accounts"} />
         <SettingsItem title={"Edit My Account"} onPress={() => { this.props.navigation.navigate("EditAccount") }} />
         {this.state.super_coach &&
@@ -55,7 +56,7 @@ export default class SettingsScreen extends React.Component {
           <Text style={{ color: Colors.grey }}>{app.expo.name} {app.expo.version}</Text>
           <Text style={{ color: Colors.grey }}>{'\u00A9'}{new Date().getFullYear()} Vida. All rights reserved.</Text>
         </View>
-      </ScrollView>
+      </ScrollContainer>
     );
   }
 
