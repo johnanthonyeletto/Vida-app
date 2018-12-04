@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import EventItem from '../components/EventItem';
 import ScrollContainer from '../components/ScrollContainer';
+import LoadingOverlay from '../components/loadingOverlay';
 
 export default class MeetingsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -39,6 +40,7 @@ export default class MeetingsScreen extends React.Component {
     this.state = {
       events: [],
       refreshing: false,
+      loading: true,
     }
 
   }
@@ -57,7 +59,7 @@ export default class MeetingsScreen extends React.Component {
     var eventList = new EventList();
     eventList.getEvents().then(foundEvents => {
       var events = foundEvents;
-      this.setState({ events: events })
+      this.setState({ events: events, loading: false, })
     });
   }
   // Need a past/future toggle.
@@ -67,6 +69,13 @@ export default class MeetingsScreen extends React.Component {
 
 
   render() {
+    if (this.state.loading) {
+      return (
+        <LoadingOverlay />
+      )
+    }
+
+
     if (this.state.events.length < 1) {
       return (
         <ScrollContainer

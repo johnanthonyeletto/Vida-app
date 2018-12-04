@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View, Alert } from 'react-native';
 import FormGroup from '../../components/forms/FormGroup';
 import LoadingOverlay from '../../components/loadingOverlay';
 import ScrollContainer from '../../components/ScrollContainer';
@@ -111,18 +111,36 @@ export default class EventEntryScreen extends React.Component {
             onChangeText={(notes) => this.setState({ notes })}
             value={this.state.notes} />
 
-          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 100 }}>
+          {this.state.event_id &&
+            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 100 }}>
 
-            <TouchableOpacity onPress={() => {
-              this.event.deleteEvent(this.state.event_id).then(() => {
-                this.props.navigation.state.params.onNavigateBack();
-                this.props.navigation.goBack();
-              });
-            }} >
-              <Text style={{ color: Colors.red, marginLeft: 25 }}>Delete</Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                Alert.alert(
+                  'Delete Event?',
+                  'Are you sure you want to delete this event? This action cannot be undone.',
+                  [
+                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                    {
+                      text: 'OK', onPress: () => {
+                        this.setState({ loading: true });
+                        this.event.deleteEvent(this.state.event_id).then(() => {
+                          this.props.navigation.state.params.onNavigateBack();
+                          this.props.navigation.goBack();
+                          this.setState({ loading: false });
+                        });
+                      }
+                    },
+                  ],
+                  { cancelable: false }
+                )
 
-          </View>
+
+              }} >
+                <Text style={{ color: Colors.red, textAlign: 'center', fontSize: 20 }}>Delete Event</Text>
+              </TouchableOpacity>
+
+            </View>
+          }
           {this.state.loading &&
             <LoadingOverlay />
           }

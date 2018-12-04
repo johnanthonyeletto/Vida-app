@@ -4,7 +4,7 @@ import Client from '../../models/Client';
 import Colors from '../../constants/Colors';
 import ListSeparator from '../../components/ListSeparator';
 import { Ionicons } from '@expo/vector-icons';
-import EventCard from '../../components/events/EventCard';
+import EventItem from '../../components/EventItem';
 import Environment from '../../constants/Environment';
 import LoadingOverlay from '../../components/loadingOverlay';
 import NoteListItem from '../../components/NoteListItem';
@@ -118,7 +118,7 @@ export default class ClientProfileScreen extends Component {
                 <Text>Next Meeting</Text>
               </ListSeparator>
               {this.state.nextMeeting &&
-                <EventCard meeting={this.state.nextMeeting} />
+                <EventItem sEvent={this.state.nextMeeting} />
               }
 
               {
