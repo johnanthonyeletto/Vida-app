@@ -12,6 +12,9 @@ import NoteListItem from '../../components/NoteListItem';
 let _this = null;
 
 export default class ClientProfileScreen extends Component {
+
+
+
   static navigationOptions = ({ navigation }) => ({
     title: (navigation.getParam('coach_name') != null) ? navigation.getParam('coach_name').toString() + "'s Client" : null,
     headerTitleStyle: {
@@ -39,6 +42,7 @@ export default class ClientProfileScreen extends Component {
     };
 
   }
+
   _onRefresh = () => {
     this.setState({ refreshing: true });
     this.componentDidMount().then(() => {
@@ -318,7 +322,7 @@ export default class ClientProfileScreen extends Component {
             navigation.navigate('NoteEntry', { 'pid': _this.state.client.pid });
             break;
           case 4:
-            navigation.navigate('AddClient', { 'pid': _this.state.client.pid });
+            navigation.navigate('AddClient', { 'pid': _this.state.client.pid, });
             break;
           case 5:
             _this._markInactive().then(res => {

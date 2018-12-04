@@ -260,7 +260,12 @@ export default class AddClientScreen extends Component {
         }
 
         client.save().then(pid => {
-            this.props.navigation.navigate('ClientProfile', { 'pid': pid });
+            if (this.state.pid) {
+                this.props.navigation.goBack();
+            } else {
+                this.props.navigation.navigate('ClientProfile', { 'pid': pid });
+            }
+
             this.setState({ loading: false });
         }).catch((errorMessage) => {
             alert(errorMessage);

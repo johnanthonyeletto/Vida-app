@@ -18,6 +18,8 @@ import LoadingOverlay from '../components/loadingOverlay';
 
 const win = Dimensions.get('window');
 
+let _this = null;
+
 export default class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Clients',
@@ -47,6 +49,7 @@ export default class HomeScreen extends React.Component {
   }
 
   async componentDidMount() {
+    _this = this;
     var clientList = new ClientList();
     clientList.getClients().then(foundClients => {
       var clients = foundClients;
