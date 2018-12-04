@@ -97,7 +97,7 @@ export default class MeetingsScreen extends React.Component {
               height: 50,
               borderRadius: 5,
               width: 200,
-            }} onPress={() => { this.props.navigation.navigate('EventEntry') }}>
+            }} onPress={() => { this.props.navigation.navigate('EventEntry', { onNavigateBack: this.navRefresh }) }}>
               <Text style={{
                 color: Colors.white,
                 fontSize: 18,
