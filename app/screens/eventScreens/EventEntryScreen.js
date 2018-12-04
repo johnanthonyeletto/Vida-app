@@ -25,11 +25,17 @@ export default class EventEntryScreen extends React.Component {
 
   constructor(props) {
     super(props);
+
+    // This will round the current date to the nearest 5 minutes.
+    var coeff = 1000 * 60 * 5;
+    var current_date = new Date();
+    var rounded_date = new Date(Math.round(current_date.getTime() / coeff) * coeff);
+
     this.state = {
       event: [],
       loading: false,
       event_id: null,
-      event_datetime: new Date().toISOString().slice(0, 19).replace('T', ' ').toString(),
+      event_datetime: rounded_date.toISOString().slice(0, 19).replace('T', ' ').toString(),
       pid: null,
       location: null,
       notes: null
