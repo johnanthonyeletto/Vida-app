@@ -9,6 +9,7 @@ export default class APIRequest {
 
     handleErrors(response) {
         if (!response.ok) {
+            console.error(response);
             throw new Error(response);
         }
         return response;
@@ -17,7 +18,7 @@ export default class APIRequest {
     async goNoAuth() {
         var requestRoute = this.route;
         var requestMethod = this.method;
-        let result = fetch(Environment.API_HOST + requestRoute, {
+        return fetch(Environment.API_HOST + requestRoute, {
             method: requestMethod,
             headers: {
                 Accept: 'application/json',
@@ -25,15 +26,13 @@ export default class APIRequest {
             },
             body: JSON.stringify(this.body),
         }).then(response => this.handleErrors(response)).then(response => {
-            let data = response.json().then(res => {
+            return response.json().then(res => {
                 return res;
             });
-            return data;
         }).catch(error => {
-            console.log(error);
+            throw new Error(error);
         });
 
-        return result;
     }
 
     async go() {
@@ -43,7 +42,7 @@ export default class APIRequest {
 
         var requestRoute = this.route;
         var requestMethod = this.method;
-        let result = Auth.getToken().then(token => {
+        return Auth.getToken().then(token => {
             return fetch(Environment.API_HOST + requestRoute, {
                 method: requestMethod,
                 headers: {
@@ -53,17 +52,14 @@ export default class APIRequest {
                 },
                 body: JSON.stringify(this.body),
             }).then(response => this.handleErrors(response)).then(response => {
-                let data = response.json().then(res => {
+                return response.json().then(res => {
                     return res;
                 });
-                return data;
             }).catch(error => {
-                console.log(error);
+                throw new Error(error);
             });
         }).catch(error => {
             throw new Error(error);
         });
-
-        return result;
     }
 }

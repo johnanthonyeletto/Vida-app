@@ -15,7 +15,7 @@ import AllNotesScreen from '../screens/Client/AllNotesScreen';
 import MeetingsScreen from '../screens/MeetingsScreen';
 import EventView from '../screens/eventScreens/eventView';
 import EventEntry from '../screens/eventScreens/eventEntry';
-import EventUpdate from '../screens/eventScreens/eventUpdate';
+import EventEntryScreen from '../screens/eventScreens/EventEntryScreen';
 
 // SETTINGS SCREENS
 import SettingsScreen from '../screens/Settings/SettingsScreen';
@@ -84,7 +84,7 @@ const LinksStack = createStackNavigator({
   Meetings: MeetingsScreen,
   EView: EventView,
   EEntry: EventEntry,
-  EUpdate: EventUpdate,
+  EventEntry: EventEntryScreen,
 }, {
     defaultNavigationOptions: defaultNavigationOptions
   });

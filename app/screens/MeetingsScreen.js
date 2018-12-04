@@ -78,7 +78,7 @@ export default class MeetingsScreen extends React.Component {
         <FlatList
           data={this.state.events}
           renderItem={({ item }) =>
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('EUpdate', { onNavigateBack: this.navRefresh, 'eventPKG': item }); }
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventEntry', { onNavigateBack: this.navRefresh, 'eventPKG': item }); }
             }>
               <EventItem sEvent={item} />
             </TouchableOpacity>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, Picker, Keyboard, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Picker, DatePickerIOS, TouchableOpacity } from 'react-native';
 import Colors from '../../constants/Colors';
+
+const Months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export default class FormGroup extends Component {
   constructor(props) {
@@ -8,11 +10,23 @@ export default class FormGroup extends Component {
     this.state = {
       showPicker: false,
     };
+
+    this.setDate = this.setDate.bind(this);
+  }
+
+  setDate(newDate) {
+    newDate.setHours(newDate.getHours() - 5);
+    var timestamp = this._toTimestamp(newDate);
+    this.props.onChangeText(timestamp);
   }
 
   render() {
     var valueIndex = (this.props.options != null && this.props.value != null) ? this.props.options.findIndex(p => p.value == this.props.value) : 0;
 
+    var date;
+    if (this.props.type == "date" && this.props.value) {
+      date = this._parseTimestamp(this.props.value);
+    }
 
     return (
       <View>
@@ -23,7 +37,7 @@ export default class FormGroup extends Component {
           </View>
 
           <View style={styles.inputContainer}>
-            {this.props.type != "picker" &&
+            {(this.props.type != "picker" && this.props.type != "date") &&
               <TextInput
                 onChangeText={this.props.onChangeText}
                 value={this.props.value}
@@ -45,15 +59,21 @@ export default class FormGroup extends Component {
               />
             }
 
-            {this.props.type == "picker" &&
+            {(this.props.type == "picker" || this.props.type == "date") &&
               <TouchableOpacity onPress={() => { this._textInputFocus() }} style={styles.input}>
-                <Text
-                //onChangeText={this.props.onChangeText}
-                //value={this.props.value}
-                >
-                  {/* {(this.state.selected != null) ? this.state.selected : this.props.placeholder} */}
-                  {(this.props.options != null) ? this.props.options[valueIndex].label : this.props.placeholder}
-                </Text>
+                {(this.props.type == "picker") &&
+                  <Text>
+                    {(this.props.options != null) ? this.props.options[valueIndex].label : this.props.placeholder}
+                  </Text>
+                }
+                {(this.props.type == "date" && this.props.value) &&
+                  <Text>
+                    {
+                      Months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear() + "  " + ((date.getHours() + 11) % 12 + 1) + ":" + date.getMinutes() + " " + ((date.getHours() < 12) ? "AM" : "PM")
+                    }
+                  </Text>
+                }
+
               </TouchableOpacity>
             }
 
@@ -72,11 +92,32 @@ export default class FormGroup extends Component {
             })}
           </Picker>
         }
+
+
+        {(this.props.type == "date" && this.state.showPicker == true && this.props.value != null) &&
+          <DatePickerIOS
+            mode="datetime"
+            date={this._parseTimestamp(this.props.value)}
+            onDateChange={this.setDate}
+            minuteInterval={5}
+          />
+        }
       </View>
     );
   }
+  _parseTimestamp(timestamp) {
+    // Split timestamp into [ Y, M, D, h, m, s ]
+    var t = timestamp.split(/[- :]/);
+    // Apply each element to the Date function
+    return new Date(t[0], t[1] - 1, t[2], t[3], t[4], t[5]);
+  }
+
+  _toTimestamp(date) {
+    return date.toISOString().slice(0, 19).replace('T', ' ').toString();
+  }
+
   _textInputFocus() {
-    if (this.props.type == "picker") {
+    if (this.props.type == "picker" || this.props.type == "date") {
       this.setState({ showPicker: !this.state.showPicker });
     }
   }

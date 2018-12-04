@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Event;
-use DB;
+use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
@@ -39,17 +38,19 @@ class EventController extends Controller
 
     // We want a function to get a specific meeting
 
-    public function getEvent($event_id){
-      $event = $this->request->auth->Meetings()->where('event_id', $event_id)->first();
-      if ($event == null) {
-          abort(404, 'This event could not be found.');
-      }
-      return response()->json($event);
+    public function getEvent($event_id)
+    {
+        $event = $this->request->auth->Meetings()->where('event_id', $event_id)->first();
+        if ($event == null) {
+            abort(404, 'This event could not be found.');
+        }
+        return response()->json($event);
     }
 
     // We want a function to update a specific meeting
 
-    public function updateEvent(){
+    public function updateEvent()
+    {
 
         $validatedData = $this->validate($this->request, [
             'event_id' => 'numeric|required',
@@ -72,7 +73,8 @@ class EventController extends Controller
 
     // We want a function to add a specific meeting
 
-    public function addEvent(){
+    public function addEvent()
+    {
 
         $validatedData = $this->validate($this->request, [
             'event_id' => 'numeric|nullable',
@@ -108,9 +110,10 @@ class EventController extends Controller
 
     // We want a function to delete a specific meeting
 
-    public function deleteEvent($event_id){
-      Event::find($event_id)->delete();
-      return response()->json("deleted");
+    public function deleteEvent($event_id)
+    {
+        Event::find($event_id)->delete();
+        return response()->json("deleted");
     }
 
 }

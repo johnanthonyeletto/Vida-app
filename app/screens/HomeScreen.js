@@ -53,6 +53,8 @@ export default class HomeScreen extends React.Component {
       this.setState({ activeClients: clients.active });
       this.setState({ inactiveClients: clients.inactive });
       this.setState({ isLoading: false });
+    }).catch(error => {
+      alert(error);
     });
   }
 
