@@ -69,7 +69,7 @@ export default class FormGroup extends Component {
                 {(this.props.type == "date" && this.props.value) &&
                   <Text>
                     {
-                      Months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear() + "  " + ((date.getHours() + 11) % 12 + 1) + ":" + date.getMinutes() + " " + ((date.getHours() < 12) ? "AM" : "PM")
+                      Months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear() + "  " + ((date.getHours() + 11) % 12 + 1) + ":" + ((date.getMinutes < 10) ? '0' : '') + date.getMinutes() + " " + ((date.getHours() < 12) ? "AM" : "PM")
                     }
                   </Text>
                 }
@@ -117,7 +117,7 @@ export default class FormGroup extends Component {
   }
 
   _textInputFocus() {
-    if (this.props.type == "picker" || this.props.type == "date") {
+    if ((this.props.type == "picker" || this.props.type == "date") && !this.props.disabled) {
       this.setState({ showPicker: !this.state.showPicker });
     }
   }

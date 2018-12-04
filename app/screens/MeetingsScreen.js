@@ -18,7 +18,7 @@ import ScrollContainer from '../components/ScrollContainer';
 
 export default class MeetingsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Upcoming Meetings',
+    title: 'Meetings',
     headerTitleStyle: {
       color: Colors.blue
     },
@@ -26,7 +26,7 @@ export default class MeetingsScreen extends React.Component {
       backgroundColor: Colors.white
     },
     headerRight: (
-      <TouchableOpacity onPress={() => { navigation.navigate('EEntry', { onNavigateBack: _this.navRefresh }) }}>
+      <TouchableOpacity onPress={() => { navigation.navigate('EventEntry', { onNavigateBack: _this.navRefresh }) }}>
         <Ionicons name="ios-add" size={32} style={{ marginRight: 15 }} color={Colors.blue} />
       </TouchableOpacity>
     ),
@@ -67,6 +67,48 @@ export default class MeetingsScreen extends React.Component {
 
 
   render() {
+    if (this.state.events.length < 1) {
+      return (
+        <ScrollContainer
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }>
+          <View style={{ alignItems: 'center', alignContent: 'center', }}>
+            <Ionicons name="ios-calendar"
+              size={150}
+              style={{
+                alignSelf: 'center',
+                marginBottom: 0,
+                marginTop: 20,
+              }}
+              color={Colors.lightGrey} />
+            <Text style={{ fontWeight: '200', fontSize: 30, marginTop: 0, textAlign: 'center', color: Colors.grey }}>
+              It seems like you don't have any meetings scheduled yet.
+            </Text>
+            <TouchableOpacity style={{
+              backgroundColor: Colors.blue,
+              marginTop: 20,
+              padding: 5,
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 50,
+              borderRadius: 5,
+              width: 200,
+            }} onPress={() => { this.props.navigation.navigate('EventEntry') }}>
+              <Text style={{
+                color: Colors.white,
+                fontSize: 18,
+              }}>Add A Meeting</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollContainer >
+      )
+    }
+
+
     return (
       <ScrollContainer
         refreshControl={

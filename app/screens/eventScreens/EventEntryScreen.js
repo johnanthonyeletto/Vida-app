@@ -1,23 +1,17 @@
 import React from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  Keyboard,
-  TouchableWithoutFeedback
-} from 'react-native';
+import { Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import FormGroup from '../../components/forms/FormGroup';
+import LoadingOverlay from '../../components/loadingOverlay';
 import ScrollContainer from '../../components/ScrollContainer';
 import Colors from '../../constants/Colors';
 import ClientList from '../../models/ClientList';
 import Event from '../../models/Event';
-import FormGroup from '../../components/forms/FormGroup';
-import LoadingOverlay from '../../components/loadingOverlay';
 
 let _this = null;
 
 export default class EventEntryScreen extends React.Component {
   static navigationOptions = {
-    title: 'Update Event',
+    // title: 'Update Event',
     headerRight: (
       <TouchableOpacity onPress={() => {
         _this._save();
@@ -33,9 +27,12 @@ export default class EventEntryScreen extends React.Component {
     super(props);
     this.state = {
       event: [],
-      inactiveClients: [],
-      activeClients: [],
       loading: false,
+      event_id: null,
+      event_datetime: new Date().toISOString().slice(0, 19).replace('T', ' ').toString(),
+      pid: null,
+      location: null,
+      notes: null
     };
   }
 
@@ -59,9 +56,14 @@ export default class EventEntryScreen extends React.Component {
 
     var clientList = new ClientList();
     clientList.getClients().then(foundClients => {
-      var clients = foundClients;
-      this.setState({ activeClients: clients.active })
-      this.setState({ inactiveClients: clients.inactive })
+      var clients = foundClients.active;
+      var options = [];
+
+      clients.map((cli, i) => {
+        options.push({ label: cli.fname + " " + cli.lname, value: cli.pid });
+      });
+
+      this.setState({ clientOptions: options, pid: options[0].value });
     });
     this.event = new Event();
   }
@@ -71,6 +73,15 @@ export default class EventEntryScreen extends React.Component {
     return (
       <DismissKeyboard>
         <ScrollContainer>
+          <FormGroup
+            onChangeText={(pid) => this.setState({ pid })}
+            value={this.state.pid}
+            placeholder={"Client"}
+            type={"picker"}
+            options={this.state.clientOptions}
+            disabled={((this.state.event_id) ? true : false)}
+          />
+
           <FormGroup
             type={"date"}
             value={this.state.event_datetime}
@@ -97,7 +108,7 @@ export default class EventEntryScreen extends React.Component {
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 100 }}>
 
             <TouchableOpacity onPress={() => {
-              this.event.deleteEvent(this.state.event.event_id).then(() => {
+              this.event.deleteEvent(this.state.event_id).then(() => {
                 this.props.navigation.state.params.onNavigateBack();
                 this.props.navigation.goBack();
               });
