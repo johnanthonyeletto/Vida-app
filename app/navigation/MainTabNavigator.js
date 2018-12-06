@@ -16,6 +16,7 @@ import MeetingsScreen from '../screens/MeetingsScreen';
 import EventView from '../screens/eventScreens/eventView';
 import EventEntry from '../screens/eventScreens/eventEntry';
 import EventEntryScreen from '../screens/eventScreens/EventEntryScreen';
+import DummyEventEntryScreen from '../screens/eventScreens/DummyEventEntryScreen';
 
 // SETTINGS SCREENS
 import SettingsScreen from '../screens/Settings/SettingsScreen';
@@ -85,6 +86,7 @@ const LinksStack = createStackNavigator({
   EView: EventView,
   EEntry: EventEntry,
   EventEntry: EventEntryScreen,
+  DEventEntry: DummyEventEntryScreen,
 }, {
     defaultNavigationOptions: defaultNavigationOptions
   });
