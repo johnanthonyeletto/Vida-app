@@ -16,7 +16,7 @@ export default class ClientProfileScreen extends Component {
 
 
   static navigationOptions = ({ navigation }) => ({
-    title: (navigation.getParam('coach_name') != null) ? navigation.getParam('coach_name').toString() + "'s Client" : null,
+    title: (navigation.getParam('coach_name') != null) ? navigation.getParam('coach_name').toString() + "'s Client" : (navigation.getParam('page_title') != null) ? navigation.getParam('page_title') : null,
     headerTitleStyle: {
       color: Colors.white
     },
@@ -149,7 +149,14 @@ export default class ClientProfileScreen extends Component {
                   </View>
                   {this.state.relationships.map((connection, i) => {
                     return (
-                      <TouchableOpacity key={i} style={{ alignItems: 'center' }} >
+                      <TouchableOpacity key={i} style={{ alignItems: 'center' }} onPress={() => {
+                        // this.props.navigation.navigate('ClientProfile', { 'pid': connection.pid });
+                        this.props.navigation.navigate({
+                          routeName: 'ClientProfile',
+                          params: { 'pid': connection.pid, 'page_title': this.state.client.fname + " " + this.state.client.lname + "'s " + connection.pivot.relationshiptoclient },
+                          key: 'ClientProfile' + connection.pid
+                        });
+                      }}>
                         <Image
                           style={styles.circleRelationshipButton}
                           source={{
