@@ -309,22 +309,22 @@ export default class ClientProfileScreen extends Component {
 
   _showMoreOptions(navigation) {
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Add Meeting', 'Add Relationship', 'Add A Note', 'Edit Client', (_this.state.client.isActive) ? 'Mark Client Inactive' : 'Mark Client Active'],
+      options: ['Cancel', 'Add Relationship', 'Add A Note', 'Edit Client', (_this.state.client.isActive) ? 'Mark Client Inactive' : 'Mark Client Active'],
       cancelButtonIndex: 0,
       destructiveButtonIndex: 5,
     },
       (buttonIndex) => {
         switch (buttonIndex) {
-          case 2:
+          case 1:
             navigation.navigate('AddRelationship', { 'pid': _this.state.client.pid });
             break;
-          case 3:
+          case 2:
             navigation.navigate('NoteEntry', { 'pid': _this.state.client.pid });
             break;
-          case 4:
+          case 3:
             navigation.navigate('AddClient', { 'pid': _this.state.client.pid, });
             break;
-          case 5:
+          case 4:
             _this._markInactive().then(res => {
               navigation.navigate("Home");
             });
