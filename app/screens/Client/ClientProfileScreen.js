@@ -57,6 +57,9 @@ export default class ClientProfileScreen extends Component {
     const { navigation } = this.props;
     const pid = navigation.getParam('pid', 'NONE');
 
+    const isRelationship = navigation.getParam('relationship', false);
+    this.setState({ isRelationship });
+
     var client = new Client();
     client.getClient(pid).then(foundClient => {
       this.setState({ loading: false, client: foundClient, nextMeeting: foundClient.next_meeting[0], relationships: foundClient.relationships, notes: foundClient.notes });
@@ -111,73 +114,75 @@ export default class ClientProfileScreen extends Component {
           <View style={styles.clientDetails}>
 
             {/* BEGIN NEXT EVENT SECTION */}
+            {!this.state.isRelationship &&
 
+              <View>
+                <ListSeparator>
+                  <Text>Next Meeting</Text>
+                </ListSeparator>
+                {this.state.nextMeeting &&
+                  <EventItem sEvent={this.state.nextMeeting} />
+                }
 
-            <View>
-              <ListSeparator>
-                <Text>Next Meeting</Text>
-              </ListSeparator>
-              {this.state.nextMeeting &&
-                <EventItem sEvent={this.state.nextMeeting} />
-              }
-
-              {
-                !this.state.nextMeeting &&
-                <Text style={{ color: Colors.grey, padding: 5 }}>You have no upcoming meetings with {this.state.client.fname} {this.state.client.lname}.</Text>
-              }
-            </View>
-
+                {
+                  !this.state.nextMeeting &&
+                  <Text style={{ color: Colors.grey, padding: 5 }}>You have no upcoming meetings with {this.state.client.fname} {this.state.client.lname}.</Text>
+                }
+              </View>
+            }
 
             {/* END NEXT EVENT SECTION */}
 
             {/* BEGIN RELATIONSHIPS SECTION */}
-            <View>
-              <ListSeparator>
-                <Text>Relationships</Text>
-              </ListSeparator>
-              {this.state.relationships &&
-                <ScrollView
-                  style={{ flexDirection: "row" }}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                >
-                  <View>
-                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph', { 'pid': _this.state.client.pid }) }} style={styles.circleRelationshipButton}>
-                      <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
-                    </TouchableOpacity>
-                    <Text style={{ alignSelf: 'center' }}>Graph</Text>
-                  </View>
-                  {this.state.relationships.map((connection, i) => {
-                    return (
-                      <TouchableOpacity key={i} style={{ alignItems: 'center' }} onPress={() => {
-                        // this.props.navigation.navigate('ClientProfile', { 'pid': connection.pid });
-                        this.props.navigation.navigate({
-                          routeName: 'ClientProfile',
-                          params: { 'pid': connection.pid, 'page_title': this.state.client.fname + " " + this.state.client.lname + "'s " + connection.pivot.relationshiptoclient },
-                          key: 'ClientProfile' + connection.pid
-                        });
-                      }}>
-                        <Image
-                          style={styles.circleRelationshipButton}
-                          source={{
-                            uri: Environment.API_HOST + connection.image_path
-                          }}
-                          resizeMode={'contain'}
-                        />
-                        <Text>{connection.fname} {connection.lname.substr(0, 1)}.</Text>
-                        <Text style={{ fontStyle: 'italic', fontSize: 10, }}>{connection.pivot.relationshiptoclient}</Text>
-
-
+            {!this.state.isRelationship &&
+              <View>
+                <ListSeparator>
+                  <Text>Relationships</Text>
+                </ListSeparator>
+                {this.state.relationships &&
+                  <ScrollView
+                    style={{ flexDirection: "row" }}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    <View>
+                      <TouchableOpacity onPress={() => { this.props.navigation.navigate('ClientGraph', { 'pid': _this.state.client.pid }) }} style={styles.circleRelationshipButton}>
+                        <Ionicons name="ios-git-merge" size={32} color={Colors.white} />
                       </TouchableOpacity>
-                    );
-                  })}
-                </ScrollView>
-              }
+                      <Text style={{ alignSelf: 'center' }}>Graph</Text>
+                    </View>
+                    {this.state.relationships.map((connection, i) => {
+                      return (
+                        <TouchableOpacity key={i} style={{ alignItems: 'center' }} onPress={() => {
+                          // this.props.navigation.navigate('ClientProfile', { 'pid': connection.pid });
+                          this.props.navigation.navigate({
+                            routeName: 'ClientProfile',
+                            params: { 'pid': connection.pid, 'page_title': this.state.client.fname + " " + this.state.client.lname + "'s " + connection.pivot.relationshiptoclient, 'relationship': true },
+                            key: 'ClientProfile' + connection.pid
+                          });
+                        }}>
+                          <Image
+                            style={styles.circleRelationshipButton}
+                            source={{
+                              uri: Environment.API_HOST + connection.image_path
+                            }}
+                            resizeMode={'contain'}
+                          />
+                          <Text>{connection.fname} {connection.lname.substr(0, 1)}.</Text>
+                          <Text style={{ fontStyle: 'italic', fontSize: 10, }}>{connection.pivot.relationshiptoclient}</Text>
 
-              {!this.state.relationships &&
-                <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any relationships yet.</Text>
-              }
-            </View>
+
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </ScrollView>
+                }
+
+                {!this.state.relationships &&
+                  <Text style={{ color: Colors.grey, padding: 5 }}>{this.state.client.fname} {this.state.client.lname} doesn't have any relationships yet.</Text>
+                }
+              </View>
+            }
             {/* END RELATIONSHIPS SECTION */}
 
             {/* BEGIN ADDRESS SECTION */}
@@ -323,6 +328,10 @@ export default class ClientProfileScreen extends Component {
       (buttonIndex) => {
         switch (buttonIndex) {
           case 1:
+            if (_this.state.isRelationship) {
+              alert("You can't add a relationship to an existing relationship.");
+              return;
+            }
             navigation.navigate('AddRelationship', { 'pid': _this.state.client.pid });
             break;
           case 2:
