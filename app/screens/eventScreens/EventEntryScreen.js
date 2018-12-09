@@ -69,7 +69,11 @@ export default class EventEntryScreen extends React.Component {
         options.push({ label: cli.fname + " " + cli.lname, value: cli.pid });
       });
 
-      this.setState({ clientOptions: options, pid: options[0].value });
+      this.setState({ clientOptions: options, });
+
+      if (event == 'NONE') {
+        this.setState({ pid: options[0].value });
+      }
     });
     this.event = new Event();
   }
