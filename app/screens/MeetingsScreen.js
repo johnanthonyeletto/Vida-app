@@ -20,7 +20,7 @@ let _this = null;
 
 export default class MeetingsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Meetings',
+    title: navigation.getParam('pastUpcomingMeeting', 'Upcoming') + ' Meetings',
     headerTitleStyle: {
       color: Colors.blue
     },
@@ -33,7 +33,15 @@ export default class MeetingsScreen extends React.Component {
       </TouchableOpacity>
     ),
     headerLeft: (
-      <TouchableOpacity onPress={() => { _this.setState({pastEventsToggle: !_this.state.pastEventsToggle}) }}>
+      <TouchableOpacity onPress={() => {
+        _this.setState({ pastEventsToggle: !_this.state.pastEventsToggle });
+        if (!_this.state.pastEventsToggle) {
+          navigation.setParams({ pastUpcomingMeeting: 'Past' });
+        } else {
+          navigation.setParams({ pastUpcomingMeeting: 'Upcoming' });
+        }
+
+      }}>
         <Ionicons name="ios-calendar" size={32} style={{ marginLeft: 15 }} color={Colors.blue} />
       </TouchableOpacity>
     ),
@@ -47,7 +55,7 @@ export default class MeetingsScreen extends React.Component {
       events: [],
       refreshing: false,
       loading: true,
-      pastEventsToggle:false,
+      pastEventsToggle: false,
     }
 
   }
@@ -68,18 +76,18 @@ export default class MeetingsScreen extends React.Component {
       var events = foundEvents;
       var today = new Date();
       var splitAt = 0;
-      var tempDate =null;
+      var tempDate = null;
       for (var i = 0; i < events.length; i++) {
         match = events[i].event_datetime;
         match = match.match(/^(\d+)-(\d+)-(\d+) (\d+)\:(\d+)\:(\d+)$/);
         match = new Date(match[1], match[2] - 1, match[3], match[4], match[5], match[6]);
-        if ( match < today) {
+        if (match < today) {
           splitAt++;
           console.log("splitAt:" + splitAt);
         }
         console.log("Loopin");
       }
-      var pastEvents = events.splice(0,splitAt);
+      var pastEvents = events.splice(0, splitAt);
       this.setState({ events: events, pastEvents: pastEvents, loading: false, })
     });
   }
@@ -93,7 +101,7 @@ export default class MeetingsScreen extends React.Component {
     }
 
 
-    if (this.state.events.length < 1) {
+    if (this.state.events.length < 1 && this.state.pastEvents.length < 1) {
       return (
         <ScrollContainer
           refreshControl={
@@ -112,7 +120,7 @@ export default class MeetingsScreen extends React.Component {
               }}
               color={Colors.lightGrey} />
             <Text style={{ fontWeight: '200', fontSize: 30, marginTop: 0, textAlign: 'center', color: Colors.grey }}>
-              It seems like you don't have any meetings scheduled yet.
+              It seems like you don't have any meetings scheduled.
             </Text>
             <TouchableOpacity style={{
               backgroundColor: Colors.blue,
