@@ -75,7 +75,7 @@ export default class ClientGraphScreen extends Component {
     injectjs() {
 
         let message =  JSON.stringify(this.state.relationship);
-        let envi = (Environment.API_HOST);
+        let envi = JSON.stringify(Environment.API_HOST);
 
         let jsCode = `
           setTimeout(() => {
