@@ -11,7 +11,9 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import GraphList from '../../models/GraphList';
-const GraphHTML = require('../../assets/html/vida_graph.html');
+// const GraphHTML = require('../../assets/html/vida_graph.html');
+import Environment from '../../constants/Environment';
+const Graph = Environment.API_HOST + '/vida_graph.html';
 
 export default class ClientGraphScreen extends Component {
     static navigationOptions = {
@@ -61,14 +63,23 @@ export default class ClientGraphScreen extends Component {
       });
     }
 
+  /*  render() {
+
+          return (
+            <View>
+                <Text>{JSON.stringify(this.state.events)}</Text>
+            </View>
+            );
+    } */
 
     injectjs() {
 
-        let message =  JSON.stringify(this.state.relationship) ;
+        let message =  JSON.stringify(this.state.relationship);
+        let envi = (Environment.API_HOST);
 
         let jsCode = `
           setTimeout(() => {
-            dumb('${message}');
+            dumb('${message}', '${envi}');
           }, 1500)`;
 
         return jsCode;
@@ -83,7 +94,7 @@ export default class ClientGraphScreen extends Component {
                    originWhitelist={['*']}
                    javaScriptEnabled={true}
                    injectedJavaScript={this.injectjs()}
-                   source={GraphHTML}
+                   source={{uri: Graph}}
                    mixedContentMode={'compatibility'}
                    style={{ backgroundColor: Colors.lightGrey }}
                    //injectedJavaScript={'dumb("' + (this.state.events) + '")'}
