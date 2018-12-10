@@ -85,7 +85,7 @@
            <FormGroup
             onChangeText={(pid1) => this.setState({ pid1 })}
             value={this.state.pid1}
-            placeholder={"Related To"}
+            placeholder={"Connecting Relative"}
             type={"picker"}
             options={this.state.clientOptions}
             // disabled={((this.state.event_id) ? true : false)}
