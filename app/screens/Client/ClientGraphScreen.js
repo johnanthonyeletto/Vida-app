@@ -61,14 +61,6 @@ export default class ClientGraphScreen extends Component {
       });
     }
 
-  /*  render() {
-
-          return (
-            <View>
-                <Text>{JSON.stringify(this.state.events)}</Text>
-            </View>
-            );
-    } */
 
     injectjs() {
 
