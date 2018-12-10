@@ -30,6 +30,7 @@ export default class EventEntryScreen extends React.Component {
     var coeff = 1000 * 60 * 5;
     var current_date = new Date();
     var rounded_date = new Date(Math.round(current_date.getTime() / coeff) * coeff);
+    rounded_date.setHours(rounded_date.getHours()-5);
 
     this.state = {
       event: [],
