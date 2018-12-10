@@ -46,5 +46,33 @@ class GraphController extends Controller
         }
         return response()->json($client);
       }
+    
+      public function addRelative(){
+  
+            $validatedData = $this->validate($this->request, [
+                'fname' => 'required|max:100',
+                'lname' => 'required|max:100',
+  
+            ]);
+  
+            $relative = new Person();
+  
+            $relative->fname = trim($this->request->input('fname'));
+            $relative->lname = trim($this->request->input('lname'));
+  
+            $relative->save();
+  
+            \DB::table('relationships')->insert(
+                [
+  
+                    'client_id' => $this->request->input('client_id'),
+                    'pid1' => $this->request->input('pid1'),
+                    'pid2' => $relative->pid,
+                    'relationshiptoclient' => $this->request->input('relationshiptoclient'),
+                ]
+            );
+            return response()->json($relative->pid);
+  
+        }
 
 }
