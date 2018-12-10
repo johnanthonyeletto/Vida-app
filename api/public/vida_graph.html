@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script>
+  function dumb(data, envi){
+    x = parse(data, envi);
+  }
+
+  </script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{
+      background-color: #eeeeee;
+      width: 100%;
+      height: 100vh;
+      min-width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+      margin: 0;
+    }
+
+
+  </style>
+
+
+</head>
+
+<body>
+  <svg width="100%" height="100vh"></svg>
+
+  <script type="text/javascript" src="d3.min.js"></script>
+  <script>
+
+    //d3.json(data, test);
+
+
+  function parse(data, envi){
+
+    data = eval(data);
+
+    function Client(client_id, pid, fname, lname, image) {
+        this.client_id = client_id;
+        this.pid = pid;
+        this.fname = fname;
+        this.lname = lname;
+        this.image = image;
+    }
+
+
+
+    function Node(pid1, pid2, group, label, relationship, level, image){
+        this.pid1 = pid1;
+        this.pid2 = pid2;
+        this.group = group;
+        this.label = label;
+        this.level = level;
+        this.relationship = relationship;
+        this.image = image;
+    }
+
+    clients = [];
+    clients.push(new Node(data[0].clientpid,  data[0].pid1, 0, data[0].clientfname, 'Client',  1, data[0].p1image,));
+
+    for(var k=0; k<data.length; k++){
+
+        clients.push(new Node(data[k].pid1, data[k].pid2, 0, data[k].fname, data[k].relationshiptoclient, 2, data[k].p2image));
+    }
+
+    var nodes = [];
+    for(var i=0; i<clients.length; i++){
+      nodes.push({ id: (clients[i]).pid2, group: (clients[i]).group, label: (clients[i]).label, relation: (clients[i]).relationship, level: (clients[i]).level, image: (clients[i]).image});
+    }
+
+    var links = [];
+    for(var i=1; i<clients.length; i++){
+      links.push({ target: (clients[i]).pid1, source: (clients[i]).pid2, strength: .3 });
+    }
+
+
+
+    // alert(JSON.stringify(nodes[1]));
+    // alert(JSON.stringify(nodes[2]));
+
+
+    function getNeighbors(node) {
+      return links.reduce(function (neighbors, link) {
+        if (link.target.id === node.id) {
+          neighbors.push(link.source.id)
+        } else if (link.source.id === node.id) {
+          neighbors.push(link.target.id)
+        }
+        return neighbors
+      },
+        [node.id]
+      )
+    }
+    function isNeighborLink(node, link) {
+      return link.target.id === node.id || link.source.id === node.id
+    }
+
+    function getNodeColor(node, neighbors) {
+      if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
+        return node.level === 1 ? '#2196F3' : 'gray'
+      }
+      return node.level === 1 ? '#2196F3' : 'lightblue'
+    }
+
+    function getLinkColor(node, link) {
+      return isNeighborLink(node, link) ? 'gray' : '#E5E5E5'
+    }
+
+    function getTextColor(node, neighbors) {
+      return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'gray' : 'black'
+    }
+
+    var width = window.innerWidth
+    var height = window.innerHeight
+
+    var svg = d3.select('svg')
+    svg.attr('width', width).attr('height', height)
+
+    // simulation setup with all forces
+    var linkForce = d3
+      .forceLink()
+      .id(function (link) { return link.id })
+      .strength(function (link) { return link.strength })
+
+    var simulation = d3
+      .forceSimulation()
+      .force('link', linkForce)
+      .force('charge', d3.forceManyBody().strength(-250))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+
+    //user interaction to drag and drop nodes
+    var dragDrop = d3.drag().on('start', function (node) {
+      node.fx = node.x
+      node.fy = node.y
+    }).on('drag', function (node) {
+      simulation.alphaTarget(0.7).restart()
+      node.fx = d3.event.x
+      node.fy = d3.event.y
+    }).on('end', function (node) {
+      if (!d3.event.active) {
+        simulation.alphaTarget(0)
+      }
+      node.fx = null
+      node.fy = null
+    })
+
+    // highlights a node and shows direct connections
+    function selectNode(selectedNode) {
+      var neighbors = getNeighbors(selectedNode)
+      // we modify the styles to highlight selected nodes
+      nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+      textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
+      textElements2.attr('fill', function (node) { return getTextColor(node, neighbors) })
+      linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+    }
+
+
+    //links nodes together
+    var linkElements = svg.append("g")
+      .attr("class", "links")
+      .selectAll("line")
+      .data(links)
+      .enter().append("line")
+      .attr("stroke-width", 2)
+      .attr("stroke", "rgba(50, 50, 50, 0.2)")
+
+    var nodeElements = svg.append("g")
+      .attr("class", "nodes")
+      .selectAll("circle")
+      .data(nodes)
+      .enter().append("circle")
+      .attr("r", 22)
+      .attr("fill", getNodeColor)
+      .call(dragDrop)
+      .on('click', selectNode)
+
+  // var defs = svg.append("defs").attr("id", "imgdefs")
+  //
+  // var catpattern = defs.append("pattern")
+  // .attr("id", "catpattern")
+  // .attr("height", 1)
+  // .attr("width", 1)
+  // .attr("x", "0")
+  // .attr("y", "0")
+  // catpattern.append("image")
+  //  .data(nodes)
+  //  .attr("x", 0)
+  //  .attr("y", 0)
+  //  .attr("height", 80)
+  //  .attr("width", 80)
+  //  .attr("xlink:href", function (node) { return ('http://fae9a830.ngrok.io' + node.image)})
+
+    //adds text to label each node --> client name
+    var textElements = svg.append("g")
+      .attr("class", "texts")
+      .selectAll("text")
+      .data(nodes)
+      .enter().append("text")
+      .text(function (node) { return node.label })
+    //  .text(function (node) { return node.relationship })
+      .attr("font-size", 14)
+      .style('font-family', '"Open Sans", sans-serif')
+      .attr("dx", 15)
+      .attr("dy", 4)
+
+      var textElements2 = svg.append("g")
+        .attr("class", "texts")
+        .selectAll("text")
+        .data(nodes)
+        .enter().append("text")
+        .text(function (node) { return node.relation })
+      //  .text(function (node) { return node.relationship })
+        .attr("font-size", 14)
+        .style('font-family', '"Open Sans", sans-serif')
+        .attr("dx", 20)
+        .attr("dy", 10)
+
+        // var clip = svg.append("g")
+        // .attr("id", "clipPath")
+        // .selectAll("clipPath")
+        // .append("clipPath")
+        // .append("circle")
+        // .attr("r", 22)
+
+        var image = svg.append("g")
+          .attr("class", "image")
+          .selectAll("image")
+          .data(nodes)
+          .enter().append("svg:image")
+          .attr("clip-path", "url(clipPath)")
+          .attr("xlink:href", function (node) { return (envi + node.image)})
+          .attr("width", 30)
+          .attr("height", 30)
+
+
+    simulation.nodes(nodes).on('tick', () => {
+      nodeElements
+        .attr('cx', function (node) { return node.x })
+        .attr('cy', function (node) { return node.y })
+      textElements
+        .attr('x', function (node) { return node.x-30})
+        .attr('y', function (node) { return node.y+30 })
+      textElements2
+        .attr('x', function (node) { return node.x-35 })
+        .attr('y', function (node) { return node.y+40 })
+      image
+        .attr('x', function (node) { return node.x-15 })
+        .attr('y', function (node) { return node.y-15 })
+      linkElements
+        .attr('x1', function (link) { return link.source.x })
+        .attr('y1', function (link) { return link.source.y })
+        .attr('x2', function (link) { return link.target.x })
+        .attr('y2', function (link) { return link.target.y })
+    })
+    simulation.force("link").links(links)
+
+  }
+
+  </script>
+</body>
+
+</html>
