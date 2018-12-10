@@ -7,7 +7,6 @@ export default class Relationship {
   constructor() {
       this.client_id;
       this.pid1;
-      this.pid;
       this.relationshiptoclient;
       this.fname;
       this.lname;
