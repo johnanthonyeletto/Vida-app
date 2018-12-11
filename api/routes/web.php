@@ -52,8 +52,8 @@ $router->group(['prefix' => '1.0'], function () use ($router) {
         
         $router->post('relationship', 'GraphController@addRelative');
 
-        $router->get('account', 'AuthController@getCurrentUser');
-        $router->post('account', 'AuthController@updateCurrentUser');
+        $router->get('account/', 'AuthController@getCurrentUser');
+        $router->post('account/', 'AuthController@updateCurrentUser');
 
         $router->get('client-list', 'ClientController@getClientList');
 

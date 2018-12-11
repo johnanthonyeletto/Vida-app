@@ -112,7 +112,7 @@ class AuthController extends BaseController
         $validatedData = $this->validate($this->request, [
             'fname' => 'required|max:100',
             'lname' => 'required|max:100',
-            'email' => 'max:100|email|nullable',
+            'email' => 'max:100|email|required',
         ]);
 
         $coach = $this->request->auth;
