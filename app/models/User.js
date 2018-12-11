@@ -13,7 +13,7 @@ export default class User {
         var request = new APIRequest();
 
         request.method = "GET";
-        request.route = '/1.0/account/';
+        request.route = '/1.0/account';
 
         let response = request.go().then(response => {
             return response;
@@ -28,7 +28,7 @@ export default class User {
         var request = new APIRequest();
 
         request.method = "POST";
-        request.route = '/1.0/account/';
+        request.route = '/1.0/account';
         request.body = this;
 
         let response = request.go().then(response => {
