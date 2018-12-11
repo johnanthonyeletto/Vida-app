@@ -28,14 +28,14 @@ class Person extends Model
 
     public function Relationships()
     {
-      $relationships = DB::select('SELECT person1.pid as pid1, person1.fname, person1.lname , person2.pid as pid2, person1.image_path as p1image, person2.image_path as p2image,
+        $relationships = DB::select('SELECT person1.pid as pid1, person1.fname, person1.lname , person2.pid as pid2, person1.image_path as p1image, person2.image_path as p2image,
       person2.fname,person2.lname,relationships.relationshiptoclient, relationships.client_id, client.pid as clientpid, client.fname as clientfname, client.lname as clientlname
       from relationships
       join people person1 on relationships.pid1 = person1.pid
       join people person2 on relationships.pid2 = person2.pid
       join people client on relationships.client_id = client.pid
       WHERE relationships.client_id = :client_id', ["client_id" => $this->pid]);
-      return $relationships;
+        return $relationships;
     }
 
     public function coach()

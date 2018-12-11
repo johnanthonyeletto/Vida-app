@@ -56,8 +56,8 @@ class ClientController extends Controller
             abort(404, 'This client could not be found. They might not be your client.');
         }
 
-        $person->relationships = $person->relationshipsPID1->merge($person->relationshipsPID2)->unique()->all();
-        unset($person->relationshipsPID1);
+        $person->relationships = $person->relationshipsPID2->unique()->all();
+        // unset($person->relationshipsPID1);
         unset($person->relationshipsPID2);
 
         if (sizeof($person->relationships) < 1) {
