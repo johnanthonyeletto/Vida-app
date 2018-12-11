@@ -1,0 +1,1742 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.6 (Ubuntu 10.6-0ubuntu0.18.04.1)
+-- Dumped by pg_dump version 10.5
+
+-- Started on 2018-12-03 11:38:29
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 5 (class 2615 OID 17238)
+-- Name: pgagent; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA pgagent;
+
+
+ALTER SCHEMA pgagent OWNER TO postgres;
+
+--
+-- TOC entry 3183 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: SCHEMA pgagent; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA pgagent IS 'pgAgent system tables';
+
+
+--
+-- TOC entry 1 (class 3079 OID 13039)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 3185 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- TOC entry 2 (class 3079 OID 17239)
+-- Name: pgagent; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS pgagent WITH SCHEMA pgagent;
+
+
+--
+-- TOC entry 3186 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION pgagent; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pgagent IS 'A PostgreSQL job scheduler';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 212 (class 1259 OID 16669)
+-- Name: coach_clients; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.coach_clients (
+    coach_id bigint NOT NULL,
+    client_id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.coach_clients OWNER TO postgres;
+
+--
+-- TOC entry 199 (class 1259 OID 16612)
+-- Name: coach_profiles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.coach_profiles (
+    pid bigint NOT NULL,
+    company_id integer NOT NULL,
+    email character varying(255) NOT NULL,
+    password character varying(255),
+    super_coach boolean,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.coach_profiles OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 16610)
+-- Name: coach_profiles_pid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.coach_profiles_pid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.coach_profiles_pid_seq OWNER TO postgres;
+
+--
+-- TOC entry 3189 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: coach_profiles_pid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.coach_profiles_pid_seq OWNED BY public.coach_profiles.pid;
+
+
+--
+-- TOC entry 211 (class 1259 OID 16667)
+-- Name: coachtoclients_client_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.coachtoclients_client_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.coachtoclients_client_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3191 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: coachtoclients_client_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.coachtoclients_client_id_seq OWNED BY public.coach_clients.client_id;
+
+
+--
+-- TOC entry 210 (class 1259 OID 16665)
+-- Name: coachtoclients_coach_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.coachtoclients_coach_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.coachtoclients_coach_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3193 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: coachtoclients_coach_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.coachtoclients_coach_id_seq OWNED BY public.coach_clients.coach_id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 16634)
+-- Name: companies; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.companies (
+    company_id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    address character varying(255),
+    city character varying(255),
+    state_province character varying(2),
+    postal_code character varying(12),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.companies OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 16632)
+-- Name: companies_company_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.companies_company_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.companies_company_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3196 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: companies_company_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.companies_company_id_seq OWNED BY public.companies.company_id;
+
+
+--
+-- TOC entry 215 (class 1259 OID 16680)
+-- Name: event_clients; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.event_clients (
+    event_id bigint NOT NULL,
+    pid bigint NOT NULL
+);
+
+
+ALTER TABLE public.event_clients OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 16676)
+-- Name: event_clients_event_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.event_clients_event_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.event_clients_event_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3199 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: event_clients_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.event_clients_event_id_seq OWNED BY public.event_clients.event_id;
+
+
+--
+-- TOC entry 214 (class 1259 OID 16678)
+-- Name: event_clients_pid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.event_clients_pid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.event_clients_pid_seq OWNER TO postgres;
+
+--
+-- TOC entry 3201 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: event_clients_pid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.event_clients_pid_seq OWNED BY public.event_clients.pid;
+
+
+--
+-- TOC entry 218 (class 1259 OID 16691)
+-- Name: events; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.events (
+    event_id bigint NOT NULL,
+    pid bigint NOT NULL,
+    event_datetime timestamp(0) without time zone,
+    location character varying(255),
+    notes character varying(255),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.events OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 16687)
+-- Name: events_event_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.events_event_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.events_event_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3204 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: events_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.events_event_id_seq OWNED BY public.events.event_id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 16689)
+-- Name: events_pid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.events_pid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.events_pid_seq OWNER TO postgres;
+
+--
+-- TOC entry 3206 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: events_pid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.events_pid_seq OWNED BY public.events.pid;
+
+
+--
+-- TOC entry 205 (class 1259 OID 16645)
+-- Name: goals; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.goals (
+    pid bigint NOT NULL,
+    goal character varying(255) NOT NULL,
+    created_at timestamp(2) with time zone,
+    updated_at timestamp(2) with time zone
+);
+
+
+ALTER TABLE public.goals OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 16643)
+-- Name: goals_pid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.goals_pid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.goals_pid_seq OWNER TO postgres;
+
+--
+-- TOC entry 3209 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: goals_pid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.goals_pid_seq OWNED BY public.goals.pid;
+
+
+--
+-- TOC entry 220 (class 1259 OID 16703)
+-- Name: life_events; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.life_events (
+    lifeevent_id bigint NOT NULL,
+    lifeevent_datetime time(6) with time zone,
+    title character varying(255),
+    notes character varying(255),
+    flagged boolean,
+    created_at timestamp(2) with time zone,
+    updated_at timestamp(2) with time zone
+);
+
+
+ALTER TABLE public.life_events OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16701)
+-- Name: lifeevents_lifeevent_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.lifeevents_lifeevent_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lifeevents_lifeevent_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3212 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: lifeevents_lifeevent_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.lifeevents_lifeevent_id_seq OWNED BY public.life_events.lifeevent_id;
+
+
+--
+-- TOC entry 222 (class 1259 OID 16896)
+-- Name: migrations; Type: TABLE; Schema: public; Owner: App
+--
+
+CREATE TABLE public.migrations (
+    id integer NOT NULL,
+    migration character varying(255) NOT NULL,
+    batch integer NOT NULL
+);
+
+
+ALTER TABLE public.migrations OWNER TO "App";
+
+--
+-- TOC entry 221 (class 1259 OID 16894)
+-- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: App
+--
+
+CREATE SEQUENCE public.migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.migrations_id_seq OWNER TO "App";
+
+--
+-- TOC entry 3214 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: App
+--
+
+ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
+
+
+--
+-- TOC entry 241 (class 1259 OID 17421)
+-- Name: notes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.notes (
+    note_id bigint NOT NULL,
+    note text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    client_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.notes OWNER TO postgres;
+
+--
+-- TOC entry 240 (class 1259 OID 17419)
+-- Name: notes_note_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.notes_note_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.notes_note_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3216 (class 0 OID 0)
+-- Dependencies: 240
+-- Name: notes_note_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.notes_note_id_seq OWNED BY public.notes.note_id;
+
+
+--
+-- TOC entry 201 (class 1259 OID 16623)
+-- Name: people; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.people (
+    pid bigint NOT NULL,
+    fname character varying(100) NOT NULL,
+    lname character varying(100) NOT NULL,
+    address character varying(100),
+    address2 character varying(255),
+    city character varying(100),
+    state_province character varying(100),
+    postal_code character varying(20),
+    cell_phone character varying(20),
+    home_phone character varying(20),
+    email character varying(100),
+    image_path character varying(255) DEFAULT '/img/people_images/default.png'::character varying NOT NULL,
+    occupation text,
+    interests text,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    "isActive" boolean DEFAULT true NOT NULL
+);
+
+
+ALTER TABLE public.people OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 16621)
+-- Name: people_pid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.people_pid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.people_pid_seq OWNER TO postgres;
+
+--
+-- TOC entry 3219 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: people_pid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.people_pid_seq OWNED BY public.people.pid;
+
+
+--
+-- TOC entry 223 (class 1259 OID 17004)
+-- Name: pid_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.pid_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pid_sequence OWNER TO postgres;
+
+--
+-- TOC entry 3221 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: pid_sequence; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.pid_sequence OWNED BY public.people.pid;
+
+
+--
+-- TOC entry 209 (class 1259 OID 16657)
+-- Name: relationships; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.relationships (
+    client_id bigint NOT NULL,
+    pid1 bigint NOT NULL,
+    pid2 bigint NOT NULL,
+    relationshiptoclient character varying(255),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.relationships OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 16651)
+-- Name: relationships_client_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.relationships_client_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.relationships_client_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3224 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: relationships_client_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.relationships_client_id_seq OWNED BY public.relationships.client_id;
+
+
+--
+-- TOC entry 207 (class 1259 OID 16653)
+-- Name: relationships_pid1_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.relationships_pid1_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.relationships_pid1_seq OWNER TO postgres;
+
+--
+-- TOC entry 3226 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: relationships_pid1_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.relationships_pid1_seq OWNED BY public.relationships.pid1;
+
+
+--
+-- TOC entry 208 (class 1259 OID 16655)
+-- Name: relationships_pid2_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.relationships_pid2_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.relationships_pid2_seq OWNER TO postgres;
+
+--
+-- TOC entry 3228 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: relationships_pid2_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.relationships_pid2_seq OWNED BY public.relationships.pid2;
+
+
+--
+-- TOC entry 224 (class 1259 OID 17063)
+-- Name: signup_codes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.signup_codes (
+    email character varying(255) NOT NULL,
+    code character varying(6) NOT NULL,
+    company_id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.signup_codes OWNER TO postgres;
+
+--
+-- TOC entry 2943 (class 2604 OID 16672)
+-- Name: coach_clients coach_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.coach_clients ALTER COLUMN coach_id SET DEFAULT nextval('public.coachtoclients_coach_id_seq'::regclass);
+
+
+--
+-- TOC entry 2944 (class 2604 OID 16673)
+-- Name: coach_clients client_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.coach_clients ALTER COLUMN client_id SET DEFAULT nextval('public.coachtoclients_client_id_seq'::regclass);
+
+
+--
+-- TOC entry 2934 (class 2604 OID 16615)
+-- Name: coach_profiles pid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.coach_profiles ALTER COLUMN pid SET DEFAULT nextval('public.coach_profiles_pid_seq'::regclass);
+
+
+--
+-- TOC entry 2938 (class 2604 OID 16637)
+-- Name: companies company_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.companies ALTER COLUMN company_id SET DEFAULT nextval('public.companies_company_id_seq'::regclass);
+
+
+--
+-- TOC entry 2945 (class 2604 OID 16683)
+-- Name: event_clients event_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_clients ALTER COLUMN event_id SET DEFAULT nextval('public.event_clients_event_id_seq'::regclass);
+
+
+--
+-- TOC entry 2946 (class 2604 OID 16684)
+-- Name: event_clients pid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_clients ALTER COLUMN pid SET DEFAULT nextval('public.event_clients_pid_seq'::regclass);
+
+
+--
+-- TOC entry 2947 (class 2604 OID 16694)
+-- Name: events event_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN event_id SET DEFAULT nextval('public.events_event_id_seq'::regclass);
+
+
+--
+-- TOC entry 2948 (class 2604 OID 16695)
+-- Name: events pid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN pid SET DEFAULT nextval('public.events_pid_seq'::regclass);
+
+
+--
+-- TOC entry 2939 (class 2604 OID 16648)
+-- Name: goals pid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.goals ALTER COLUMN pid SET DEFAULT nextval('public.goals_pid_seq'::regclass);
+
+
+--
+-- TOC entry 2949 (class 2604 OID 16706)
+-- Name: life_events lifeevent_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.life_events ALTER COLUMN lifeevent_id SET DEFAULT nextval('public.lifeevents_lifeevent_id_seq'::regclass);
+
+
+--
+-- TOC entry 2950 (class 2604 OID 16899)
+-- Name: migrations id; Type: DEFAULT; Schema: public; Owner: App
+--
+
+ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.migrations_id_seq'::regclass);
+
+
+--
+-- TOC entry 2992 (class 2604 OID 17424)
+-- Name: notes note_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.notes ALTER COLUMN note_id SET DEFAULT nextval('public.notes_note_id_seq'::regclass);
+
+
+--
+-- TOC entry 2935 (class 2604 OID 17022)
+-- Name: people pid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.people ALTER COLUMN pid SET DEFAULT nextval('public.pid_sequence'::regclass);
+
+
+--
+-- TOC entry 2940 (class 2604 OID 16660)
+-- Name: relationships client_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.relationships ALTER COLUMN client_id SET DEFAULT nextval('public.relationships_client_id_seq'::regclass);
+
+
+--
+-- TOC entry 2941 (class 2604 OID 16661)
+-- Name: relationships pid1; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.relationships ALTER COLUMN pid1 SET DEFAULT nextval('public.relationships_pid1_seq'::regclass);
+
+
+--
+-- TOC entry 2942 (class 2604 OID 16662)
+-- Name: relationships pid2; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.relationships ALTER COLUMN pid2 SET DEFAULT nextval('public.relationships_pid2_seq'::regclass);
+
+
+--
+-- TOC entry 2926 (class 0 OID 17240)
+-- Dependencies: 225
+-- Data for Name: pga_jobagent; Type: TABLE DATA; Schema: pgagent; Owner: postgres
+--
+
+COPY pgagent.pga_jobagent (jagpid, jaglogintime, jagstation) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2927 (class 0 OID 17251)
+-- Dependencies: 227
+-- Data for Name: pga_jobclass; Type: TABLE DATA; Schema: pgagent; Owner: postgres
+--
+
+COPY pgagent.pga_jobclass (jclid, jclname) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2928 (class 0 OID 17263)
+-- Dependencies: 229
+-- Data for Name: pga_job; Type: TABLE DATA; Schema: pgagent; Owner: postgres
+--
+
+COPY pgagent.pga_job (jobid, jobjclid, jobname, jobdesc, jobhostagent, jobenabled, jobcreated, jobchanged, jobagentid, jobnextrun, joblastrun) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2930 (class 0 OID 17315)
+-- Dependencies: 233
+-- Data for Name: pga_schedule; Type: TABLE DATA; Schema: pgagent; Owner: postgres
+--
+
+COPY pgagent.pga_schedule (jscid, jscjobid, jscname, jscdesc, jscenabled, jscstart, jscend, jscminutes, jschours, jscweekdays, jscmonthdays, jscmonths) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2931 (class 0 OID 17345)
+-- Dependencies: 235
+-- Data for Name: pga_exception; Type: TABLE DATA; Schema: pgagent; Owner: postgres
+--
+
+COPY pgagent.pga_exception (jexid, jexscid, jexdate, jextime) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2932 (class 0 OID 17360)
+-- Dependencies: 237
+-- Data for Name: pga_joblog; Type: TABLE DATA; Schema: pgagent; Owner: postgres
+--
+
+COPY pgagent.pga_joblog (jlgid, jlgjobid, jlgstatus, jlgstart, jlgduration) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2929 (class 0 OID 17289)
+-- Dependencies: 231
+-- Data for Name: pga_jobstep; Type: TABLE DATA; Schema: pgagent; Owner: postgres
+--
+
+COPY pgagent.pga_jobstep (jstid, jstjobid, jstname, jstdesc, jstenabled, jstkind, jstcode, jstconnstr, jstdbname, jstonerror, jscnextrun) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2933 (class 0 OID 17377)
+-- Dependencies: 239
+-- Data for Name: pga_jobsteplog; Type: TABLE DATA; Schema: pgagent; Owner: postgres
+--
+
+COPY pgagent.pga_jobsteplog (jslid, jsljlgid, jsljstid, jslstatus, jslresult, jslstart, jslduration, jsloutput) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3162 (class 0 OID 16669)
+-- Dependencies: 212
+-- Data for Name: coach_clients; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.coach_clients (coach_id, client_id, created_at, updated_at) FROM stdin;
+30	7	\N	\N
+30	8	\N	\N
+31	9	\N	\N
+31	10	\N	\N
+33	12	\N	\N
+33	13	\N	\N
+34	14	\N	\N
+32	16	\N	\N
+32	65	2018-11-07 15:00:43	2018-11-07 15:00:43
+32	79	2018-11-07 22:08:55	2018-11-07 22:08:55
+32	83	2018-11-12 03:08:27	2018-11-12 03:08:27
+31	84	2018-11-12 19:27:17	2018-11-12 19:27:17
+32	95	2018-11-22 01:17:51	2018-11-22 01:17:51
+33	98	2018-11-26 19:01:07	2018-11-26 19:01:07
+32	99	2018-11-26 19:17:11	2018-11-26 19:17:11
+34	1	\N	\N
+34	11	\N	\N
+30	6	2018-12-01 01:11:29	2018-12-01 01:11:29
+32	81	2018-12-01 20:37:08	2018-12-01 20:37:08
+32	97	2018-12-01 21:03:37	2018-12-01 21:03:37
+32	80	2018-12-02 16:03:12	2018-12-02 16:03:12
+\.
+
+
+--
+-- TOC entry 3149 (class 0 OID 16612)
+-- Dependencies: 199
+-- Data for Name: coach_profiles; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.coach_profiles (pid, company_id, email, password, super_coach, created_at, updated_at) FROM stdin;
+30	2	andrew.arrigo1@marist.edu	$2y$10$jn98WdNDbOg1BRahprfNIuToA9qZ4ZCEFwOIJxZdnuyFjtJCahEMq	t	2018-11-05 12:54:14	2018-12-01 01:13:14
+34	2	jenna.ficula1@marist.edu	$2y$10$jn98WdNDbOg1BRahprfNIuToA9qZ4ZCEFwOIJxZdnuyFjtJCahEMq	f	\N	2018-12-01 21:03:07
+32	2	john.eletto1@marist.edu	$2y$10$j7tHRVOWKE9PCkhbgIMaBe1S0wQXb8Ehwr82vrHAya4w6tZjHzUpO	t	\N	2018-11-12 23:58:09
+31	2	john.ryan4@marist.edu	$2y$10$jn98WdNDbOg1BRahprfNIuToA9qZ4ZCEFwOIJxZdnuyFjtJCahEMq	t	\N	2018-11-29 06:47:51
+94	2	arrigoandrew@gmail.com	$2y$10$.J6LdCze32RT1q1PZDINC.PHlzUVeiJjXPuvTjV15zCE0VdvDOpc2	f	2018-11-19 04:16:45	2018-11-30 03:57:03
+33	2	hunter.postiglione1@marist.edu	$2y$10$jn98WdNDbOg1BRahprfNIuToA9qZ4ZCEFwOIJxZdnuyFjtJCahEMq	f	\N	2018-11-30 19:20:24
+96	2	johnanthony.eletto@gmail.com	$2y$10$eTFeL/q6YXpsUFUjB.kxD.6AxvfDxVkt3ClBjlbyNHmXPpXo58jNq	f	2018-11-23 16:47:06	2018-11-30 21:48:13
+\.
+
+
+--
+-- TOC entry 3153 (class 0 OID 16634)
+-- Dependencies: 203
+-- Data for Name: companies; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.companies (company_id, name, address, city, state_province, postal_code, created_at, updated_at) FROM stdin;
+1	Morgan Stanley	7 W Wabansia Ave #227	Orlando	FL	32822	\N	\N
+3	Google	6882 Torresdale Ave	Columbia	SC	29201	\N	\N
+4	Amazon	985 E 6th Ave	Santa Rosa	CA	95407	\N	\N
+2	Vida Labs 💙	25 Minters Chapel Rd #9	Minneapolis	MN	55401	\N	2018-11-26 18:30:02
+\.
+
+
+--
+-- TOC entry 3165 (class 0 OID 16680)
+-- Dependencies: 215
+-- Data for Name: event_clients; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.event_clients (event_id, pid) FROM stdin;
+1	6
+2	7
+\.
+
+
+--
+-- TOC entry 3168 (class 0 OID 16691)
+-- Dependencies: 218
+-- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.events (event_id, pid, event_datetime, location, notes, created_at, updated_at) FROM stdin;
+1	6	\N	Shadows	\N	\N	\N
+2	7	\N	Cosimos	Order Chicken Parm	\N	\N
+73	95	2018-11-30 00:00:00	Benens	Be nene	2018-11-28 23:29:52	2018-11-28 23:29:52
+76	12	2018-12-03 05:30:48	House	Note	2018-11-29 05:45:13	2018-11-29 06:04:14
+22	79	2018-11-22 04:23:00	Test	Testing	2018-11-19 04:23:10	2018-11-19 04:23:10
+24	9	2018-11-25 22:57:22	hkj		2018-11-25 22:57:32	2018-11-25 22:57:32
+79	98	2018-12-24 21:48:44	Housee		2018-12-03 02:49:05	2018-12-03 02:49:05
+\.
+
+
+--
+-- TOC entry 3155 (class 0 OID 16645)
+-- Dependencies: 205
+-- Data for Name: goals; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.goals (pid, goal, created_at, updated_at) FROM stdin;
+6	Lose 10lbs	\N	\N
+7	Quit smoking	\N	\N
+8	Obtain healthier eating habits	\N	\N
+9	Spend more time with the family	\N	\N
+\.
+
+
+--
+-- TOC entry 3170 (class 0 OID 16703)
+-- Dependencies: 220
+-- Data for Name: life_events; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.life_events (lifeevent_id, lifeevent_datetime, title, notes, flagged, created_at, updated_at) FROM stdin;
+1	\N	Wedding	Pick up grandparents at 3	\N	\N	\N
+2	\N	Birthday	Remember to get Willy the Whale Cake	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 3172 (class 0 OID 16896)
+-- Dependencies: 222
+-- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: App
+--
+
+COPY public.migrations (id, migration, batch) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3176 (class 0 OID 17421)
+-- Dependencies: 241
+-- Data for Name: notes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.notes (note_id, note, created_at, updated_at, client_id) FROM stdin;
+6	<p><strong>This is a test of adding a note to another coach’s client. </strong></p>	2018-12-02 02:56:44	2018-12-02 02:56:44	1
+8	<p><strong>Note to self: </strong>Pablo likes KitKats 🍫</p>	2018-12-02 14:49:20	2018-12-02 14:49:20	80
+14	<h2>Someone get this kid some help. </h2><p><br></p><p>Why is is he wearing a wig? </p>	2018-12-03 02:10:30	2018-12-03 02:10:30	97
+15	<p><strong>Note to self: </strong>This guy is a stud. </p>	2018-12-03 02:11:53	2018-12-03 02:11:53	81
+16	<p><strong><u>Jack’s Life Goals:</u></strong></p><ol><li>git add 🧮</li><li>git commit 👰 </li><li>git money 💵 </li></ol>	2018-12-03 02:14:33	2018-12-03 02:16:05	99
+\.
+
+
+--
+-- TOC entry 3151 (class 0 OID 16623)
+-- Dependencies: 201
+-- Data for Name: people; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.people (pid, fname, lname, address, address2, city, state_province, postal_code, cell_phone, home_phone, email, image_path, occupation, interests, created_at, updated_at, "isActive") FROM stdin;
+34	Jenna	Ficcula	4 Ralph Ct	\N	Dunellen	NJ	8812	732-924-7882	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+2	John	Newfield	4 B Blue Ridge Blvd	\N	Brighton	MI	48116	810-292-9388	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+3	Ethan	Wilde	8 W Cerritos Ave #54	\N	Bridgeport	NJ	8014	856-636-8749	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+23	Willard	Kolmetz	618 W Yakima Ave	\N	Irving	TX	75062	972-303-9197	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+24	Maryann	Royster	74 S Westgate St	\N	Albany	NY	12204	518-966-7987	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+4	Mark	Miller	639 Main St	\N	Anchorage	AK	99501	907-385-4412	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+5	Rob	Lynch	34 Center St	\N	Hamilton	OH	45011	513-570-1893	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+94	Andrew	Ariigo	\N	\N	\N	\N	\N	\N	\N	\N	/img/people_images/default.png	\N	\N	2018-11-19 04:16:45	2018-11-19 04:16:45	t
+84	Jess	Gardinier	\N	\N	\N	\N	\N	5187757527	\N	\N	/img/people_images/31-1542050837-kmPqxxZ7FHxFanTmPSyyHEMmB2zLg7acjlMMNT2clawKCWt1r3z9iNJM6kSvP9eDOTEHgYG27GAUaJI2pEPL3GEwGaG2ySIlU81Y.png	Student	\N	2018-11-12 19:27:17	2018-11-12 19:29:10	t
+1	Drew	DeCarolis	6649 N Blue Gum St		Floral Park	LA	70116	504-621-8927			/img/people_images/32-1543551187-p1GRFn9oN8Y0cI8DYamLBKfnoFo1cgCBLJdzMZL9yfwagouzhybhAPfRQ1KoyVE89c7HQu52bYAPYmTl7zYq51cphAsSjmEsZphG.png		\N	2018-10-31 00:00:00	2018-11-30 19:02:50	t
+6	Jennifer	Lopez	3 Mcauley Dr			OH	44805	419-503-2484			/img/people_images/30-1542050655-5hisI1xQuSiKSoh1W4v68t1AcEe9hdRKLdKudHD6scKb7fZFD9oRzzNlcknG6QmJZ2WEN9BbA6BZ6uUjdQpIi5tLCS3VGKr7GzCD.png	Actress	\N	2018-10-31 00:00:00	2018-12-01 00:57:55	t
+81	John	Eletto	1889 Jane Street		Wantagh	NY	11793	5164689725	5166792825	johnanthony.eletto@gmail.com	/img/people_images/32-1542043749-M7hPtoIxfNeD9naoiMFcmSnLwDKdJeRyP6ag1gZEQdKsFXEzhrYcqmrSBtQ3cjZIjM5euoFHFFTSnbFyE0PSAZHzlVkwZbDjbm5w.png	Andrew’s Father	\N	2018-11-12 03:06:40	2018-12-01 20:37:08	t
+97	Jonathan	Newf									/img/people_images/32-1543258564-qYd0Zdiop6NPT6ubcPVtdt7wEFNy3SPlZVk3h65wOGdmVFaWeljm8C4YgvGvdPIaclsTPo2w0PRPG4iCOsROsXLJt9g49HBnguJD.png	Bro	\N	2018-11-26 18:56:04	2018-12-01 21:03:37	t
+65	Pumpkin	Man	\N	\N	\N	\N	\N	5164689725	5166792825	johnanthony.eletto@gmail.com	/img/people_images/32-1542040667-BDRCsmyfnJskO0qCT5vbqzfBewA80kJvjAskq8IzjRz9MY2ugrqXUC0oxLw0hUF1pTjYIc0mDaBhVAgAw60cNXkkzgZHv6yoaA5a.png	Professional Pumpkin	\N	2018-11-07 15:00:42	2018-11-12 17:03:22	t
+95	Gregory	Eletto	\N	\N	\N	\N	\N	\N	\N	\N	/img/people_images/32-1542849471-FNRKP87rE3Tov9bP07DzqvFFvnrEdCM2ErTnmtKwTZstllDRDWykX0MrMFN3yFbvFP7sExtVG1ymlciHaP7OYaDHcBnLrGrGLBu4.png	\N	\N	2018-11-22 01:17:51	2018-11-22 01:17:51	t
+98	Tobi	Sjoberg	\N	\N	\N	\N	\N	\N	\N	\N	/img/people_images/33-1543258929-chDJxxDjeBgUxxzVZyC4wanN4glFQZ5SgdmqzzunkmGDA1WrGqjQ4FAlYBVi8GZ86aAf6hIbLdpcoUEeUiteyFJU572Bf0iEy3Sk.png	\N	\N	2018-11-26 19:01:07	2018-11-26 19:02:09	t
+12	Abel	Maclead	37275 St  Rt 17m M	\N	Middle Island	NY	11953	631-335-3414	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+13	Kiley	Caldarera	25 E 75th St #69	\N	Los Angeles	CA	90034	310-498-5651	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+14	Graciela	Ruta	98 Connecticut Ave Nw	\N	Chagrin Falls	OH	44023	440-780-8425	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+15	Cammy	Albares	56 E Morehead St	\N	Laredo	TX	78045	956-537-6195	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+8	Michaela	Olivero	52 Glenwood Dr	\N	Hauppauge	NY	95111	(631) 974-3190	\N	\N	/img/people_images/30-1542050882-eiC8LVyoAAfMD1IkCpH8XqOvslzLmaPqCY17IBHmRxLPIuXX63wnq6p8aR6pYHhy75ZdGCXIc89a220dxLwO13ZhaTu6oTBXAxHr.png	Ex-Girlfriend	\N	2018-10-31 00:00:00	2018-11-28 23:15:42	f
+16	Mattie	Poquette	73 State Road 434 E	\N	Phoenix	AZ	85013	602-277-4385	\N	\N	/img/people_images/mattie.jpeg	\N	\N	2018-10-31 00:00:00	2018-11-12 03:00:42	f
+11	Minna	Amigon	2371 Jerrold Ave	\N	Kulpsville	PA	19443	215-874-1229	\N	\N	/img/people_images/mina.jpg	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+7	Jason	Vorhees	7 Eads St		Chicago	IL	60632	773-573-6914			/img/people_images/30-1542050737-RCk9Qiy215ALKPZWh6bqNjsAc7L0GAJE4ajOmQY7ncDGqqgwP4uNlFdMlw7ST7mqXmsp3dnk0gUMMqGSvIPTdvRfNlSAmKonVS9C.png	Not A Serial Killer	\N	2018-10-31 00:00:00	2018-11-30 19:06:27	t
+10	Kris	Marrier	228 Runamuck Pl #2808	\N	Baltimore	MD	21224	410-655-8723	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-11-12 19:13:58	f
+79	Andrew	Arrigo	\N	\N	\N	\N	\N	\N	\N	\N	/img/people_images/32-1541628535-CSoZ9OHwJmgyIbVOaNBrezZCBBY7OS885Y0xzTGilmKrKzkIC6rAqeOQKXkIKnw0dvX9InjQE5ysxzBj6Cf3SFJr3rNHTTPhYLi2.png	Analyst, Infrastructure Consultant	\N	2018-11-07 22:08:55	2018-11-12 19:27:00	t
+9	Argo	Arrigo	5 Boston Ave #88	\N	Sioux Falls	SD	57105	6053066536	\N	\N	/img/people_images/31-1542050530-keXQxhZ0VoVgswE0o4UtSst1CHqqGhOKNIOhgRsfAHEMjyjGGoDpu36lSzmoZTQ8oTXg3Vkx7EcICsE7gK6LiBWb8XaDyBkD4G98.png	Jacks Son	\N	2018-10-31 00:00:00	2018-11-12 19:23:29	t
+96	John	Eletto	\N	\N	\N	\N	\N	\N	\N	\N	/img/people_images/default.png	\N	\N	2018-11-23 16:47:06	2018-11-30 04:04:20	t
+30	Andrew	Arrigo	386 9th Ave N	\N	Conroe	TX	77301	936-336-3951	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-11-30 19:13:40	t
+99	Jack	Ryan									/img/people_images/default.png	Life Coach	\N	2018-11-26 19:17:11	2018-11-30 21:41:46	t
+17	Meaghan	Garufi	69734 E Carrillo St	\N	Mc Minnville	TN	37110	931-313-9635	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+18	Gladys	Rim	322 New Horizon Blvd	\N	Milwaukee	WI	53207	414-661-9598	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+19	Yuki	Whobrey	1 State Route 27	\N	Taylor	MI	48180	313-288-7937	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+20	Fletcher	Flosi	394 Manchester Blvd	\N	Rockford	IL	61109	815-828-2147	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+21	Bette	Nicka	6 S 33rd St	\N	Aston	PA	19014	610-545-3615	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+22	Veronika	Inouye	6 Greenleaf Ave	\N	San Jose	CA	95111	408-540-1785	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+25	Alisha	Slusarski	3273 State St	\N	Middlesex	NJ	8846	732-658-3154	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+26	Allene	Iturbide	1 Central Ave	\N	Stevens Point	WI	54481	715-662-6764	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+27	Chanel	Caudy	86 Nw 66th St #8673	\N	Shawnee	KS	66218	913-388-2079	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+28	Ezekiel	Chui	2 Cedar Ave #84	\N	Easton	MD	21601	410-669-1642	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+35	Alishia	Sergi	2742 Distribution Way	\N	New York	NY	10025	212-860-1579	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+36	Solange	Shinko	426 Wolf St	\N	Metairie	LA	70002	504-979-9175	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+37	Jose	Stockham	128 Bransten Rd	\N	New York	NY	10011	212-675-8570	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+38	Rozella	Ostrosky	17 Morena Blvd	\N	Camarillo	CA	93012	805-832-6163	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+39	Valentine	Gillian	775 W 17th St	\N	San Antonio	TX	78204	210-812-9597	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+80	Pablo	Rivas						8458676873		pablo.rivas@marist.edu	/img/people_images/32-1542043094-b51FHE7CjOCE6N3PA0VHdo8aMWxR5f42Edvy5ZpBGGl9Y5dRl4oKlNTxVCdPjftyl5Eme8UiDOr1gar40fozUMfkJOIN1SpuKkdY.png	Machine Learning Enthusiast ⚙️ 🖥	\N	2018-11-08 00:16:51	2018-12-02 16:03:12	t
+31	John	Ryan	74874 Atlantic Ave	\N	Columbus	OH	43215	614-801-9788	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+33	Hunter	Postiglione	45 E Liberty St	\N	Ridgefield Park	NJ	7660	201-709-6245	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-10-31 00:00:00	t
+83	Julia	Laibach	\N	\N	\N	\N	\N	5163057102	5168263869	\N	/img/people_images/32-1541992107-XJKnrdLnJsnN1HUJcbnlJcpCctBceQabJn24hQ5TaCxZ2I5kWbmMmp0LJsmxQ7GKMYjzh6LsbDIO8z7tCslr4iXzeEfZbbwLwpQ2.png	Physician Assistant	\N	2018-11-12 03:08:27	2018-11-12 17:16:59	t
+32	John	Eletto	366 South Dr	\N	Las Cruces	NM	88011	505-977-3911	\N	\N	/img/people_images/default.png	\N	\N	2018-10-31 00:00:00	2018-11-26 17:07:23	t
+\.
+
+
+--
+-- TOC entry 3159 (class 0 OID 16657)
+-- Dependencies: 209
+-- Data for Name: relationships; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.relationships (client_id, pid1, pid2, relationshiptoclient, created_at, updated_at) FROM stdin;
+1	1	2	Brother	\N	\N
+1	1	3	Sister	\N	\N
+1	1	4	Mother	\N	\N
+1	2	5	Nephew	\N	\N
+6	6	7	Mother	\N	\N
+6	6	8	Father	\N	\N
+11	11	12	Brother	\N	\N
+11	11	15	Sister	2018-11-05 00:36:13	2018-11-05 00:36:13
+11	11	10	Father	\N	\N
+1	4	20	Uncle	\N	\N
+1	20	22	Nephew	\N	\N
+\.
+
+
+--
+-- TOC entry 3174 (class 0 OID 17063)
+-- Dependencies: 224
+-- Data for Name: signup_codes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.signup_codes (email, code, company_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3231 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: coach_profiles_pid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.coach_profiles_pid_seq', 1, false);
+
+
+--
+-- TOC entry 3232 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: coachtoclients_client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.coachtoclients_client_id_seq', 1, false);
+
+
+--
+-- TOC entry 3233 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: coachtoclients_coach_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.coachtoclients_coach_id_seq', 1, false);
+
+
+--
+-- TOC entry 3234 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: companies_company_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.companies_company_id_seq', 1, false);
+
+
+--
+-- TOC entry 3235 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: event_clients_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.event_clients_event_id_seq', 1, false);
+
+
+--
+-- TOC entry 3236 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: event_clients_pid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.event_clients_pid_seq', 1, false);
+
+
+--
+-- TOC entry 3237 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: events_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.events_event_id_seq', 79, true);
+
+
+--
+-- TOC entry 3238 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: events_pid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.events_pid_seq', 1, false);
+
+
+--
+-- TOC entry 3239 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: goals_pid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.goals_pid_seq', 1, false);
+
+
+--
+-- TOC entry 3240 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: lifeevents_lifeevent_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.lifeevents_lifeevent_id_seq', 1, false);
+
+
+--
+-- TOC entry 3241 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: App
+--
+
+SELECT pg_catalog.setval('public.migrations_id_seq', 1, false);
+
+
+--
+-- TOC entry 3242 (class 0 OID 0)
+-- Dependencies: 240
+-- Name: notes_note_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.notes_note_id_seq', 16, true);
+
+
+--
+-- TOC entry 3243 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: people_pid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.people_pid_seq', 6, true);
+
+
+--
+-- TOC entry 3244 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: pid_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.pid_sequence', 100, true);
+
+
+--
+-- TOC entry 3245 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: relationships_client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.relationships_client_id_seq', 1, false);
+
+
+--
+-- TOC entry 3246 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: relationships_pid1_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.relationships_pid1_seq', 1, false);
+
+
+--
+-- TOC entry 3247 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: relationships_pid2_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.relationships_pid2_seq', 1, false);
+
+
+--
+-- TOC entry 2994 (class 2606 OID 16620)
+-- Name: coach_profiles coach_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.coach_profiles
+    ADD CONSTRAINT coach_profiles_pkey PRIMARY KEY (pid, company_id);
+
+
+--
+-- TOC entry 3004 (class 2606 OID 16675)
+-- Name: coach_clients coachtoclients_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.coach_clients
+    ADD CONSTRAINT coachtoclients_pkey PRIMARY KEY (coach_id, client_id);
+
+
+--
+-- TOC entry 2998 (class 2606 OID 16642)
+-- Name: companies companies_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.companies
+    ADD CONSTRAINT companies_pkey PRIMARY KEY (company_id);
+
+
+--
+-- TOC entry 3006 (class 2606 OID 16686)
+-- Name: event_clients event_clients_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_clients
+    ADD CONSTRAINT event_clients_pkey PRIMARY KEY (event_id, pid);
+
+
+--
+-- TOC entry 3008 (class 2606 OID 16700)
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (event_id);
+
+
+--
+-- TOC entry 3000 (class 2606 OID 16650)
+-- Name: goals goals_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.goals
+    ADD CONSTRAINT goals_pkey PRIMARY KEY (pid, goal);
+
+
+--
+-- TOC entry 3010 (class 2606 OID 16711)
+-- Name: life_events lifeevents_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.life_events
+    ADD CONSTRAINT lifeevents_pkey PRIMARY KEY (lifeevent_id);
+
+
+--
+-- TOC entry 3012 (class 2606 OID 16901)
+-- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: App
+--
+
+ALTER TABLE ONLY public.migrations
+    ADD CONSTRAINT migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3014 (class 2606 OID 17429)
+-- Name: notes notes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT notes_pkey PRIMARY KEY (note_id);
+
+
+--
+-- TOC entry 2996 (class 2606 OID 16631)
+-- Name: people people_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.people
+    ADD CONSTRAINT people_pkey PRIMARY KEY (pid);
+
+
+--
+-- TOC entry 3002 (class 2606 OID 16664)
+-- Name: relationships relationships_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.relationships
+    ADD CONSTRAINT relationships_pkey PRIMARY KEY (client_id, pid1, pid2);
+
+
+--
+-- TOC entry 3016 (class 2606 OID 16718)
+-- Name: coach_profiles COMPIDFK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.coach_profiles
+    ADD CONSTRAINT "COMPIDFK" FOREIGN KEY (company_id) REFERENCES public.companies(company_id);
+
+
+--
+-- TOC entry 3018 (class 2606 OID 16738)
+-- Name: relationships ClientIDFK1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.relationships
+    ADD CONSTRAINT "ClientIDFK1" FOREIGN KEY (client_id) REFERENCES public.people(pid);
+
+
+--
+-- TOC entry 3021 (class 2606 OID 17024)
+-- Name: coach_clients ClientIDFK2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.coach_clients
+    ADD CONSTRAINT "ClientIDFK2" FOREIGN KEY (coach_id) REFERENCES public.people(pid) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3022 (class 2606 OID 17029)
+-- Name: coach_clients Coach_IDFK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.coach_clients
+    ADD CONSTRAINT "Coach_IDFK" FOREIGN KEY (coach_id) REFERENCES public.people(pid) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3023 (class 2606 OID 16763)
+-- Name: event_clients Event_IDFK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_clients
+    ADD CONSTRAINT "Event_IDFK" FOREIGN KEY (event_id) REFERENCES public.life_events(lifeevent_id);
+
+
+--
+-- TOC entry 3015 (class 2606 OID 16713)
+-- Name: coach_profiles PIDFK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.coach_profiles
+    ADD CONSTRAINT "PIDFK" FOREIGN KEY (pid) REFERENCES public.people(pid);
+
+
+--
+-- TOC entry 3017 (class 2606 OID 16723)
+-- Name: goals PIDFK1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.goals
+    ADD CONSTRAINT "PIDFK1" FOREIGN KEY (pid) REFERENCES public.people(pid);
+
+
+--
+-- TOC entry 3019 (class 2606 OID 16743)
+-- Name: relationships PIDFK2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.relationships
+    ADD CONSTRAINT "PIDFK2" FOREIGN KEY (pid1) REFERENCES public.people(pid);
+
+
+--
+-- TOC entry 3020 (class 2606 OID 16748)
+-- Name: relationships PIDFK3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.relationships
+    ADD CONSTRAINT "PIDFK3" FOREIGN KEY (pid2) REFERENCES public.people(pid);
+
+
+--
+-- TOC entry 3024 (class 2606 OID 16768)
+-- Name: event_clients PIDFK4; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_clients
+    ADD CONSTRAINT "PIDFK4" FOREIGN KEY (event_id) REFERENCES public.people(pid);
+
+
+--
+-- TOC entry 3026 (class 2606 OID 17430)
+-- Name: notes client_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT client_id FOREIGN KEY (client_id) REFERENCES public.people(pid);
+
+
+--
+-- TOC entry 3025 (class 2606 OID 17413)
+-- Name: events fk_people; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT fk_people FOREIGN KEY (pid) REFERENCES public.people(pid) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3187 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: TABLE coach_clients; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.coach_clients TO "App";
+
+
+--
+-- TOC entry 3188 (class 0 OID 0)
+-- Dependencies: 199
+-- Name: TABLE coach_profiles; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.coach_profiles TO "App";
+
+
+--
+-- TOC entry 3190 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: SEQUENCE coach_profiles_pid_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.coach_profiles_pid_seq TO "App";
+
+
+--
+-- TOC entry 3192 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: SEQUENCE coachtoclients_client_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.coachtoclients_client_id_seq TO "App";
+
+
+--
+-- TOC entry 3194 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: SEQUENCE coachtoclients_coach_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.coachtoclients_coach_id_seq TO "App";
+
+
+--
+-- TOC entry 3195 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: TABLE companies; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.companies TO "App";
+
+
+--
+-- TOC entry 3197 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: SEQUENCE companies_company_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.companies_company_id_seq TO "App";
+
+
+--
+-- TOC entry 3198 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: TABLE event_clients; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.event_clients TO "App";
+
+
+--
+-- TOC entry 3200 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: SEQUENCE event_clients_event_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.event_clients_event_id_seq TO "App";
+
+
+--
+-- TOC entry 3202 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: SEQUENCE event_clients_pid_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.event_clients_pid_seq TO "App";
+
+
+--
+-- TOC entry 3203 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: TABLE events; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.events TO "App";
+
+
+--
+-- TOC entry 3205 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: SEQUENCE events_event_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.events_event_id_seq TO "App";
+
+
+--
+-- TOC entry 3207 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: SEQUENCE events_pid_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.events_pid_seq TO "App";
+
+
+--
+-- TOC entry 3208 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: TABLE goals; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.goals TO "App";
+
+
+--
+-- TOC entry 3210 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: SEQUENCE goals_pid_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.goals_pid_seq TO "App";
+
+
+--
+-- TOC entry 3211 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: TABLE life_events; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.life_events TO "App";
+
+
+--
+-- TOC entry 3213 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: SEQUENCE lifeevents_lifeevent_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.lifeevents_lifeevent_id_seq TO "App";
+
+
+--
+-- TOC entry 3215 (class 0 OID 0)
+-- Dependencies: 241
+-- Name: TABLE notes; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.notes TO "App";
+
+
+--
+-- TOC entry 3217 (class 0 OID 0)
+-- Dependencies: 240
+-- Name: SEQUENCE notes_note_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.notes_note_id_seq TO "App";
+
+
+--
+-- TOC entry 3218 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: TABLE people; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.people TO "App";
+
+
+--
+-- TOC entry 3220 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: SEQUENCE people_pid_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.people_pid_seq TO "App";
+
+
+--
+-- TOC entry 3222 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: SEQUENCE pid_sequence; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.pid_sequence TO "App";
+
+
+--
+-- TOC entry 3223 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: TABLE relationships; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.relationships TO "App";
+
+
+--
+-- TOC entry 3225 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: SEQUENCE relationships_client_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.relationships_client_id_seq TO "App";
+
+
+--
+-- TOC entry 3227 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: SEQUENCE relationships_pid1_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.relationships_pid1_seq TO "App";
+
+
+--
+-- TOC entry 3229 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: SEQUENCE relationships_pid2_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.relationships_pid2_seq TO "App";
+
+
+--
+-- TOC entry 3230 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: TABLE signup_codes; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.signup_codes TO "App";
+
+
+-- Completed on 2018-12-03 11:38:33
+
+--
+-- PostgreSQL database dump complete
+--
+
