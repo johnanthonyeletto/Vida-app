@@ -73,7 +73,7 @@
         options.push({ label: cli.fname + " " + cli.lname, value: cli.pid });
       });
 
-      this.setState({ clientOptions: options, pid: options[0].value,  clientpid: pid });
+       this.setState({ clientOptions: options, pid: options[0].value,  clientpid: pid, pid1: pid });
     });
       this.relationship = new Relationship();
   }

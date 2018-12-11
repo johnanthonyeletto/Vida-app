@@ -49,17 +49,8 @@ class ClientController extends Controller
 
     public function getClient($pid)
     {
-        if ($this->request->auth->super_coach) {
-            // If the user is a super coach, they can select any user.
-            // This is a security vulnerbility because it will also allow them to select users from other comapnies,
-            // but I'll let it slide for now.
-            // - John Eletto
-            $person = Person::where('pid', $pid)->with('nextMeeting', 'relationshipsPID2', 'coach', 'notes')->first();
-        } else {
-            // This will allow normal coaches to only view their clients. This works good.
-            $person = $this->request->auth->clients()->where('pid', $pid)->with('nextMeeting', 'relationshipsPID2', 'coach', 'notes')->first();
 
-        }
+        $person = Person::where('pid', $pid)->with('nextMeeting', 'relationshipsPID2', 'coach', 'notes')->first();
 
         if ($person == null) {
             abort(404, 'This client could not be found. They might not be your client.');
@@ -72,7 +63,10 @@ class ClientController extends Controller
         if (sizeof($person->relationships) < 1) {
             unset($person->relationships);
         }
-        $person->coach_id = $person->coach[0]->pid;
+        if (sizeOf($person->coach)) {
+            $person->coach_id = $person->coach[0]->pid;
+        }
+
         unset($person->coach);
 
         return response()->json($person);
@@ -177,11 +171,7 @@ class ClientController extends Controller
 
     public function createUpdateNote()
     {
-        if ($this->request->auth->super_coach) {
-            $client = Person::find($this->request->input('pid'));
-        } else {
-            $client = $this->request->auth->clients()->find($this->request->input('pid'));
-        }
+        $client = Person::find($this->request->input('pid'));
 
         if ($client == null) {
             abort(404);
@@ -198,22 +188,14 @@ class ClientController extends Controller
 
     public function getNotes($pid)
     {
-        if ($this->request->auth->super_coach) {
-            $client = Person::find($pid);
-        } else {
-            $client = $this->request->auth->clients()->find($pid);
-        }
+        $client = Person::find($pid);
 
         return response()->json($client->notes()->get());
     }
 
     public function deleteNote($pid, $note_id)
     {
-        if ($this->request->auth->super_coach) {
-            $client = Person::find($pid);
-        } else {
-            $client = $this->request->auth->clients()->find($pid);
-        }
+        $client = Person::find($pid);
 
         $note = $client->notes->find($note_id);
 

@@ -46,6 +46,10 @@ export default class AddClientScreen extends Component {
 
         const { navigation } = this.props;
         const pid = navigation.getParam('pid', 'NONE');
+
+        const isRelationship = navigation.getParam('isRelationship', false);
+        this.setState({ isRelationship });
+
         if (pid !== 'NONE') {
             // We're editing a client. Load their info.
 
@@ -88,7 +92,7 @@ export default class AddClientScreen extends Component {
                 <KeyboardAvoidingView
                     keyboardVerticalOffset={100} behavior={"padding"}>
                     <View style={{ marginBottom: 20 }}>
-                        {this.state.super_coach &&
+                        {(this.state.super_coach && !this.state.isRelationship) &&
                             <FormGroup
                                 onChangeText={(coach_id) => this.setState({ coach_id })}
                                 value={(this.state.coach_id != null) ? this.state.coach_id : this.state.defaultEmployee}
@@ -255,7 +259,7 @@ export default class AddClientScreen extends Component {
         client.image_base64 = this.state.image_base64;
         client.image_path = this.state.image_path;
 
-        if (this.state.super_coach) {
+        if (this.state.super_coach && !this.state.isRelationship) {
             client.coach_id = this.state.coach_id;
         }
 
