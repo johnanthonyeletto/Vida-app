@@ -78,6 +78,11 @@ export default class NoteEntryScreen extends Component {
   }
 
   _save() {
+
+    if (this.state.loading) {
+      return;
+    }
+
     this.setState({ loading: true });
 
     var client = new Client();

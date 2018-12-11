@@ -57,16 +57,16 @@ class ClientController extends Controller
         }
 
         $person->relationships = $person->relationshipsPID2->where('isActive', true)->unique()->all();
-        // $person->relationshipsForJenna = $person->relationshipsPID1->merge($person->relationshipsPID2)->unique()->all();
-        // unset($person->relationshipsPID1);
+        $person->relationshipsForJenna = $person->relationshipsPID1->merge($person->relationshipsPID2)->unique()->all();
+        unset($person->relationshipsPID1);
         unset($person->relationshipsPID2);
 
         if (sizeof($person->relationships) < 1) {
             unset($person->relationships);
         }
-        // if (sizeof($person->relationshipsForJenna) < 1) {
-        //     unset($person->relationshipsForJenna);
-        // }
+        if (sizeof($person->relationshipsForJenna) < 1) {
+            unset($person->relationshipsForJenna);
+        }
 
         if (sizeOf($person->coach)) {
             $person->coach_id = $person->coach[0]->pid;
