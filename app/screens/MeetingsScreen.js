@@ -34,6 +34,7 @@ export default class MeetingsScreen extends React.Component {
     ),
     headerLeft: (
       <TouchableOpacity onPress={() => {
+        _this.navRefresh();
         _this.setState({ pastEventsToggle: !_this.state.pastEventsToggle });
         if (!_this.state.pastEventsToggle) {
           navigation.setParams({ pastUpcomingMeeting: 'Past' });
@@ -141,7 +142,8 @@ export default class MeetingsScreen extends React.Component {
         </ScrollContainer >
       )
     }
-
+    console.log("These are past events.");
+    console.log(this.state.pastEvents);
     if (this.state.pastEventsToggle) {
       return (
         <ScrollContainer
@@ -154,7 +156,7 @@ export default class MeetingsScreen extends React.Component {
           <FlatList
             data={this.state.pastEvents}
             renderItem={({ item }) =>
-              <TouchableOpacity onPress={() => { this.props.navigation.navigate('DEventEntry', { onNavigateBack: this.navRefresh, 'eventPKG': item }); }
+              <TouchableOpacity onPress={() => { this.props.navigation.navigate('EventEntry', { onNavigateBack: this.navRefresh, 'eventPKG': item }); }
               }>
                 <EventItem sEvent={item} />
               </TouchableOpacity>
