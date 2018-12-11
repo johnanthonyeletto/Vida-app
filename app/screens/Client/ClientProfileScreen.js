@@ -338,7 +338,7 @@ export default class ClientProfileScreen extends Component {
             navigation.navigate('NoteEntry', { 'pid': _this.state.client.pid });
             break;
           case 3:
-            navigation.navigate('AddClient', { 'pid': _this.state.client.pid, });
+            navigation.navigate('AddClient', { 'pid': _this.state.client.pid, 'isRelationship': _this.state.isRelationship });
             break;
           case 4:
             _this._markInactive().then(res => {
