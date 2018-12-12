@@ -86,7 +86,7 @@ export default class AddRelationshipScreen extends Component {
                     <FormGroup
                         onChangeText={(pid1) => this.setState({ pid1 })}
                         value={(this.state.pid1 == null) ? this.state.clientpid : this.state.pid1}
-                        placeholder={"Connecting Relative"}
+                        placeholder={"Related To"}
                         type={"picker"}
                         options={this.state.clientOptions}
                     // disabled={((this.state.event_id) ? true : false)}
