@@ -85,7 +85,7 @@ export default class AddRelationshipScreen extends Component {
                 <ScrollContainer>
                     <FormGroup
                         onChangeText={(pid1) => this.setState({ pid1 })}
-                        value={this.state.pid1}
+                        value={(this.state.pid1 == null) ? this.state.clientpid : this.state.pid1}
                         placeholder={"Connecting Relative"}
                         type={"picker"}
                         options={this.state.clientOptions}

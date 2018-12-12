@@ -34,7 +34,7 @@ class Person extends Model
       join people person1 on relationships.pid1 = person1.pid
       join people person2 on relationships.pid2 = person2.pid
       join people client on relationships.client_id = client.pid
-      WHERE relationships.client_id = :client_id', ["client_id" => $this->pid]);
+      WHERE person2."isActive" = true and relationships.client_id = :client_id', ["client_id" => $this->pid]);
         return $relationships;
     }
 

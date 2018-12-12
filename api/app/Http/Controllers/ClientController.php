@@ -57,7 +57,7 @@ class ClientController extends Controller
         }
 
         $person->relationships = $person->relationshipsPID2->where('isActive', true)->unique()->all();
-        $person->relationshipsForJenna = $person->relationshipsPID1->merge($person->relationshipsPID2)->unique()->all();
+        $person->relationshipsForJenna = $person->relationshipsPID1->merge($person->relationshipsPID2)->where('isActive', true)->unique()->all();
         unset($person->relationshipsPID1);
         unset($person->relationshipsPID2);
 
@@ -65,7 +65,15 @@ class ClientController extends Controller
             unset($person->relationships);
         }
         if (sizeof($person->relationshipsForJenna) < 1) {
-            unset($person->relationshipsForJenna);
+            $relationships = $person->relationshipsForJenna;
+            $relationships[0]['fname'] = $person->fname;
+            $relationships[0]['lname'] = $person->lname;
+            $relationships[0]['pid'] = $person->pid;
+            $relationships[0]['pivot']['relationshiptoclient'] = 'Client';
+            // unset($person->relationshipsForJenna);
+            // $person['relationshipsForJenna'] = [];
+            // $person['relationshipsForJenna'][0] = $person->first();
+            $person->relationshipsForJenna = $relationships;
         }
 
         if (sizeOf($person->coach)) {
